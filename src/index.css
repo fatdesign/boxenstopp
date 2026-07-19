@@ -1,13 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #16191c;
-  --color-asphalt: #22272a;
-  --color-race: #e01e26;
-  --color-race-700: #b91e1f;
-  --color-amber: #f2a41c;
-  --color-paper: #f7f6f3;
-  --color-line: #e7e4df;
+  --color-ink: #1a1a1a;
+  --color-asphalt: #f4f4f5;
+  --color-race: #E31837;
+  --color-race-700: #B00F26;
+  --color-amber: #F0A500;
+  --color-paper: #ffffff;
+  --color-line: #e5e7eb;
+  
+  /* Lotteria Theme Colors */
+  --color-lotteria-bg: #f5efe6;
+  --color-lotteria-red: #da291c;
+  --color-lotteria-yellow: #ffb81c;
 
   --font-display: "Archivo", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -22,6 +27,28 @@
 
 @layer utilities {
   .speed-cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.85em), calc(100% - 0.85em) 100%, 0 100%); }
-  .speed-stripes { background-image: repeating-linear-gradient(-55deg, transparent 0 22px, rgba(255, 255, 255, 0.02) 22px 24px); }
-  .glassmorphic-card { background: rgba(34, 39, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+  .speed-stripes { background-image: repeating-linear-gradient(-55deg, transparent 0 22px, rgba(0, 0, 0, 0.02) 22px 24px); }
+  
+  .animate-circle-reveal {
+    animation: circle-reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+}
+
+@keyframes circle-reveal {
+  0% { clip-path: circle(0% at 50% 50%); }
+  100% { clip-path: circle(150% at 50% 50%); }
+}
+
+@keyframes slide-up {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 80s linear infinite;
 }

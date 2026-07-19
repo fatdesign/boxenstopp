@@ -1,0 +1,149 @@
+{
+  "settings": {},
+  "categories": [
+    {
+      "id": "warme-snacks",
+      "name": "Warme Snacks",
+      "items": [
+        {
+          "name": "Leberkäse-Semmel",
+          "description": "Klassiker, heiß aus dem Ofen.",
+          "price": "3.80",
+          "isSoldOut": false,
+          "isPopular": true,
+          "isVegetarian": false
+        },
+        {
+          "name": "Bosna",
+          "description": "Bratwurst, Zwiebel, Senf & Curry.",
+          "price": "4.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": false
+        },
+        {
+          "name": "Käsekrainer im Weckerl",
+          "description": "Mit Senf oder Ketchup.",
+          "price": "4.90",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": false
+        },
+        {
+          "name": "Currywurst",
+          "description": "Mit hauseigener Currysauce.",
+          "price": "5.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": false
+        }
+      ]
+    },
+    {
+      "id": "burger",
+      "name": "Burger & Klassiker",
+      "items": [
+        {
+          "name": "Boxenstopp-Burger",
+          "description": "Rind, Cheddar, Salat, Haussauce.",
+          "price": "8.90",
+          "isSoldOut": false,
+          "isPopular": true,
+          "isVegetarian": false
+        },
+        {
+          "name": "Cheeseburger",
+          "description": "Der Klassiker, kompromisslos.",
+          "price": "7.90",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": false
+        },
+        {
+          "name": "Crispy-Chicken-Burger",
+          "description": "Knuspriges Hähnchen, Coleslaw.",
+          "price": "8.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": false
+        },
+        {
+          "name": "Veggie-Burger",
+          "description": "Pflanzlich, voller Geschmack.",
+          "price": "8.90",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        }
+      ]
+    },
+    {
+      "id": "beilagen",
+      "name": "Beilagen",
+      "items": [
+        {
+          "name": "Pommes frites",
+          "description": "Goldgelb & knusprig.",
+          "price": "3.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        },
+        {
+          "name": "Süßkartoffel-Pommes",
+          "description": "Knusprige Süßkartoffeln.",
+          "price": "4.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        },
+        {
+          "name": "Wedges",
+          "description": "Mit Sour-Cream-Dip.",
+          "price": "4.20",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        }
+      ]
+    },
+    {
+      "id": "getraenke",
+      "name": "Getränke",
+      "items": [
+        {
+          "name": "Softdrinks",
+          "description": "Cola, Limo & Co.",
+          "price": "2.50",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        },
+        {
+          "name": "Mineralwasser",
+          "description": "Still oder prickelnd.",
+          "price": "2.00",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        },
+        {
+          "name": "Kaffee",
+          "description": "Für den schnellen Wachmacher.",
+          "price": "2.80",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        },
+        {
+          "name": "Energy & Eistee",
+          "description": "Erfrischende Kaltgetränke.",
+          "price": "3.00",
+          "isSoldOut": false,
+          "isPopular": false,
+          "isVegetarian": true
+        }
+      ]
+    }
+  ]
+}

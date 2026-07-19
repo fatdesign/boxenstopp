@@ -1,38 +1,162 @@
-import React, { useState } from 'react';
-import { MENU } from '../config/dinerConfig';
-import { Leaf, Star } from 'lucide-react';
-import { cn } from './Startlights';
+import React, { useState, useEffect } from 'react';
+
+const GET_IMAGE_FOR_CATEGORY = (catId: string) => {
+  switch (catId) {
+    case 'burger':
+      return '/images/burger.png';
+    case 'beilagen':
+      return '/images/fries.png';
+    case 'getraenke':
+      return '/images/drinks.png';
+    case 'warme-snacks':
+    default:
+      return '/images/food-diner.jpg';
+  }
+};
+
+interface MenuItem {
+  name: string;
+  description?: string;
+  price: string;
+  isVegetarian?: boolean;
+  isPopular?: boolean;
+  isSoldOut?: boolean;
+}
+
+interface MenuCategory {
+  id: string;
+  name: string;
+  items: MenuItem[];
+}
 
 export const MenuSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState(MENU[0].id);
-  const activeCategory = MENU.find(c => c.id === activeTab) || MENU[0];
+  const [categories, setCategories] = useState<MenuCategory[]>([]);
+  const [activeCategory, setActiveCategory] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/menu.json')
+      .then(res => res.json())
+      .then(data => {
+        setCategories(data.categories || []);
+        if (data.categories && data.categories.length > 0) {
+          setActiveCategory(data.categories[0].id);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load menu.json', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="py-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Lade Speisekarte...</div>;
+  }
+
+  if (categories.length === 0) {
+    return <div className="py-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Keine Daten gefunden.</div>;
+  }
+
+  const currentCategoryData = categories.find(c => c.id === activeCategory);
 
   return (
-    <section id="speisekarte" className="py-24 bg-ink relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+    <section id="menu" className="py-24 bg-lotteria-bg relative overflow-hidden">
+      
+      {/* Background Glows */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-10">
+        <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] bg-lotteria-red rounded-full blur-[120px]"></div>
+        <div className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] bg-lotteria-yellow rounded-full blur-[120px]"></div>
+      </div>
+
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 md:px-12 relative z-10">
+        
+        {/* Title Header */}
         <div className="text-center mb-16">
-          <h2 className="font-display font-black text-4xl md:text-5xl text-white uppercase tracking-tight mb-4">Was bei uns <span className="text-race">auf die Hand kommt</span></h2>
-          <p className="text-white/60 max-w-2xl mx-auto">Alle Preise und Gerichte werden laufend ergänzt. Frisch zubereitet, sofort mitnehmbar.</p>
+          <h2 className="font-display font-black text-4xl sm:text-6xl md:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
+            YOUR NEW FAVORITE BURGER STARTS HERE!
+          </h2>
+          <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase">
+            A BITE OF JOY IN EVERY BITE.
+          </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {MENU.map(category => (
-            <button key={category.id} onClick={() => setActiveTab(category.id)} className={cn("px-6 py-3 font-display font-bold uppercase tracking-wide text-sm speed-cut transition-all", activeTab === category.id ? "bg-race text-white shadow-[0_4px_15px_rgba(224,30,38,0.4)]" : "bg-asphalt text-white/70 hover:bg-white/10 hover:text-white border border-white/5")}>
-              {category.name}
+
+        {/* Categories Navigation (Pill-Style) */}
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-5 mb-16">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`
+                px-6 sm:px-10 py-3.5 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-sm
+                ${activeCategory === cat.id 
+                  ? 'bg-lotteria-yellow text-lotteria-red shadow-xl scale-105 ring-4 ring-lotteria-yellow/40' 
+                  : 'bg-white text-lotteria-red border-2 border-lotteria-yellow/30 hover:border-lotteria-yellow hover:scale-105 hover:bg-white/90'
+                }
+              `}
+            >
+              {cat.name}
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {activeCategory.items.map(item => (
-            <div key={item.id} className="glassmorphic-card p-6 speed-cut group hover:border-race/50 hover:shadow-[0_8px_30px_rgba(224,30,38,0.15)] transition-all duration-300 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-race/5 rounded-full blur-2xl group-hover:bg-race/10 transition-colors"></div>
-              <div className="flex justify-between items-start mb-2 relative z-10">
-                <h3 className="font-display font-bold text-xl text-white flex items-center gap-2">{item.name}{item.isPopular && <span className="flex items-center gap-1 bg-amber/10 text-amber text-[0.65rem] px-2 py-0.5 rounded-full uppercase tracking-wider border border-amber/20"><Star size={10} className="fill-amber" /> Beliebt</span>}{item.isVegetarian && <span className="flex items-center gap-1 bg-green-500/10 text-green-400 text-[0.65rem] px-2 py-0.5 rounded-full uppercase tracking-wider border border-green-500/20"><Leaf size={10} /> Veggie</span>}</h3>
-                <span className="font-mono font-bold text-lg text-race whitespace-nowrap ml-4">€ {item.price}</span>
+
+        {/* Full-Width Responsive Card Grid (1 col mobile, 2 col tablet, 3-4 col desktop) */}
+        {currentCategoryData && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+            {currentCategoryData.items.map((item, idx) => (
+              <div 
+                key={idx} 
+                className={`bg-white rounded-3xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-lotteria-yellow/20 hover:border-lotteria-yellow relative flex flex-col justify-between overflow-hidden group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
+              >
+                <div>
+                  {/* Item Image Framing */}
+                  <div className="w-full h-48 sm:h-52 bg-lotteria-bg/60 rounded-2xl mb-6 flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-75 group-hover:scale-125 transition-transform duration-500 blur-xl"></div>
+                    <img 
+                      src={GET_IMAGE_FOR_CATEGORY(activeCategory)} 
+                      alt={item.name}
+                      className="w-36 h-36 object-cover rounded-full shadow-lg relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 border-4 border-white"
+                    />
+                    
+                    {/* Price Tag Floating Top-Right */}
+                    <div className="absolute top-3 right-3 bg-lotteria-yellow text-lotteria-red font-display font-black text-lg px-4 py-1.5 rounded-full shadow-lg z-20 border border-white">
+                      € {item.price}
+                    </div>
+                  </div>
+
+                  {/* Title & Description */}
+                  <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight mb-2 group-hover:text-lotteria-red/90 transition-colors">
+                    {item.name}
+                  </h3>
+                  
+                  <p className="text-sm font-medium text-lotteria-red/70 mb-4 line-clamp-2">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Status Badges */}
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-lotteria-bg">
+                  {item.isPopular && (
+                    <span className="px-3 py-1 bg-lotteria-red text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
+                      ★ Beliebt
+                    </span>
+                  )}
+                  {item.isVegetarian && (
+                    <span className="px-3 py-1 bg-green-600 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
+                      🌱 Veggie
+                    </span>
+                  )}
+                  {item.isSoldOut && (
+                    <span className="px-3 py-1 bg-gray-500 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
+                      Ausverkauft
+                    </span>
+                  )}
+                </div>
               </div>
-              <p className="text-white/60 text-sm relative z-10 pr-12">{item.description}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
       </div>
     </section>
   );
