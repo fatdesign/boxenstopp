@@ -34,16 +34,30 @@ export const FullMenuPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('menu.json')
-      .then(res => res.json())
-      .then(data => {
+    const loadMenu = async () => {
+      try {
+        // Try loading from Cloudflare Worker D1 Database
+        const res = await fetch('https://boxenstopp.f-klavun.workers.dev');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
         setCategories(data.categories || []);
         setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to load menu.json', err);
-        setLoading(false);
-      });
+      } catch (err) {
+        console.warn('Worker fetch failed, falling back to local menu.json', err);
+        // Fallback to local static file
+        fetch('menu.json')
+          .then(res => res.json())
+          .then(data => {
+            setCategories(data.categories || []);
+            setLoading(false);
+          })
+          .catch(fallbackErr => {
+            console.error('Failed to load local menu.json fallback', fallbackErr);
+            setLoading(false);
+          });
+      }
+    };
+    loadMenu();
   }, []);
 
   if (loading) {
