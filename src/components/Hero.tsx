@@ -6,7 +6,7 @@ export const Hero: React.FC = () => {
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 overflow-hidden bg-lotteria-red animate-circle-reveal">
       {/* Background Studio Glow & Texture */}
-      <div className="absolute inset-0 opacity-25 z-0 bg-cover bg-center mix-blend-multiply" style={{ backgroundImage: "url('/images/hero_food_bg.png')" }}></div>
+      <div className="absolute inset-0 opacity-25 z-0 bg-cover bg-center mix-blend-multiply" style={{ backgroundImage: "url('images/hero_food_bg.png')" }}></div>
       <div className="absolute inset-0 bg-gradient-to-b from-lotteria-red/80 via-transparent to-lotteria-red z-0 pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 w-full flex flex-col items-center text-center">
@@ -28,10 +28,10 @@ export const Hero: React.FC = () => {
       
       {/* Decorative Floating Food Highlights */}
       <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full overflow-hidden shadow-2xl border-8 border-white opacity-0 animate-[slide-up_1.2s_ease-out_1s_forwards] rotate-[-10deg]">
-        <img src="/images/schnitzel.png" alt="Knuspriges Schnitzel mit Pommes" className="w-full h-full object-cover" />
+        <img src="images/schnitzel.png" alt="Knuspriges Schnitzel mit Pommes" className="w-full h-full object-cover" />
       </div>
       <div className="absolute top-32 -right-10 w-72 h-72 rounded-full overflow-hidden shadow-2xl border-8 border-white opacity-0 animate-[slide-up_1.2s_ease-out_1.2s_forwards] rotate-[15deg]">
-        <img src="/images/burger_combo.png" alt="Burger & Fries Combo" className="w-full h-full object-cover" />
+        <img src="images/burger_combo.png" alt="Burger & Fries Combo" className="w-full h-full object-cover" />
       </div>
     </section>
   );

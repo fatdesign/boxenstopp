@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
         {/* Left: Logo */}
         <div className="flex-shrink-0">
           <Link to="/" className="flex items-center gap-3">
-            <img src="/images/boxenstopp_logo.png" alt="Boxenstopp Logo" className="h-16 md:h-18 lg:h-20 w-auto object-contain" />
+            <img src="images/boxenstopp_logo.png" alt="Boxenstopp Logo" className="h-16 md:h-18 lg:h-20 w-auto object-contain" />
           </Link>
         </div>
 

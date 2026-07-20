@@ -3,14 +3,14 @@ import React, { useState, useEffect } from 'react';
 const GET_IMAGE_FOR_CATEGORY = (catId: string) => {
   switch (catId) {
     case 'burger':
-      return '/images/burger.png';
+      return 'images/burger.png';
     case 'beilagen':
-      return '/images/fries.png';
+      return 'images/fries.png';
     case 'getraenke':
-      return '/images/drinks.png';
+      return 'images/drinks.png';
     case 'warme-snacks':
     default:
-      return '/images/food-diner.jpg';
+      return 'images/schnitzel.png';
   }
 };
 
@@ -35,7 +35,7 @@ export const MenuSection: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/menu.json')
+    fetch('menu.json')
       .then(res => res.json())
       .then(data => {
         setCategories(data.categories || []);

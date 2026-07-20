@@ -38,7 +38,7 @@ export const InfoSection: React.FC = () => {
             </div>
             <div className="rounded-2xl overflow-hidden shadow-lg speed-cut relative h-64 group">
               <div className="absolute inset-0 bg-ink/5 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-              <img src="/images/location-diner.jpg" alt="Standort & Außenansicht" className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+              <img src="images/location-diner.jpg" alt="Standort & Außenansicht" className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
         </div>

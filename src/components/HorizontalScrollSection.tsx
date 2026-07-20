@@ -2,11 +2,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import { DINER_INFO } from '../config/dinerConfig';
 
 const SCROLL_ITEMS = [
-  { id: 1, type: 'image', src: '/images/schnitzel.png', shape: 'rounded-[100px] rounded-tl-none' },
-  { id: 2, type: 'image', src: '/images/burger_combo.png', shape: 'rounded-full' },
-  { id: 3, type: 'image', src: '/images/burger.png', shape: 'rounded-[40px]' },
-  { id: 4, type: 'image', src: '/images/fries.png', shape: 'rounded-t-full rounded-b-xl' },
-  { id: 5, type: 'image', src: '/images/burger.png', shape: 'rounded-br-[80px] rounded-tl-[80px]' } // Placeholder for Pastrami Toast
+  { id: 1, type: 'image', src: 'images/schnitzel.png', shape: 'rounded-[100px] rounded-tl-none' },
+  { id: 2, type: 'image', src: 'images/burger_combo.png', shape: 'rounded-full' },
+  { id: 3, type: 'image', src: 'images/burger.png', shape: 'rounded-[40px]' },
+  { id: 4, type: 'image', src: 'images/fries.png', shape: 'rounded-t-full rounded-b-xl' },
+  { id: 5, type: 'image', src: 'images/burger.png', shape: 'rounded-br-[80px] rounded-tl-[80px]' } // Placeholder for Pastrami Toast
 ];
 
 export const HorizontalScrollSection: React.FC = () => {
