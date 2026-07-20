@@ -3,7 +3,12 @@ import { Tag } from 'lucide-react';
 
 export const DailySpecials: React.FC = () => {
   return (
-    <section id="tagesangebot" className="py-24 bg-gray-50 relative speed-stripes">
+    <section id="tagesangebot" className="py-24 bg-gray-50 relative overflow-hidden">
+      {/* Subtle Food Background Texture (25% Opacity) */}
+      <div 
+        className="absolute inset-0 opacity-25 bg-cover bg-center mix-blend-multiply pointer-events-none z-0" 
+        style={{ backgroundImage: "url('/images/hero_food_bg.png')" }}
+      ></div>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="font-display font-black text-4xl md:text-5xl text-ink uppercase tracking-tight mb-4">Heute im <span className="text-race">Boxenstopp</span></h2>
