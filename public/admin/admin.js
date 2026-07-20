@@ -70,6 +70,17 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
+// Submit form on Enter key in password field
+document.getElementById('password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        if (submitBtn && !submitBtn.disabled) {
+            submitBtn.click();
+        }
+    }
+});
+
 logoutBtn.addEventListener('click', () => {
     dashboardScreen.classList.remove('active');
     loginScreen.classList.add('active');

@@ -210,6 +210,17 @@ export default {
       if (request.method === "GET") {
         // If request is from admin dashboard (requesting base64 wrapper)
         if (request.headers.get("X-Menu-File")) {
+          // Authenticate with X-Admin-Password header against env secret
+          const clientPassword = request.headers.get("X-Admin-Password");
+          const adminPasswordSecret = env.ADMIN_PASSWORD;
+
+          if (!clientPassword || clientPassword !== adminPasswordSecret) {
+            return new Response(JSON.stringify({ error: "401 Unauthorized" }), {
+              status: 401,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+
           return new Response(
             JSON.stringify({
               sha: dbRecord.sha,
