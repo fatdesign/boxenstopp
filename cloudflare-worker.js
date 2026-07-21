@@ -3,6 +3,23 @@
 
 const DEFAULT_MENU = {
   "settings": {},
+  "dailySpecials": [
+    {
+      "title": "Mittagsmenü",
+      "description": "Hauptspeise + Beilage + Getränk.",
+      "price": ""
+    },
+    {
+      "title": "Snack-Deal",
+      "description": "Heißer Snack + Pommes + Getränk.",
+      "price": ""
+    },
+    {
+      "title": "Frische des Tages",
+      "description": "Tagesaktuelle Special-Burger oder Salate.",
+      "price": ""
+    }
+  ],
   "categories": [
     {
       "id": "warme-snacks",

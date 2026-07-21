@@ -46,6 +46,20 @@
         <main class="admin-container dashboard-main">
             <section class="admin-controls">
                 <div class="controls-left">
+                    <h2 class="dash-title">🔥 Tagesangebote</h2>
+                    <p class="dash-sub">Tagesaktuelle Deals pflegen – erscheinen live auf der Startseite unter "Heute im Boxenstopp".</p>
+                </div>
+                <button id="add-special-btn" class="btn btn-secondary">+ Angebot hinzufügen</button>
+            </section>
+
+            <div class="category-block" style="margin-bottom:2.5rem;">
+                <div id="specials-container" class="item-list">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+
+            <section class="admin-controls">
+                <div class="controls-left">
                     <h2 class="dash-title">Speisekarte verwalten</h2>
                     <p class="dash-sub">Gerichte hinzufügen, bearbeiten oder markieren (Beliebt/Veggie/Ausverkauft).</p>
                 </div>
@@ -56,6 +70,34 @@
                 <!-- Rendered dynamically -->
             </div>
         </main>
+    </div>
+
+    <!-- Special Modal -->
+    <div id="special-modal" class="modal-overlay hidden">
+        <div class="modal-content glass">
+            <h3 id="special-modal-title">Angebot hinzufügen</h3>
+            <form id="special-form">
+                <input type="hidden" id="special-index">
+                <div class="form-grid" style="grid-template-columns:1fr">
+                    <div class="form-group">
+                        <label>Titel *</label>
+                        <input type="text" id="special-title" required placeholder="z.B. Mittagsmenü">
+                    </div>
+                    <div class="form-group">
+                        <label>Preis (€) — leer lassen für "siehe Aushang"</label>
+                        <input type="text" id="special-price" placeholder="6.90">
+                    </div>
+                    <div class="form-group">
+                        <label>Beschreibung</label>
+                        <textarea id="special-desc" rows="3" placeholder="Hauptspeise + Beilage + Getränk."></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="special-modal-cancel" class="btn btn-ghost">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Übernehmen</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Item Modal -->
