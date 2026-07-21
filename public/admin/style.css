@@ -450,6 +450,86 @@ body {
     filter: drop-shadow(0 0 4px rgba(255, 184, 28, 0.7));
 }
 
+/* ── Opening Hours ────── */
+.hours-list {
+    padding: 0.5rem 1.5rem;
+}
+
+.hours-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
+}
+
+.hours-day {
+    font-family: var(--font);
+    font-weight: 700;
+    width: 110px;
+    flex-shrink: 0;
+    color: var(--text);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.hours-closed-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.hours-time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-left: auto;
+    transition: opacity 0.2s;
+}
+
+.hours-time-inputs.is-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.hours-time-inputs input[type="time"] {
+    background: #f9f9f9;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.hours-time-inputs input[type="time"]:focus {
+    border-color: var(--accent);
+    background: #fff;
+}
+
+.hours-time-inputs span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 560px) {
+    .hours-time-inputs {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
 .add-item-wrap {
     padding: 1rem 1.5rem;
     background: rgba(0,0,0,0.02);

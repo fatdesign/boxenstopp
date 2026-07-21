@@ -1,5 +1,6 @@
 export interface MenuItem { id: string; name: string; description: string; price: string; isVegetarian?: boolean; isPopular?: boolean; }
 export interface MenuCategory { id: string; name: string; items: MenuItem[]; }
+export type OpeningHours = Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday', { open: string; close: string } | null>;
 export const DINER_INFO = {
   name: "BOXENSTOPP im Handelszentrum", slogan: "Schnell. Heiss. Lecker.", phone: "+43 662 123456",
   address: { street: "Handelszentrum", city: "Bergheim bei Salzburg", zip: "5101", country: "AT" },

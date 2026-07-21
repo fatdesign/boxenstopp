@@ -9,6 +9,7 @@ import { MarqueeSection } from './components/MarqueeSection';
 import { Footer } from './components/Footer';
 import { MobileOrderBar } from './components/MobileOrderBar';
 import { CheckeredDivider } from './components/CheckeredDivider';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
 const Home = () => (
   <>
@@ -62,20 +63,22 @@ function App() {
     };
   }, []);
   return (
-    <Router>
-      <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
-        <Header />
-        <main className="pb-16 lg:pb-0">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/speisekarte" element={<MenuPage />} />
-          </Routes>
-        </main>
-        <MarqueeSection />
-        <Footer />
-        <MobileOrderBar />
-      </div>
-    </Router>
+    <SiteSettingsProvider>
+      <Router>
+        <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
+          <Header />
+          <main className="pb-16 lg:pb-0">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/speisekarte" element={<MenuPage />} />
+            </Routes>
+          </main>
+          <MarqueeSection />
+          <Footer />
+          <MobileOrderBar />
+        </div>
+      </Router>
+    </SiteSettingsProvider>
   );
 }
 

@@ -6,13 +6,15 @@ import type { OpenStatus } from '../utils/timeUtils';
 import { DINER_INFO } from '../config/dinerConfig';
 import { cn } from '../utils/cn';
 import { scrollToId } from '../utils/scrollToId';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const SECTION_IDS = ['menu', 'tagesangebot', 'standort', 'zeiten'];
 
 export const Header: React.FC = () => {
+  const { openingHours } = useSiteSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [status, setStatus] = useState<OpenStatus>(getCurrentStatus());
+  const [status, setStatus] = useState<OpenStatus>(() => getCurrentStatus(openingHours));
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,9 +26,10 @@ export const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => setStatus(getCurrentStatus()), 60000);
+    setStatus(getCurrentStatus(openingHours));
+    const timer = setInterval(() => setStatus(getCurrentStatus(openingHours)), 60000);
     return () => clearInterval(timer);
-  }, []);
+  }, [openingHours]);
 
   useEffect(() => {
     const handleSpy = () => {

@@ -1,12 +1,13 @@
 import { DINER_INFO } from '../config/dinerConfig';
+import type { OpeningHours } from '../config/dinerConfig';
 export type StatusType = 'open' | 'closed' | 'closing-soon';
 export interface OpenStatus { status: StatusType; message: string; }
-export function getCurrentStatus(): OpenStatus {
+export function getCurrentStatus(openingHours: OpeningHours = DINER_INFO.openingHours): OpenStatus {
   const now = new Date();
   const dayIndex = now.getDay();
   const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
   const currentDayStr = days[dayIndex];
-  const todayHours = DINER_INFO.openingHours[currentDayStr];
+  const todayHours = openingHours[currentDayStr];
   if (!todayHours) return { status: 'closed', message: 'Heute geschlossen' };
   const hours = now.getHours().toString().padStart(2, '0');
   const minutes = now.getMinutes().toString().padStart(2, '0');
@@ -15,7 +16,7 @@ export function getCurrentStatus(): OpenStatus {
   if (currentTime >= todayHours.close) {
     const nextDayIndex = (dayIndex + 1) % 7;
     const nextDayStr = days[nextDayIndex];
-    const nextDayHours = DINER_INFO.openingHours[nextDayStr];
+    const nextDayHours = openingHours[nextDayStr];
     if (nextDayHours) return { status: 'closed', message: `Geschlossen. Öffnet morgen um ${nextDayHours.open} Uhr` };
     else return { status: 'closed', message: 'Jetzt geschlossen' };
   }

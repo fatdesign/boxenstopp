@@ -30,6 +30,29 @@ const modalCancel = document.getElementById('modal-cancel');
 const catModal = document.getElementById('cat-modal');
 const catForm = document.getElementById('cat-form');
 const catModalCancel = document.getElementById('cat-modal-cancel');
+const hoursContainer = document.getElementById('hours-container');
+
+const DAY_LABELS = [
+    { key: 'monday', label: 'Montag' },
+    { key: 'tuesday', label: 'Dienstag' },
+    { key: 'wednesday', label: 'Mittwoch' },
+    { key: 'thursday', label: 'Donnerstag' },
+    { key: 'friday', label: 'Freitag' },
+    { key: 'saturday', label: 'Samstag' },
+    { key: 'sunday', label: 'Sonntag' },
+];
+
+function defaultOpeningHours() {
+    return {
+        monday: { open: '08:00', close: '18:00' },
+        tuesday: { open: '08:00', close: '18:00' },
+        wednesday: { open: '08:00', close: '18:00' },
+        thursday: { open: '08:00', close: '18:00' },
+        friday: { open: '08:00', close: '18:00' },
+        saturday: { open: '09:00', close: '14:00' },
+        sunday: null,
+    };
+}
 
 // ── White-Label Hydration ─────────────────────
 (function hydrateAdminUI() {
@@ -128,6 +151,7 @@ async function loadMenu() {
             menuData = JSON.parse(decoded);
 
             if (!menuData.settings) menuData.settings = {};
+            if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
@@ -151,6 +175,9 @@ async function loadMenu() {
         menuData = JSON.parse(JSON.stringify(MENU_INLINE));
     }
 
+    if (!menuData.settings) menuData.settings = {};
+    if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
+
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
     
@@ -169,6 +196,8 @@ function showConfigNotice(msg = '') {
 
 // ── Render Dashboard ──────────────────────────
 function renderDashboard() {
+    renderOpeningHours();
+
     const notice = categoriesContainer.querySelector('.config-notice');
     categoriesContainer.innerHTML = '';
     if (notice) categoriesContainer.appendChild(notice);
@@ -244,6 +273,54 @@ function toggleDailySpecial(catIdx, itemIdx) {
     const item = menuData.categories[catIdx].items[itemIdx];
     item.isDailySpecial = !item.isDailySpecial;
     renderDashboard();
+    showSaveHint();
+}
+
+// ── Opening Hours ───────────────────────────────
+function renderOpeningHours() {
+    if (!menuData.settings) menuData.settings = {};
+    if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
+    const openingHours = menuData.settings.openingHours;
+
+    hoursContainer.innerHTML = DAY_LABELS.map(day => {
+        const hours = openingHours[day.key];
+        const closed = !hours;
+        const open = hours ? hours.open : '08:00';
+        const close = hours ? hours.close : '18:00';
+        return `
+            <div class="hours-row">
+                <span class="hours-day">${day.label}</span>
+                <label class="check-label hours-closed-toggle">
+                    <input type="checkbox" class="hours-closed-checkbox" data-day="${day.key}" ${closed ? 'checked' : ''}>
+                    <span>Geschlossen</span>
+                </label>
+                <div class="hours-time-inputs ${closed ? 'is-disabled' : ''}">
+                    <input type="time" class="hours-open-input" data-day="${day.key}" value="${open}" ${closed ? 'disabled' : ''}>
+                    <span>–</span>
+                    <input type="time" class="hours-close-input" data-day="${day.key}" value="${close}" ${closed ? 'disabled' : ''}>
+                </div>
+            </div>`;
+    }).join('');
+
+    document.querySelectorAll('.hours-closed-checkbox').forEach(cb =>
+        cb.onchange = () => toggleDayClosed(cb.dataset.day, cb.checked));
+    document.querySelectorAll('.hours-open-input').forEach(input =>
+        input.onchange = () => updateDayTime(input.dataset.day, 'open', input.value));
+    document.querySelectorAll('.hours-close-input').forEach(input =>
+        input.onchange = () => updateDayTime(input.dataset.day, 'close', input.value));
+}
+
+function toggleDayClosed(day, closed) {
+    menuData.settings.openingHours[day] = closed ? null : { open: '08:00', close: '18:00' };
+    renderOpeningHours();
+    showSaveHint();
+}
+
+function updateDayTime(day, field, value) {
+    if (!menuData.settings.openingHours[day]) {
+        menuData.settings.openingHours[day] = { open: '08:00', close: '18:00' };
+    }
+    menuData.settings.openingHours[day][field] = value;
     showSaveHint();
 }
 

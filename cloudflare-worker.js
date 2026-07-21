@@ -2,7 +2,17 @@
 // Connects to a Cloudflare D1 SQLite database named 'boxenstopp-db' (bound to env.DB)
 
 const DEFAULT_MENU = {
-  "settings": {},
+  "settings": {
+    "openingHours": {
+      "monday": { "open": "08:00", "close": "18:00" },
+      "tuesday": { "open": "08:00", "close": "18:00" },
+      "wednesday": { "open": "08:00", "close": "18:00" },
+      "thursday": { "open": "08:00", "close": "18:00" },
+      "friday": { "open": "08:00", "close": "18:00" },
+      "saturday": { "open": "09:00", "close": "14:00" },
+      "sunday": null
+    }
+  },
   "categories": [
     {
       "id": "warme-snacks",

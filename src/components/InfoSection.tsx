@@ -2,8 +2,10 @@ import React from 'react';
 import { Clock, MapPin, Navigation } from 'lucide-react';
 import { DINER_INFO } from '../config/dinerConfig';
 import { Reveal } from './Reveal';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export const InfoSection: React.FC = () => {
+  const { openingHours } = useSiteSettings();
   const days = [
     { key: 'monday', label: 'Montag' }, { key: 'tuesday', label: 'Dienstag' }, { key: 'wednesday', label: 'Mittwoch' },
     { key: 'thursday', label: 'Donnerstag' }, { key: 'friday', label: 'Freitag' }, { key: 'saturday', label: 'Samstag' }, { key: 'sunday', label: 'Sonntag' },
@@ -26,7 +28,7 @@ export const InfoSection: React.FC = () => {
             <div className="bg-white p-8 speed-cut mb-8 border border-gray-200 shadow-md">
               <ul className="space-y-4">
                 {days.map((day) => {
-                  const hours = (DINER_INFO.openingHours as any)[day.key];
+                  const hours = (openingHours as any)[day.key];
                   const isToday = day.key === currentDayKey;
                   return (
                     <li key={day.key} className={`flex justify-between items-center pb-4 border-b border-gray-100 last:border-0 last:pb-0 ${isToday ? 'text-ink font-bold' : 'text-gray-500 font-medium'}`}>
