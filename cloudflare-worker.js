@@ -3,23 +3,6 @@
 
 const DEFAULT_MENU = {
   "settings": {},
-  "dailySpecials": [
-    {
-      "title": "Mittagsmenü",
-      "description": "Hauptspeise + Beilage + Getränk.",
-      "price": ""
-    },
-    {
-      "title": "Snack-Deal",
-      "description": "Heißer Snack + Pommes + Getränk.",
-      "price": ""
-    },
-    {
-      "title": "Frische des Tages",
-      "description": "Tagesaktuelle Special-Burger oder Salate.",
-      "price": ""
-    }
-  ],
   "categories": [
     {
       "id": "warme-snacks",
@@ -31,7 +14,8 @@ const DEFAULT_MENU = {
           "price": "3.80",
           "isSoldOut": false,
           "isPopular": true,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         },
         {
           "name": "Bosna",
@@ -39,7 +23,8 @@ const DEFAULT_MENU = {
           "price": "4.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         },
         {
           "name": "Käsekrainer im Weckerl",
@@ -47,7 +32,8 @@ const DEFAULT_MENU = {
           "price": "4.90",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         },
         {
           "name": "Currywurst",
@@ -55,7 +41,8 @@ const DEFAULT_MENU = {
           "price": "5.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         }
       ]
     },
@@ -69,7 +56,8 @@ const DEFAULT_MENU = {
           "price": "8.90",
           "isSoldOut": false,
           "isPopular": true,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": true
         },
         {
           "name": "Cheeseburger",
@@ -77,7 +65,8 @@ const DEFAULT_MENU = {
           "price": "7.90",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         },
         {
           "name": "Crispy-Chicken-Burger",
@@ -85,7 +74,8 @@ const DEFAULT_MENU = {
           "price": "8.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": false
+          "isVegetarian": false,
+          "isDailySpecial": false
         },
         {
           "name": "Veggie-Burger",
@@ -93,7 +83,8 @@ const DEFAULT_MENU = {
           "price": "8.90",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         }
       ]
     },
@@ -107,7 +98,8 @@ const DEFAULT_MENU = {
           "price": "3.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         },
         {
           "name": "Süßkartoffel-Pommes",
@@ -115,7 +107,8 @@ const DEFAULT_MENU = {
           "price": "4.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         },
         {
           "name": "Wedges",
@@ -123,7 +116,8 @@ const DEFAULT_MENU = {
           "price": "4.20",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         }
       ]
     },
@@ -137,7 +131,8 @@ const DEFAULT_MENU = {
           "price": "2.50",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         },
         {
           "name": "Mineralwasser",
@@ -145,7 +140,8 @@ const DEFAULT_MENU = {
           "price": "2.00",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         },
         {
           "name": "Kaffee",
@@ -153,7 +149,8 @@ const DEFAULT_MENU = {
           "price": "2.80",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         },
         {
           "name": "Energy & Eistee",
@@ -161,7 +158,8 @@ const DEFAULT_MENU = {
           "price": "3.00",
           "isSoldOut": false,
           "isPopular": false,
-          "isVegetarian": true
+          "isVegetarian": true,
+          "isDailySpecial": false
         }
       ]
     }

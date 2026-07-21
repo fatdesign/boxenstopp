@@ -30,12 +30,6 @@ const modalCancel = document.getElementById('modal-cancel');
 const catModal = document.getElementById('cat-modal');
 const catForm = document.getElementById('cat-form');
 const catModalCancel = document.getElementById('cat-modal-cancel');
-const specialsContainer = document.getElementById('specials-container');
-const addSpecialBtn = document.getElementById('add-special-btn');
-const specialModal = document.getElementById('special-modal');
-const specialForm = document.getElementById('special-form');
-const specialModalTitle = document.getElementById('special-modal-title');
-const specialModalCancel = document.getElementById('special-modal-cancel');
 
 // ── White-Label Hydration ─────────────────────
 (function hydrateAdminUI() {
@@ -47,7 +41,7 @@ const specialModalCancel = document.getElementById('special-modal-cancel');
 })();
 
 // ── Inline fallback data (used if fetch fails) ─────────────
-const MENU_INLINE = { "settings": {}, "dailySpecials": [], "categories": [] };
+const MENU_INLINE = { "settings": {}, "categories": [] };
 
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -134,7 +128,6 @@ async function loadMenu() {
             menuData = JSON.parse(decoded);
 
             if (!menuData.settings) menuData.settings = {};
-            if (!menuData.dailySpecials) menuData.dailySpecials = [];
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
@@ -158,8 +151,6 @@ async function loadMenu() {
         menuData = JSON.parse(JSON.stringify(MENU_INLINE));
     }
 
-    if (!menuData.dailySpecials) menuData.dailySpecials = [];
-
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
     
@@ -178,8 +169,6 @@ function showConfigNotice(msg = '') {
 
 // ── Render Dashboard ──────────────────────────
 function renderDashboard() {
-    renderSpecials();
-
     const notice = categoriesContainer.querySelector('.config-notice');
     categoriesContainer.innerHTML = '';
     if (notice) categoriesContainer.appendChild(notice);
@@ -217,6 +206,8 @@ function renderDashboard() {
         btn.onclick = () => openItemModal(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
     document.querySelectorAll('.delete-item-btn').forEach(btn =>
         btn.onclick = () => deleteItem(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
+    document.querySelectorAll('.toggle-special-btn').forEach(btn =>
+        btn.onclick = () => toggleDailySpecial(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
     document.querySelectorAll('.delete-cat-btn').forEach(btn =>
         btn.onclick = () => deleteCategory(parseInt(btn.dataset.catIdx)));
     document.querySelectorAll('.edit-cat-btn').forEach(btn =>
@@ -226,11 +217,13 @@ function renderDashboard() {
 function renderItemRow(item, catIdx, itemIdx) {
     const name = item.name || 'N/A';
     const soldOut = item.isSoldOut === true;
-    
+    const isSpecial = item.isDailySpecial === true;
+
     let badges = '';
     if (soldOut) badges += '<span class="badge-aus">AUSVERKAUFT</span>';
     if (item.isPopular) badges += '<span class="badge-hit">HIT</span>';
     if (item.isVegetarian) badges += '<span class="badge-veg">VEGGIE</span>';
+    if (isSpecial) badges += '<span class="badge-special">🔥 TAGESANGEBOT</span>';
 
     return `
         <div class="item-row ${soldOut ? 'is-unavailable' : ''}">
@@ -240,95 +233,18 @@ function renderItemRow(item, catIdx, itemIdx) {
             </div>
             <div class="item-row-price">€ ${item.price}</div>
             <div class="item-actions">
+                <button class="btn-icon toggle-special-btn ${isSpecial ? 'is-active-special' : ''}" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}">🔥</button>
                 <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten">✏️</button>
                 <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen">🗑</button>
             </div>
         </div>`;
 }
 
-// ── Daily Specials ─────────────────────────────
-function renderSpecials() {
-    if (!menuData.dailySpecials) menuData.dailySpecials = [];
-
-    if (menuData.dailySpecials.length === 0) {
-        specialsContainer.innerHTML = '<p style="padding:1.5rem 0.5rem;color:var(--text-muted);font-size:0.9rem;">Noch keine Tagesangebote. Füge oben eines hinzu.</p>';
-        return;
-    }
-
-    specialsContainer.innerHTML = menuData.dailySpecials
-        .map((special, idx) => renderSpecialRow(special, idx))
-        .join('');
-
-    document.querySelectorAll('.edit-special-btn').forEach(btn =>
-        btn.onclick = () => openSpecialModal(parseInt(btn.dataset.idx)));
-    document.querySelectorAll('.delete-special-btn').forEach(btn =>
-        btn.onclick = () => deleteSpecial(parseInt(btn.dataset.idx)));
-}
-
-function renderSpecialRow(special, idx) {
-    const priceDisplay = special.price ? `€ ${special.price}` : 'siehe Aushang';
-    return `
-        <div class="item-row">
-            <div class="item-info">
-                <div class="item-row-name">${special.title || 'N/A'}</div>
-                <div class="item-row-desc">${special.description || ''}</div>
-            </div>
-            <div class="item-row-price" style="font-size:0.95rem;">${priceDisplay}</div>
-            <div class="item-actions">
-                <button class="btn-icon edit-special-btn" data-idx="${idx}" title="Bearbeiten">✏️</button>
-                <button class="btn-icon delete-special-btn" data-idx="${idx}" title="Löschen">🗑</button>
-            </div>
-        </div>`;
-}
-
-function openSpecialModal(idx = null) {
-    document.getElementById('special-index').value = idx !== null ? idx : '';
-    specialForm.reset();
-
-    if (idx !== null) {
-        const special = menuData.dailySpecials[idx];
-        specialModalTitle.textContent = 'Angebot bearbeiten';
-        document.getElementById('special-title').value = special.title || '';
-        document.getElementById('special-price').value = special.price || '';
-        document.getElementById('special-desc').value = special.description || '';
-    } else {
-        specialModalTitle.textContent = 'Angebot hinzufügen';
-    }
-    specialModal.classList.remove('hidden');
-}
-
-addSpecialBtn.onclick = () => openSpecialModal();
-specialModalCancel.onclick = () => specialModal.classList.add('hidden');
-specialModal.addEventListener('click', e => { if (e.target === specialModal) specialModal.classList.add('hidden'); });
-
-specialForm.onsubmit = (e) => {
-    e.preventDefault();
-    const rawIdx = document.getElementById('special-index').value;
-    const idx = rawIdx !== '' ? parseInt(rawIdx) : null;
-
-    const newSpecial = {
-        title: document.getElementById('special-title').value.trim(),
-        price: document.getElementById('special-price').value.trim(),
-        description: document.getElementById('special-desc').value.trim(),
-    };
-
-    if (idx !== null) {
-        menuData.dailySpecials[idx] = newSpecial;
-    } else {
-        menuData.dailySpecials.push(newSpecial);
-    }
-
-    specialModal.classList.add('hidden');
-    renderSpecials();
+function toggleDailySpecial(catIdx, itemIdx) {
+    const item = menuData.categories[catIdx].items[itemIdx];
+    item.isDailySpecial = !item.isDailySpecial;
+    renderDashboard();
     showSaveHint();
-};
-
-function deleteSpecial(idx) {
-    if (confirm('Angebot wirklich löschen?')) {
-        menuData.dailySpecials.splice(idx, 1);
-        renderSpecials();
-        showSaveHint();
-    }
 }
 
 // ── Item Modal ────────────────────────────────
@@ -364,12 +280,15 @@ itemForm.onsubmit = (e) => {
     const rawIdx = document.getElementById('item-index').value;
     const itemIdx = rawIdx !== '' ? parseInt(rawIdx) : null;
 
+    const existingItem = itemIdx !== null ? menuData.categories[catIdx].items[itemIdx] : null;
+
     const newItem = {
         name: document.getElementById('item-name').value.trim(),
         price: document.getElementById('item-price').value.trim(),
         isSoldOut: document.getElementById('item-available').checked,
         isVegetarian: document.getElementById('item-vegetarian').checked,
         isPopular: document.getElementById('item-popular').checked,
+        isDailySpecial: existingItem ? existingItem.isDailySpecial === true : false,
         description: document.getElementById('item-desc').value.trim()
     };
 
