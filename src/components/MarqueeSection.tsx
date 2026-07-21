@@ -3,7 +3,7 @@ import React from 'react';
 export const MarqueeSection: React.FC = () => {
   // We duplicate the text multiple times to ensure a smooth infinite scroll
   // The animation translates -50%, so the content needs to be exactly duplicated once (or just have enough items so -50% is a seamless loop)
-  const textItems = Array(8).fill("FAVORITES IN HERE FEEL THE TASTE OF JOY!");
+  const textItems = Array(8).fill("Schnell. Heiss. Leiwand.");
 
   return (
     <div className="bg-lotteria-bg py-6 border-b border-gray-200 overflow-hidden relative flex">

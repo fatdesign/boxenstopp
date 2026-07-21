@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Reveal } from './Reveal';
 
 const GET_IMAGE_FOR_CATEGORY = (catId: string) => {
   switch (catId) {
@@ -79,19 +80,19 @@ export const FullMenuPage: React.FC = () => {
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 relative z-10">
         
         {/* Page Header */}
-        <div className="text-center mb-20 border-b-2 border-lotteria-red/10 pb-12">
+        <Reveal className="text-center mb-20 border-b-2 border-lotteria-red/10 pb-12">
           <h1 className="font-display font-black text-5xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
             Die Speisekarte
           </h1>
           <p className="font-medium text-lg text-lotteria-red/70 tracking-widest uppercase">
             Original Boxenstopp Geschmack
           </p>
-        </div>
+        </Reveal>
 
         {/* Sequential Categories */}
         <div className="space-y-24">
-          {categories.map((category) => (
-            <div key={category.id} className="scroll-mt-32" id={`cat-${category.id}`}>
+          {categories.map((category, catIdx) => (
+            <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
               {/* Category Header */}
               <div className="flex items-center gap-6 mb-12">
                 <h2 className="font-display font-black text-4xl text-lotteria-red uppercase tracking-tight whitespace-nowrap">
@@ -103,8 +104,8 @@ export const FullMenuPage: React.FC = () => {
               {/* Items Grid (Classic 2-Column Menu Style) */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {category.items.map((item, idx) => (
-                  <div 
-                    key={idx} 
+                  <div
+                    key={idx}
                     className={`bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
                   >
                     {/* Item Image Left Side */}
@@ -154,7 +155,7 @@ export const FullMenuPage: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 

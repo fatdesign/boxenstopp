@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { DINER_INFO } from '../config/dinerConfig';
+import { scrollToId } from '../utils/scrollToId';
 
 export const Hero: React.FC = () => {
   return (
@@ -12,16 +13,16 @@ export const Hero: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10 w-full flex flex-col items-center text-center">
         <div className="space-y-6 mb-10 opacity-0 animate-[slide-up_1s_ease-out_0.5s_forwards]">
           <h2 className="font-display font-bold text-2xl md:text-4xl text-white tracking-wide">
-            Where Taste Meets Originality
+            Wo Gschmack aufs Original trifft
           </h2>
           <h1 className="font-display font-black text-6xl md:text-8xl text-white uppercase leading-[0.9] tracking-tighter drop-shadow-xl">
-            The Original Burger,<br/>{DINER_INFO.name}
+            Der Original Burger,<br/>{DINER_INFO.name}
           </h1>
         </div>
-        
+
         <div className="opacity-0 animate-[slide-up_1s_ease-out_0.8s_forwards]">
-          <a href="#speisekarte" className="inline-flex items-center justify-center gap-2 bg-white text-lotteria-red px-10 py-5 rounded-full font-display font-bold text-xl uppercase tracking-wide hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-            Explore Menu <ChevronRight size={24} />
+          <a href="#menu" onClick={(e) => { e.preventDefault(); scrollToId('menu'); }} className="inline-flex items-center justify-center gap-2 bg-white text-lotteria-red px-10 py-5 rounded-full font-display font-bold text-xl uppercase tracking-wide hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+            Speisekarte entdecken <ChevronRight size={24} />
           </a>
         </div>
       </div>

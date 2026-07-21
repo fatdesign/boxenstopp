@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { DINER_INFO } from '../config/dinerConfig';
+import { scrollToId } from '../utils/scrollToId';
 
 const SCROLL_ITEMS = [
   { id: 1, type: 'image', src: 'images/schnitzel.png', shape: 'rounded-[100px] rounded-tl-none' },
@@ -73,7 +74,7 @@ export const HorizontalScrollSection: React.FC = () => {
             <p className="font-medium text-lg leading-relaxed">
               Wir bringen die Leidenschaft für echte Original Burger und knusprige Snacks direkt zu dir im Handelszentrum Bergheim.
             </p>
-            <a href="#speisekarte" className="inline-block bg-white text-lotteria-red px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform shadow-lg">
+            <a href="#menu" onClick={(e) => { e.preventDefault(); scrollToId('menu'); }} className="inline-block bg-white text-lotteria-red px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform shadow-lg">
               Unsere Speisen
             </a>
           </div>

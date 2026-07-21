@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Reveal } from './Reveal';
 
 const GET_IMAGE_FOR_CATEGORY = (catId: string) => {
   switch (catId) {
@@ -89,14 +90,14 @@ export const MenuSection: React.FC = () => {
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 md:px-12 relative z-10">
         
         {/* Title Header */}
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16">
           <h2 className="font-display font-black text-4xl sm:text-6xl md:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
-            YOUR NEW FAVORITE BURGER STARTS HERE!
+            Dein neuer Lieblingsburger startet do!
           </h2>
           <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase">
-            A BITE OF JOY IN EVERY BITE.
+            Jeder Biss a Stückerl Freid.
           </p>
-        </div>
+        </Reveal>
 
         {/* Categories Navigation (Pill-Style) */}
         <div className="flex flex-wrap justify-center gap-3 sm:gap-5 mb-16">
@@ -121,8 +122,9 @@ export const MenuSection: React.FC = () => {
         {currentCategoryData && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {currentCategoryData.items.map((item, idx) => (
-              <div 
-                key={idx} 
+              <Reveal
+                key={idx}
+                delay={Math.min(idx, 7) * 70}
                 className={`bg-white rounded-3xl p-6 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-lotteria-yellow/20 hover:border-lotteria-yellow relative flex flex-col justify-between overflow-hidden group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
               >
                 <div>
@@ -169,7 +171,7 @@ export const MenuSection: React.FC = () => {
                     </span>
                   )}
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         )}

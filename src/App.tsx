@@ -7,12 +7,16 @@ import { DailySpecials } from './components/DailySpecials';
 import { InfoSection } from './components/InfoSection';
 import { MarqueeSection } from './components/MarqueeSection';
 import { Footer } from './components/Footer';
+import { MobileOrderBar } from './components/MobileOrderBar';
+import { CheckeredDivider } from './components/CheckeredDivider';
 
 const Home = () => (
   <>
     <Hero />
+    <CheckeredDivider />
     <MenuSection />
     <HorizontalScrollSection />
+    <CheckeredDivider />
     <DailySpecials />
     <InfoSection />
   </>
@@ -29,6 +33,7 @@ const MenuPage = () => (
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
+import { setLenisInstance } from './utils/lenis';
 
 function App() {
   useEffect(() => {
@@ -42,6 +47,8 @@ function App() {
       touchMultiplier: 2,
     });
 
+    setLenisInstance(lenis);
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -50,6 +57,7 @@ function App() {
     requestAnimationFrame(raf);
 
     return () => {
+      setLenisInstance(null);
       lenis.destroy();
     };
   }, []);
@@ -57,7 +65,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
         <Header />
-        <main>
+        <main className="pb-16 lg:pb-0">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/speisekarte" element={<MenuPage />} />
@@ -65,6 +73,7 @@ function App() {
         </main>
         <MarqueeSection />
         <Footer />
+        <MobileOrderBar />
       </div>
     </Router>
   );

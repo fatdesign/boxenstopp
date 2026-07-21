@@ -28,9 +28,15 @@
 @layer utilities {
   .speed-cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.85em), calc(100% - 0.85em) 100%, 0 100%); }
   .speed-stripes { background-image: repeating-linear-gradient(-55deg, transparent 0 22px, rgba(0, 0, 0, 0.02) 22px 24px); }
-  
+
   .animate-circle-reveal {
     animation: circle-reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+
+  .checkered-flag {
+    background-image: conic-gradient(var(--color-ink) 90deg, transparent 90deg 180deg, var(--color-ink) 180deg 270deg, transparent 270deg);
+    background-size: 16px 16px;
+    background-color: #fff;
   }
 }
 
@@ -51,4 +57,8 @@
 
 .animate-marquee {
   animation: marquee 80s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
