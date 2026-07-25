@@ -74,7 +74,7 @@ export const DailySpecials: React.FC = () => {
         className="absolute inset-0 opacity-25 bg-cover bg-center mix-blend-multiply pointer-events-none z-0"
         style={{ backgroundImage: "url('images/hero_food_bg.png')" }}
       ></div>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 md:px-12 relative z-10">
         <Reveal className="text-center mb-16">
           <h2 className="font-display font-black text-4xl md:text-5xl text-ink uppercase tracking-tight mb-4">Heute im <span className="text-race">Boxenstopp</span></h2>
           <p className="text-gray-600 font-medium max-w-2xl mx-auto">Täglich wechselnde Angebote direkt vor Ort. Schnell vorbeikommen, zugreifen und sparen.</p>
@@ -87,24 +87,24 @@ export const DailySpecials: React.FC = () => {
         )}
 
         {specials.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {specials.map((special, idx) => {
               const accent = CARD_ACCENTS[idx % CARD_ACCENTS.length];
               return (
-                <Reveal key={idx} delay={idx * 120} className={`bg-white p-8 speed-cut border-t-4 ${accent.border} border border-gray-100 shadow-md group hover:-translate-y-2 hover:shadow-xl transition-all duration-300`}>
-                  <div className="w-16 h-16 rounded-full overflow-hidden mb-4 border-2 border-gray-100 shadow-sm">
-                    <img src={special.image || getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover" />
+                <Reveal key={idx} delay={idx * 120} className={`bg-white p-8 sm:p-10 speed-cut border-t-4 ${accent.border} border border-gray-100 shadow-md group hover:-translate-y-2 hover:shadow-xl transition-all duration-300`}>
+                  <div className="w-full h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 border-2 border-gray-100 shadow-sm">
+                    <img src={special.image || getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <div className={`flex items-center gap-3 mb-4 ${accent.text}`}><Tag size={24} /><h3 className="font-display font-bold text-2xl uppercase">{special.name}</h3></div>
-                  <p className="text-gray-600 mb-6 font-medium">{special.description}</p>
-                  <div className="font-mono text-xl text-gray-900 font-bold bg-gray-100 border border-gray-200 inline-block px-4 py-2 rounded-md">€ {special.price}</div>
+                  <div className={`flex items-center gap-3 mb-4 ${accent.text}`}><Tag size={26} /><h3 className="font-display font-bold text-2xl sm:text-3xl uppercase">{special.name}</h3></div>
+                  <p className="text-gray-600 mb-6 font-medium text-lg">{special.description}</p>
+                  <div className="font-mono text-xl sm:text-2xl text-gray-900 font-bold bg-gray-100 border border-gray-200 inline-block px-5 py-2.5 rounded-md">€ {special.price}</div>
                 </Reveal>
               );
             })}
           </div>
         )}
 
-        <Reveal className="mt-16 rounded-2xl overflow-hidden shadow-xl speed-cut relative h-80 group">
+        <Reveal className="mt-16 rounded-2xl overflow-hidden shadow-xl speed-cut relative h-80 md:h-[28rem] group">
           <div className="absolute inset-0 bg-ink/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
           <img src="images/schnitzel.png" alt="Knuspriges Schnitzel mit Pommes" className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
         </Reveal>
