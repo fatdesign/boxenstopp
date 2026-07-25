@@ -68,11 +68,11 @@ export const FullMenuPage: React.FC = () => {
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 relative z-10">
         
         {/* Page Header */}
-        <Reveal className="text-center mb-20 border-b-2 border-lotteria-red/10 pb-12">
-          <h1 className="font-display font-black text-5xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
+        <Reveal className="text-center mb-12 sm:mb-20 border-b-2 border-lotteria-red/10 pb-8 sm:pb-12">
+          <h1 className="font-display font-black text-4xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
             Die Speisekarte
           </h1>
-          <p className="font-medium text-lg text-lotteria-red/70 tracking-widest uppercase">
+          <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase">
             Original Boxenstopp Geschmack
           </p>
         </Reveal>
@@ -82,41 +82,41 @@ export const FullMenuPage: React.FC = () => {
           {categories.map((category, catIdx) => (
             <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
               {/* Category Header */}
-              <div className="flex items-center gap-6 mb-12">
-                <h2 className="font-display font-black text-4xl text-lotteria-red uppercase tracking-tight whitespace-nowrap">
+              <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+                <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
                   {category.name}
                 </h2>
                 <div className="flex-grow h-1 bg-lotteria-red/10 rounded-full"></div>
               </div>
 
               {/* Items Grid (Classic 2-Column Menu Style) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                 {category.items.map((item, idx) => (
                   <div
                     key={idx}
-                    className={`bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
+                    className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
                   >
                     {/* Item Image Left Side */}
-                    <div className="w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                    <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl flex items-center justify-center relative overflow-hidden">
                       <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-50 group-hover:scale-150 transition-transform duration-500 blur-xl"></div>
                       <img
                         src={item.image || getImageForCategory(category.id)}
                         alt={item.name}
-                        className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-full shadow-md relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 border-2 border-white"
+                        className="w-16 h-16 sm:w-28 sm:h-28 object-cover rounded-full shadow-md relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 border-2 border-white"
                       />
                     </div>
 
                     {/* Details Right Side */}
-                    <div className="flex-grow py-2">
-                      <div className="flex justify-between items-start mb-2 gap-4">
-                        <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors">
+                    <div className="flex-grow min-w-0 py-2">
+                      <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
+                        <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0">
                           {item.name}
                         </h3>
-                        <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-lg px-3 py-1 rounded-full shadow-sm flex-shrink-0">
+                        <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-base sm:text-lg px-2.5 sm:px-3 py-1 rounded-full shadow-sm flex-shrink-0">
                           € {item.price}
                         </span>
                       </div>
-                      
+
                       <p className="text-sm font-medium text-lotteria-red/70 mb-3">
                         {item.description}
                       </p>
