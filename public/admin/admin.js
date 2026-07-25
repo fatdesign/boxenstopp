@@ -42,6 +42,7 @@ const itemImageHidden = document.getElementById('item-image');
 const itemImagePreview = document.getElementById('item-image-preview');
 const itemImagePlaceholder = document.getElementById('image-preview-placeholder');
 const imageUploadStatus = document.getElementById('image-upload-status');
+const itemImageDelete = document.getElementById('item-image-delete');
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 
@@ -400,9 +401,11 @@ function setImagePreview(url) {
         itemImagePreview.src = url;
         itemImagePreview.style.display = 'block';
         itemImagePlaceholder.style.display = 'none';
+        if (itemImageDelete) itemImageDelete.style.display = 'inline-flex';
     } else {
         itemImagePreview.style.display = 'none';
         itemImagePlaceholder.style.display = 'flex';
+        if (itemImageDelete) itemImageDelete.style.display = 'none';
     }
 }
 
@@ -466,6 +469,17 @@ itemImageFile.addEventListener('change', async () => {
         itemImageFile.value = '';
     }
 });
+
+if (itemImageDelete) {
+    itemImageDelete.addEventListener('click', () => {
+        itemImageHidden.value = '';
+        setImagePreview('');
+        imageUploadStatus.textContent = 'Bild entfernt.';
+        imageUploadStatus.style.color = 'var(--text-muted)';
+        itemImageFile.value = '';
+        showSaveHint();
+    });
+}
 
 // ── Item Modal ────────────────────────────────
 function openItemModal(catIdx, itemIdx = null) {
