@@ -25,9 +25,13 @@ export const HorizontalScrollSection: React.FC = () => {
       if (!containerRef.current) return;
       const { top, height } = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      
+      // The section anchors 10vh below the top of the screen
+      const offset = windowHeight * 0.1;
 
       const maxScroll = height - windowHeight;
-      const scrolled = -top;
+      // Start progress when the top of the container reaches the offset
+      const scrolled = offset - top;
 
       if (scrolled < 0) {
         setScrollProgress(0);
@@ -72,7 +76,7 @@ export const HorizontalScrollSection: React.FC = () => {
 
   return (
     <section ref={containerRef} className="relative bg-lotteria-red h-[200vh] w-full">
-      <div className="sticky -top-[10vh] h-[110vh] w-full overflow-hidden">
+      <div className="sticky top-[10vh] h-[90vh] w-full overflow-hidden">
         <div className="h-full flex flex-col justify-center pt-24 sm:pt-32 md:pt-40 pb-24 sm:pb-32 md:pb-40">
 
           <div className="px-4 sm:px-8 md:px-16 mb-4 sm:mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-12 items-center">
