@@ -106,7 +106,7 @@ export const DailySpecials: React.FC = () => {
 
         <Reveal className="mt-16 rounded-2xl overflow-hidden shadow-xl speed-cut relative h-80 md:h-[28rem] group">
           <div className="absolute inset-0 bg-ink/10 z-10 group-hover:bg-transparent transition-colors duration-500"></div>
-          <img src="images/schnitzel.png" alt="Knuspriges Schnitzel mit Pommes" className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <img src="images/boxenstopp-tagesteller.png" alt="Schnitzel, Pommes und Käsekrainer im Boxenstopp-Ambiente" className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
         </Reveal>
       </div>
     </section>
