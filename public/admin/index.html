@@ -46,27 +46,63 @@
         <main class="admin-container dashboard-main">
             <section class="admin-controls">
                 <div class="controls-left">
-                    <h2 class="dash-title">🕒 Öffnungszeiten</h2>
-                    <p class="dash-sub">Wird live auf der Startseite angezeigt und bestimmt den "Geöffnet/Geschlossen"-Status im Header.</p>
-                </div>
-            </section>
-
-            <div class="category-block" style="margin-bottom:2.5rem;">
-                <div id="hours-container" class="hours-list">
-                    <!-- Rendered dynamically -->
-                </div>
-            </div>
-
-            <section class="admin-controls">
-                <div class="controls-left">
                     <h2 class="dash-title">Speisekarte verwalten</h2>
                     <p class="dash-sub">Gerichte hinzufügen, bearbeiten oder markieren (Beliebt/Veggie/Ausverkauft). Mit 🔥 markierte Gerichte erscheinen live als Tagesangebot auf der Startseite.</p>
                 </div>
                 <button id="add-category-btn" class="btn btn-secondary">+ Neue Kategorie</button>
             </section>
 
-            <div id="categories-container" class="categories-list">
+            <div id="categories-container" class="categories-list" style="margin-bottom:2.5rem;">
                 <!-- Rendered dynamically -->
+            </div>
+
+            <section class="admin-controls">
+                <div class="controls-left">
+                    <h2 class="dash-title">📞 Kontaktdaten</h2>
+                    <p class="dash-sub">Name, Slogan, Telefonnummer und Adresse – erscheinen live auf der ganzen Website.</p>
+                </div>
+            </section>
+
+            <div class="category-block" style="margin-bottom:2.5rem;">
+                <div class="contact-form-grid">
+                    <div class="form-group full-width">
+                        <label>Name</label>
+                        <input type="text" id="contact-name" placeholder="BOXENSTOPP im Handelszentrum">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Slogan</label>
+                        <input type="text" id="contact-slogan" placeholder="Schnell. Heiss. Lecker.">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="text" id="contact-phone" placeholder="+43 662 123456">
+                    </div>
+                    <div class="form-group">
+                        <label>PLZ</label>
+                        <input type="text" id="contact-zip" placeholder="5101">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Straße</label>
+                        <input type="text" id="contact-street" placeholder="Handelszentrum">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Ort</label>
+                        <input type="text" id="contact-city" placeholder="Bergheim bei Salzburg">
+                    </div>
+                </div>
+            </div>
+
+            <section class="admin-controls">
+                <div class="controls-left">
+                    <h2 class="dash-title">🕒 Öffnungszeiten</h2>
+                    <p class="dash-sub">Wird live auf der Startseite angezeigt und bestimmt den "Geöffnet/Geschlossen"-Status im Header.</p>
+                </div>
+            </section>
+
+            <div class="category-block">
+                <div id="hours-container" class="hours-list">
+                    <!-- Rendered dynamically -->
+                </div>
             </div>
         </main>
     </div>
@@ -78,7 +114,22 @@
             <form id="item-form">
                 <input type="hidden" id="item-cat-id">
                 <input type="hidden" id="item-index">
+                <input type="hidden" id="item-image">
                 <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Bild</label>
+                        <div class="image-upload-row">
+                            <div class="image-preview-wrap">
+                                <img id="item-image-preview" class="image-preview" alt="Vorschau" style="display:none;">
+                                <div id="image-preview-placeholder" class="image-preview-placeholder">Kein Bild</div>
+                            </div>
+                            <div class="image-upload-controls">
+                                <input type="file" id="item-image-file" class="image-file-input" accept="image/*">
+                                <p class="image-upload-hint">JPG, PNG oder WebP, max. 5 MB. Ohne Upload wird das Standardbild der Kategorie verwendet.</p>
+                                <p id="image-upload-status" class="image-upload-status"></p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group full-width">
                         <label>Name des Gerichts *</label>
                         <input type="text" id="item-name" required placeholder="z.B. Boxenstopp-Burger">
@@ -101,7 +152,7 @@
                             <span style="color:#16a34a;">Als <strong>VEGGIE</strong> markieren</span>
                         </label>
                     </div>
-                    
+
                     <div class="form-group full-width">
                         <label>Beschreibung</label>
                         <textarea id="item-desc" rows="3"

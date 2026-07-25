@@ -11,6 +11,7 @@ interface MenuItem {
   isPopular?: boolean;
   isSoldOut?: boolean;
   isDailySpecial?: boolean;
+  image?: string;
 }
 
 interface MenuCategory {
@@ -92,7 +93,7 @@ export const DailySpecials: React.FC = () => {
               return (
                 <Reveal key={idx} delay={idx * 120} className={`bg-white p-8 speed-cut border-t-4 ${accent.border} border border-gray-100 shadow-md group hover:-translate-y-2 hover:shadow-xl transition-all duration-300`}>
                   <div className="w-16 h-16 rounded-full overflow-hidden mb-4 border-2 border-gray-100 shadow-sm">
-                    <img src={getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover" />
+                    <img src={special.image || getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover" />
                   </div>
                   <div className={`flex items-center gap-3 mb-4 ${accent.text}`}><Tag size={24} /><h3 className="font-display font-bold text-2xl uppercase">{special.name}</h3></div>
                   <p className="text-gray-600 mb-6 font-medium">{special.description}</p>

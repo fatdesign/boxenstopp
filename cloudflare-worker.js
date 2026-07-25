@@ -3,6 +3,14 @@
 
 const DEFAULT_MENU = {
   "settings": {
+    "name": "BOXENSTOPP im Handelszentrum",
+    "slogan": "Schnell. Heiss. Lecker.",
+    "phone": "+43 662 123456",
+    "address": {
+      "street": "Handelszentrum",
+      "city": "Bergheim bei Salzburg",
+      "zip": "5101"
+    },
     "openingHours": {
       "monday": { "open": "08:00", "close": "18:00" },
       "tuesday": { "open": "08:00", "close": "18:00" },
@@ -182,14 +190,30 @@ function getCorsHeaders(request) {
   return {
     "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, X-Admin-Password, X-Menu-File",
+    "Access-Control-Allow-Headers": "Content-Type, X-Admin-Password, X-Menu-File, X-File-Name",
     "Access-Control-Max-Age": "86400",
   };
+}
+
+// Derive a safe file extension from the uploaded filename or its content type
+function getExtension(fileName, contentType) {
+  if (fileName && fileName.includes(".")) {
+    const ext = fileName.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (ext) return ext;
+  }
+  const map = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+  };
+  return map[contentType] || "jpg";
 }
 
 export default {
   async fetch(request, env) {
     const corsHeaders = getCorsHeaders(request);
+    const url = new URL(request.url);
 
     // Handle Preflight OPTIONS request
     if (request.method === "OPTIONS") {
@@ -200,6 +224,55 @@ export default {
     }
 
     try {
+      // ── Image Upload (Cloudflare R2, bound as env.ASSETS) ──────────────
+      if (url.pathname === "/upload" && request.method === "POST") {
+        const clientPassword = request.headers.get("X-Admin-Password");
+        if (!clientPassword || clientPassword !== env.ADMIN_PASSWORD) {
+          return new Response(JSON.stringify({ error: "401 Unauthorized" }), {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        if (!env.ASSETS) {
+          return new Response(JSON.stringify({ error: "Kein R2-Bucket gebunden (ASSETS)." }), {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        const contentType = request.headers.get("Content-Type") || "application/octet-stream";
+        const fileName = request.headers.get("X-File-Name") || "";
+        const ext = getExtension(fileName, contentType);
+        const key = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+
+        await env.ASSETS.put(key, request.body, { httpMetadata: { contentType } });
+
+        return new Response(JSON.stringify({ url: `${url.origin}/assets/${key}` }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // ── Serve uploaded images from R2 ───────────────────────────────────
+      if (url.pathname.startsWith("/assets/") && request.method === "GET") {
+        if (!env.ASSETS) {
+          return new Response("Not found", { status: 404, headers: corsHeaders });
+        }
+        const key = url.pathname.replace("/assets/", "");
+        const object = await env.ASSETS.get(key);
+        if (!object) {
+          return new Response("Not found", { status: 404, headers: corsHeaders });
+        }
+        return new Response(object.body, {
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": object.httpMetadata?.contentType || "application/octet-stream",
+            "Cache-Control": "public, max-age=31536000, immutable",
+          },
+        });
+      }
+
       // 1. Ensure D1 DB Table exists
       await env.DB.prepare(`
         CREATE TABLE IF NOT EXISTS menu_store (

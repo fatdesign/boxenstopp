@@ -1,9 +1,10 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
-import { DINER_INFO } from '../config/dinerConfig';
 import { scrollToId } from '../utils/scrollToId';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export const Hero: React.FC = () => {
+  const { contact } = useSiteSettings();
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 overflow-hidden bg-lotteria-red animate-circle-reveal">
       {/* Background Studio Glow & Texture */}
@@ -16,7 +17,7 @@ export const Hero: React.FC = () => {
             Wo Gschmack aufs Original trifft
           </h2>
           <h1 className="font-display font-black text-6xl md:text-8xl text-white uppercase leading-[0.9] tracking-tighter drop-shadow-xl">
-            Der Original Burger,<br/>{DINER_INFO.name}
+            Der Original Burger,<br/>{contact.name}
           </h1>
         </div>
 

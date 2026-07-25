@@ -9,6 +9,7 @@ interface MenuItem {
   isVegetarian?: boolean;
   isPopular?: boolean;
   isSoldOut?: boolean;
+  image?: string;
 }
 
 interface MenuCategory {
@@ -118,8 +119,8 @@ export const MenuSection: React.FC = () => {
                   {/* Item Image Framing */}
                   <div className="w-full h-48 sm:h-52 bg-lotteria-bg/60 rounded-2xl mb-6 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-75 group-hover:scale-125 transition-transform duration-500 blur-xl"></div>
-                    <img 
-                      src={getImageForCategory(activeCategory)} 
+                    <img
+                      src={item.image || getImageForCategory(activeCategory)}
                       alt={item.name}
                       className="w-36 h-36 object-cover rounded-full shadow-lg relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 border-4 border-white"
                     />

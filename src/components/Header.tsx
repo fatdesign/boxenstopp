@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { getCurrentStatus } from '../utils/timeUtils';
 import type { OpenStatus } from '../utils/timeUtils';
-import { DINER_INFO } from '../config/dinerConfig';
 import { cn } from '../utils/cn';
 import { scrollToId } from '../utils/scrollToId';
 import { useSiteSettings } from '../context/SiteSettingsContext';
@@ -11,7 +10,7 @@ import { useSiteSettings } from '../context/SiteSettingsContext';
 const SECTION_IDS = ['menu', 'tagesangebot', 'standort', 'zeiten'];
 
 export const Header: React.FC = () => {
-  const { openingHours } = useSiteSettings();
+  const { openingHours, contact } = useSiteSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [status, setStatus] = useState<OpenStatus>(() => getCurrentStatus(openingHours));
@@ -99,7 +98,7 @@ export const Header: React.FC = () => {
 
         {/* Right: Bestellen Button & Status Badge at Far Right */}
         <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
-          <a href={`tel:${DINER_INFO.phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 bg-race hover:bg-race-700 active:scale-95 text-white px-5 py-2.5 rounded-md font-bold text-[15px] md:text-base transition-all speed-cut shadow-md shadow-race/20">
+          <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 bg-race hover:bg-race-700 active:scale-95 text-white px-5 py-2.5 rounded-md font-bold text-[15px] md:text-base transition-all speed-cut shadow-md shadow-race/20">
             <Phone size={18} /> Bestellen
           </a>
           <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200 shadow-sm">

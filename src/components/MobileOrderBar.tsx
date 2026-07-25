@@ -1,10 +1,11 @@
 import React from 'react';
 import { Phone, UtensilsCrossed } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { DINER_INFO } from '../config/dinerConfig';
 import { scrollToId } from '../utils/scrollToId';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export const MobileOrderBar: React.FC = () => {
+  const { contact } = useSiteSettings();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ export const MobileOrderBar: React.FC = () => {
         <UtensilsCrossed size={18} /> Speisekarte
       </a>
       <a
-        href={`tel:${DINER_INFO.phone.replace(/\s+/g, '')}`}
+        href={`tel:${contact.phone.replace(/\s+/g, '')}`}
         className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-race text-white font-bold uppercase text-sm tracking-wide active:scale-95 transition-transform speed-cut"
       >
         <Phone size={18} /> Bestellen

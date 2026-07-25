@@ -31,6 +31,19 @@ const catModal = document.getElementById('cat-modal');
 const catForm = document.getElementById('cat-form');
 const catModalCancel = document.getElementById('cat-modal-cancel');
 const hoursContainer = document.getElementById('hours-container');
+const contactNameInput = document.getElementById('contact-name');
+const contactSloganInput = document.getElementById('contact-slogan');
+const contactPhoneInput = document.getElementById('contact-phone');
+const contactStreetInput = document.getElementById('contact-street');
+const contactZipInput = document.getElementById('contact-zip');
+const contactCityInput = document.getElementById('contact-city');
+const itemImageFile = document.getElementById('item-image-file');
+const itemImageHidden = document.getElementById('item-image');
+const itemImagePreview = document.getElementById('item-image-preview');
+const itemImagePlaceholder = document.getElementById('image-preview-placeholder');
+const imageUploadStatus = document.getElementById('image-upload-status');
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 const DAY_LABELS = [
     { key: 'monday', label: 'Montag' },
@@ -52,6 +65,23 @@ function defaultOpeningHours() {
         saturday: { open: '09:00', close: '14:00' },
         sunday: null,
     };
+}
+
+function defaultContactInfo() {
+    return {
+        name: 'BOXENSTOPP im Handelszentrum',
+        slogan: 'Schnell. Heiss. Lecker.',
+        phone: '+43 662 123456',
+        address: { street: 'Handelszentrum', city: 'Bergheim bei Salzburg', zip: '5101' },
+    };
+}
+
+function seedContactDefaults(settings) {
+    const defaults = defaultContactInfo();
+    if (!settings.name) settings.name = defaults.name;
+    if (!settings.slogan) settings.slogan = defaults.slogan;
+    if (!settings.phone) settings.phone = defaults.phone;
+    if (!settings.address) settings.address = defaults.address;
 }
 
 // ── White-Label Hydration ─────────────────────
@@ -152,6 +182,7 @@ async function loadMenu() {
 
             if (!menuData.settings) menuData.settings = {};
             if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
+            seedContactDefaults(menuData.settings);
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
@@ -177,6 +208,7 @@ async function loadMenu() {
 
     if (!menuData.settings) menuData.settings = {};
     if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
+    seedContactDefaults(menuData.settings);
 
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
@@ -197,6 +229,7 @@ function showConfigNotice(msg = '') {
 // ── Render Dashboard ──────────────────────────
 function renderDashboard() {
     renderOpeningHours();
+    renderContactInfo();
 
     const notice = categoriesContainer.querySelector('.config-notice');
     categoriesContainer.innerHTML = '';
@@ -324,6 +357,116 @@ function updateDayTime(day, field, value) {
     showSaveHint();
 }
 
+// ── Contact Info ─────────────────────────────────
+function renderContactInfo() {
+    if (!menuData.settings) menuData.settings = {};
+    seedContactDefaults(menuData.settings);
+    const s = menuData.settings;
+
+    contactNameInput.value = s.name || '';
+    contactSloganInput.value = s.slogan || '';
+    contactPhoneInput.value = s.phone || '';
+    contactStreetInput.value = s.address.street || '';
+    contactZipInput.value = s.address.zip || '';
+    contactCityInput.value = s.address.city || '';
+}
+
+[
+    [contactNameInput, 'name'],
+    [contactSloganInput, 'slogan'],
+    [contactPhoneInput, 'phone'],
+].forEach(([input, field]) => {
+    input.addEventListener('input', () => {
+        menuData.settings[field] = input.value;
+        showSaveHint();
+    });
+});
+
+[
+    [contactStreetInput, 'street'],
+    [contactZipInput, 'zip'],
+    [contactCityInput, 'city'],
+].forEach(([input, field]) => {
+    input.addEventListener('input', () => {
+        if (!menuData.settings.address) menuData.settings.address = {};
+        menuData.settings.address[field] = input.value;
+        showSaveHint();
+    });
+});
+
+// ── Image Upload ─────────────────────────────────
+function setImagePreview(url) {
+    if (url) {
+        itemImagePreview.src = url;
+        itemImagePreview.style.display = 'block';
+        itemImagePlaceholder.style.display = 'none';
+    } else {
+        itemImagePreview.style.display = 'none';
+        itemImagePlaceholder.style.display = 'flex';
+    }
+}
+
+async function uploadImage(file) {
+    const res = await fetch(`${PROXY_URL}/upload`, {
+        method: 'POST',
+        headers: {
+            'X-Admin-Password': sessionPassword,
+            'X-File-Name': file.name,
+            'Content-Type': file.type,
+        },
+        body: file,
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `${res.status}`);
+    }
+    const data = await res.json();
+    return data.url;
+}
+
+itemImageFile.addEventListener('change', async () => {
+    const file = itemImageFile.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        imageUploadStatus.textContent = 'Bitte eine Bilddatei wählen.';
+        imageUploadStatus.style.color = 'var(--danger)';
+        itemImageFile.value = '';
+        return;
+    }
+    if (file.size > MAX_IMAGE_SIZE) {
+        imageUploadStatus.textContent = 'Datei zu groß (max. 5 MB).';
+        imageUploadStatus.style.color = 'var(--danger)';
+        itemImageFile.value = '';
+        return;
+    }
+    if (!PROXY_URL) {
+        imageUploadStatus.textContent = 'Bild-Upload nur im Online-Modus verfügbar.';
+        imageUploadStatus.style.color = 'var(--danger)';
+        itemImageFile.value = '';
+        return;
+    }
+
+    imageUploadStatus.textContent = 'Lädt hoch…';
+    imageUploadStatus.style.color = 'var(--text-muted)';
+    itemImageFile.disabled = true;
+
+    try {
+        const url = await uploadImage(file);
+        itemImageHidden.value = url;
+        setImagePreview(url);
+        imageUploadStatus.textContent = '✓ Bild hochgeladen';
+        imageUploadStatus.style.color = '#16a34a';
+        showSaveHint();
+    } catch (err) {
+        imageUploadStatus.textContent = '❌ Fehler: ' + err.message;
+        imageUploadStatus.style.color = 'var(--danger)';
+    } finally {
+        itemImageFile.disabled = false;
+        itemImageFile.value = '';
+    }
+});
+
 // ── Item Modal ────────────────────────────────
 function openItemModal(catIdx, itemIdx = null) {
     document.getElementById('item-cat-id').value = catIdx;
@@ -332,6 +475,9 @@ function openItemModal(catIdx, itemIdx = null) {
     document.getElementById('item-vegetarian').checked = false;
     document.getElementById('item-popular').checked = false;
     document.getElementById('item-available').checked = false;
+    itemImageHidden.value = '';
+    imageUploadStatus.textContent = '';
+    setImagePreview('');
 
     if (itemIdx !== null) {
         const item = menuData.categories[catIdx].items[itemIdx];
@@ -342,6 +488,8 @@ function openItemModal(catIdx, itemIdx = null) {
         document.getElementById('item-vegetarian').checked = item.isVegetarian === true;
         document.getElementById('item-popular').checked = item.isPopular === true;
         document.getElementById('item-desc').value = item.description || '';
+        itemImageHidden.value = item.image || '';
+        setImagePreview(item.image || '');
     } else {
         modalTitle.textContent = 'Gericht hinzufügen';
     }
@@ -366,6 +514,7 @@ itemForm.onsubmit = (e) => {
         isVegetarian: document.getElementById('item-vegetarian').checked,
         isPopular: document.getElementById('item-popular').checked,
         isDailySpecial: existingItem ? existingItem.isDailySpecial === true : false,
+        image: itemImageHidden.value.trim(),
         description: document.getElementById('item-desc').value.trim()
     };
 

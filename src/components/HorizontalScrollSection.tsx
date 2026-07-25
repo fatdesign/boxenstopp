@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { DINER_INFO } from '../config/dinerConfig';
 import { scrollToId } from '../utils/scrollToId';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const SCROLL_ITEMS = [
   { id: 1, type: 'image', src: 'images/schnitzel.png', shape: 'rounded-[100px] rounded-tl-none' },
@@ -11,6 +11,7 @@ const SCROLL_ITEMS = [
 ];
 
 export const HorizontalScrollSection: React.FC = () => {
+  const { contact } = useSiteSettings();
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollTrackRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -69,7 +70,7 @@ export const HorizontalScrollSection: React.FC = () => {
           </div>
           <div className="text-white max-w-lg space-y-6">
             <p className="font-medium text-lg leading-relaxed">
-              {DINER_INFO.name} ist die perfekte Kombination aus Schnelligkeit und meisterhaftem Geschmack – frisch, echt und in höchster Qualität.
+              {contact.name} ist die perfekte Kombination aus Schnelligkeit und meisterhaftem Geschmack – frisch, echt und in höchster Qualität.
             </p>
             <p className="font-medium text-lg leading-relaxed">
               Wir bringen die Leidenschaft für echte Original Burger und knusprige Snacks direkt zu dir im Handelszentrum Bergheim.
