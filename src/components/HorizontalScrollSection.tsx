@@ -73,7 +73,7 @@ export const HorizontalScrollSection: React.FC = () => {
   return (
     <section ref={containerRef} className="relative bg-lotteria-red h-[200vh] w-full">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="h-full flex flex-col justify-center pt-24 sm:pt-0">
+        <div className="h-full flex flex-col justify-center pt-24 sm:pt-32 md:pt-40">
 
           <div className="px-4 sm:px-8 md:px-16 mb-4 sm:mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-12 items-center">
             <div>
