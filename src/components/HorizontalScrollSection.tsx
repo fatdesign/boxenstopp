@@ -77,7 +77,7 @@ export const HorizontalScrollSection: React.FC = () => {
   return (
     <section ref={containerRef} className="relative bg-lotteria-red h-[200vh] w-full">
       <div className="sticky top-[10vh] h-[90vh] w-full overflow-hidden">
-        <div className="h-full flex flex-col justify-center pt-24 sm:pt-32 md:pt-40 pb-24 sm:pb-32 md:pb-40">
+        <div className="h-full flex flex-col justify-center pt-24 sm:pt-[10vh]">
 
           <div className="px-4 sm:px-8 md:px-16 mb-4 sm:mb-12 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-12 items-center">
             <div>
@@ -110,7 +110,7 @@ export const HorizontalScrollSection: React.FC = () => {
               {SCROLL_ITEMS.map((item) => (
                 <div
                   key={item.id}
-                  className={`w-[70vw] sm:w-[520px] h-[220px] sm:h-[400px] flex-shrink-0 bg-white overflow-hidden shadow-2xl ${item.shape}`}
+                  className={`w-[70vw] sm:w-[440px] md:w-[480px] h-[220px] sm:h-[min(320px,28vh)] flex-shrink-0 bg-white overflow-hidden shadow-2xl ${item.shape}`}
                 >
                   <img
                     src={item.src}
