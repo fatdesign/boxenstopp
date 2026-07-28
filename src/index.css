@@ -1,5 +1,58 @@
 @import "tailwindcss";
 
+/* Self-hosted fonts (replaces Google Fonts CDN — avoids sending visitor
+   IPs to Google; only the "latin" subset is included since the site is
+   German-only, which fully covers umlauts/ß via U+0000-00FF). */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/archivo-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/archivo-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/spacemono-normal-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/spacemono-italic-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/spacemono-normal-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/spacemono-italic-700.woff2") format("woff2");
+}
+
 @theme {
   --color-ink: #1a1a1a;
   --color-asphalt: #f4f4f5;

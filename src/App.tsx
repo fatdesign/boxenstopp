@@ -25,6 +25,7 @@ const Home = () => (
 
 import { FullMenuPage } from './components/FullMenuPage';
 import { ImpressumPage } from './components/ImpressumPage';
+import { DatenschutzPage } from './components/DatenschutzPage';
 
 const MenuPage = () => (
   <div>
@@ -40,6 +41,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/speisekarte" element={<MenuPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
+        <Route path="/datenschutz" element={<DatenschutzPage />} />
       </Routes>
     </div>
   );
