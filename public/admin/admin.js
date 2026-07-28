@@ -73,7 +73,7 @@ function defaultContactInfo() {
         name: 'BOXENSTOPP im Handelszentrum',
         slogan: 'Schnell. Heiss. Lecker.',
         phone: '+43 662 123456',
-        address: { street: 'Handelszentrum', city: 'Bergheim bei Salzburg', zip: '5101' },
+        address: { street: 'Handelszentrum 4', city: 'Bergheim bei Salzburg', zip: '5101' },
     };
 }
 

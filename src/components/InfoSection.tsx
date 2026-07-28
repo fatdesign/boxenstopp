@@ -12,6 +12,10 @@ export const InfoSection: React.FC = () => {
   const currentDayIndex = new Date().getDay();
   const currentDayKey = currentDayIndex === 0 ? 'sunday' : days[currentDayIndex - 1].key;
 
+  const fullAddress = `${contact.name}, ${contact.address.street}, ${contact.address.zip} ${contact.address.city}`;
+  const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+  const mapsEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`;
+
   return (
     <section id="standort" className="py-24 bg-white relative border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -20,7 +24,18 @@ export const InfoSection: React.FC = () => {
             <div className="flex items-center gap-3 mb-6 text-ink"><MapPin size={32} className="text-race" /><h2 className="font-display font-black text-4xl uppercase tracking-tight">Standort</h2></div>
             <p className="text-gray-600 font-medium text-lg mb-8">Direkt im Handelszentrum Bergheim – gut erreichbar beim Einkauf oder für den kurzen Boxenstopp zwischendurch.</p>
             <div className="bg-gray-50 p-6 speed-cut mb-8 border-l-4 border-l-race border border-gray-200 shadow-sm"><h3 className="font-bold text-ink text-xl mb-2">{contact.name}</h3><p className="text-gray-600 font-medium mb-1">{contact.address.street}</p><p className="text-gray-600 font-medium">{contact.address.zip} {contact.address.city}</p></div>
-            <a href="https://www.google.com/maps/search/?api=1&query=Handelszentrum+Bergheim+Salzburg" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-race text-white hover:bg-race-700 active:scale-95 px-8 py-4 font-display font-bold text-sm uppercase tracking-wide transition-all speed-cut shadow-md shadow-race/20"><Navigation size={18} /> In Maps öffnen</a>
+            <div className="rounded-2xl overflow-hidden shadow-lg speed-cut mb-8 h-64 border border-gray-200">
+              <iframe
+                title={`Standort ${contact.name} auf Google Maps`}
+                src={mapsEmbedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <a href={mapsSearchUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-race text-white hover:bg-race-700 active:scale-95 px-8 py-4 font-display font-bold text-sm uppercase tracking-wide transition-all speed-cut shadow-md shadow-race/20"><Navigation size={18} /> In Maps öffnen</a>
           </Reveal>
           <Reveal delay={150} id="zeiten" className="lg:pl-12 lg:border-l border-gray-200">
             <div className="flex items-center gap-3 mb-6 text-ink"><Clock size={32} className="text-amber-500" /><h2 className="font-display font-black text-4xl uppercase tracking-tight">Öffnungszeiten</h2></div>

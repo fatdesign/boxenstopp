@@ -26,6 +26,8 @@ const Home = () => (
 import { FullMenuPage } from './components/FullMenuPage';
 import { ImpressumPage } from './components/ImpressumPage';
 import { DatenschutzPage } from './components/DatenschutzPage';
+import { NotFoundPage } from './components/NotFoundPage';
+import { LoadingScreen } from './components/LoadingScreen';
 
 const MenuPage = () => (
   <div>
@@ -42,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/speisekarte" element={<MenuPage />} />
         <Route path="/impressum" element={<ImpressumPage />} />
         <Route path="/datenschutz" element={<DatenschutzPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
@@ -81,6 +84,7 @@ function App() {
   return (
     <SiteSettingsProvider>
       <Router>
+        <LoadingScreen />
         <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
           <Header />
           <main className="pb-16 lg:pb-0">

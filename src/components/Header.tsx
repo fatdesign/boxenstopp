@@ -6,6 +6,7 @@ import type { OpenStatus } from '../utils/timeUtils';
 import { cn } from '../utils/cn';
 import { scrollToId } from '../utils/scrollToId';
 import { useSiteSettings } from '../context/SiteSettingsContext';
+import { StatusGauge } from './StatusGauge';
 
 const SECTION_IDS = ['menu', 'tagesangebot', 'standort', 'zeiten'];
 
@@ -101,8 +102,8 @@ export const Header: React.FC = () => {
           <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 bg-race hover:bg-race-700 active:scale-95 text-white px-5 py-2.5 rounded-md font-bold text-[15px] md:text-base transition-all speed-cut shadow-md shadow-race/20">
             <Phone size={18} /> Bestellen
           </a>
-          <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3.5 py-1.5 border border-gray-200 shadow-sm">
-            <span className={cn("w-2.5 h-2.5 rounded-full animate-pulse", status.status === 'open' ? 'bg-green-500' : status.status === 'closing-soon' ? 'bg-amber' : 'bg-red-500')} />
+          <div className="flex items-center gap-2 bg-gray-100 rounded-full pl-2 pr-3.5 py-1.5 border border-gray-200 shadow-sm">
+            <StatusGauge status={status.status} size={26} />
             <span className="text-xs font-mono text-gray-700 font-medium">{status.message}</span>
           </div>
         </div>
@@ -132,7 +133,7 @@ export const Header: React.FC = () => {
               );
             })}
             <div className="flex items-center gap-2 py-2">
-               <span className={cn("w-3 h-3 rounded-full", status.status === 'open' ? 'bg-green-500' : status.status === 'closing-soon' ? 'bg-amber' : 'bg-red-500')} />
+              <StatusGauge status={status.status} size={32} />
               <span className="text-sm font-mono text-gray-700 font-medium">{status.message}</span>
             </div>
           </div>

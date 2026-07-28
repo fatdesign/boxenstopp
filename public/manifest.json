@@ -1,0 +1,20 @@
+{
+  "name": "BOXENSTOPP im Handelszentrum",
+  "short_name": "Boxenstopp",
+  "description": "Schnell. Heiss. Leiwand. Speisekarte, Tagesangebote und Öffnungszeiten von Boxenstopp im Handelszentrum Bergheim bei Salzburg.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f5efe6",
+  "theme_color": "#E31837",
+  "lang": "de-AT",
+  "icons": [
+    {
+      "src": "images/boxenstopp_favicon.png",
+      "sizes": "376x397",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

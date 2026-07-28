@@ -112,6 +112,15 @@
   animation: page-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@keyframes light-on {
+  0% { background-color: rgba(227, 24, 55, 0.15); box-shadow: none; }
+  100% { background-color: #E31837; box-shadow: 0 0 18px 5px rgba(227, 24, 55, 0.65); }
+}
+
+.animate-light-on {
+  animation: light-on 0.35s ease-out forwards;
+}
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
