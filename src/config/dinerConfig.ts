@@ -9,7 +9,7 @@ export interface ContactInfo {
 }
 export const DINER_INFO = {
   name: "BOXENSTOPP im Handelszentrum", slogan: "Schnell. Heiss. Lecker.", phone: "+43 662 123456",
-  address: { street: "Handelszentrum", city: "Bergheim bei Salzburg", zip: "5101", country: "AT" },
+  address: { street: "Handelszentrum 4", city: "Bergheim bei Salzburg", zip: "5101", country: "AT" },
   openingHours: {
     monday: { open: "08:00", close: "18:00" }, tuesday: { open: "08:00", close: "18:00" }, wednesday: { open: "08:00", close: "18:00" },
     thursday: { open: "08:00", close: "18:00" }, friday: { open: "08:00", close: "18:00" }, saturday: { open: "09:00", close: "14:00" }, sunday: null
