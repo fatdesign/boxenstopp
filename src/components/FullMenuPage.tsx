@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
+import { MenuRowSkeletonGrid } from './MenuSkeleton';
 
 interface MenuItem {
   name: string;
@@ -49,11 +50,7 @@ export const FullMenuPage: React.FC = () => {
     loadMenu();
   }, []);
 
-  if (loading) {
-    return <div className="min-h-screen pt-32 pb-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Lade Speisekarte...</div>;
-  }
-
-  if (categories.length === 0) {
+  if (!loading && categories.length === 0) {
     return <div className="min-h-screen pt-32 pb-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Keine Speisen gefunden.</div>;
   }
 
@@ -66,7 +63,7 @@ export const FullMenuPage: React.FC = () => {
       </div>
 
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 relative z-10">
-        
+
         {/* Page Header */}
         <Reveal className="text-center mb-12 sm:mb-20 border-b-2 border-lotteria-red/10 pb-8 sm:pb-12">
           <h1 className="font-display font-black text-4xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
@@ -78,8 +75,14 @@ export const FullMenuPage: React.FC = () => {
         </Reveal>
 
         {/* Sequential Categories */}
+        {loading && (
+          <div className="space-y-16">
+            <MenuRowSkeletonGrid />
+            <MenuRowSkeletonGrid />
+          </div>
+        )}
         <div className="space-y-24">
-          {categories.map((category, catIdx) => (
+          {!loading && categories.map((category, catIdx) => (
             <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
               {/* Category Header */}
               <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">

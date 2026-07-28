@@ -249,8 +249,8 @@ function renderDashboard() {
                     <span class="category-name">${catName}</span>
                 </div>
                 <div class="category-actions">
-                    <button class="btn btn-ghost btn-sm edit-cat-btn" data-cat-idx="${catIdx}" title="Umbenennen">✏️</button>
-                    <button class="btn btn-ghost btn-sm delete-cat-btn" data-cat-idx="${catIdx}" title="Löschen">🗑</button>
+                    <button class="btn btn-ghost btn-sm edit-cat-btn" data-cat-idx="${catIdx}" title="Umbenennen" aria-label="Kategorie umbenennen">✏️</button>
+                    <button class="btn btn-ghost btn-sm delete-cat-btn" data-cat-idx="${catIdx}" title="Löschen" aria-label="Kategorie löschen">🗑</button>
                 </div>
             </div>
             <div class="item-list">
@@ -296,9 +296,9 @@ function renderItemRow(item, catIdx, itemIdx) {
             </div>
             <div class="item-row-price">€ ${item.price}</div>
             <div class="item-actions">
-                <button class="btn-icon toggle-special-btn ${isSpecial ? 'is-active-special' : ''}" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}">🔥</button>
-                <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten">✏️</button>
-                <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen">🗑</button>
+                <button class="btn-icon toggle-special-btn ${isSpecial ? 'is-active-special' : ''}" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}" aria-label="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}">🔥</button>
+                <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten" aria-label="Gericht bearbeiten">✏️</button>
+                <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen" aria-label="Gericht löschen">🗑</button>
             </div>
         </div>`;
 }

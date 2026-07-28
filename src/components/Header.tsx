@@ -107,7 +107,12 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        <button className="lg:hidden text-ink" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <button
+          className="lg:hidden text-ink"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
+          aria-expanded={isMobileMenuOpen}
+        >
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>

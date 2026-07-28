@@ -50,6 +50,15 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes page-fade-in {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-page-fade-in {
+  animation: page-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }

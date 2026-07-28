@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { HorizontalScrollSection } from './components/HorizontalScrollSection';
@@ -30,6 +30,18 @@ const MenuPage = () => (
     <FullMenuPage />
   </div>
 );
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <div key={location.pathname} className="animate-page-fade-in">
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/speisekarte" element={<MenuPage />} />
+      </Routes>
+    </div>
+  );
+};
 
 import { useEffect } from 'react';
 import Lenis from 'lenis';
@@ -68,10 +80,7 @@ function App() {
         <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
           <Header />
           <main className="pb-16 lg:pb-0">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/speisekarte" element={<MenuPage />} />
-            </Routes>
+            <AnimatedRoutes />
           </main>
           <MarqueeSection />
           <Footer />

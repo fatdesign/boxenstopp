@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
+import { MenuCardSkeletonGrid } from './MenuSkeleton';
 
 interface MenuItem {
   name: string;
@@ -56,11 +57,7 @@ export const MenuSection: React.FC = () => {
     loadMenu();
   }, []);
 
-  if (loading) {
-    return <div className="py-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Lade Speisekarte...</div>;
-  }
-
-  if (categories.length === 0) {
+  if (!loading && categories.length === 0) {
     return <div className="py-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Keine Daten gefunden.</div>;
   }
 
@@ -88,26 +85,35 @@ export const MenuSection: React.FC = () => {
         </Reveal>
 
         {/* Categories Navigation (Pill-Style) */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-5 mb-16">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`
-                px-6 sm:px-10 py-3.5 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-sm
-                ${activeCategory === cat.id 
-                  ? 'bg-lotteria-yellow text-lotteria-red shadow-xl scale-105 ring-4 ring-lotteria-yellow/40' 
-                  : 'bg-white text-lotteria-red border-2 border-lotteria-yellow/30 hover:border-lotteria-yellow hover:scale-105 hover:bg-white/90'
-                }
-              `}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-5 mb-16 animate-pulse">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-[46px] sm:h-[54px] w-28 sm:w-36 rounded-full bg-white/70" />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-5 mb-16">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`
+                  px-6 sm:px-10 py-3.5 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-sm
+                  ${activeCategory === cat.id
+                    ? 'bg-lotteria-yellow text-lotteria-red shadow-xl scale-105 ring-4 ring-lotteria-yellow/40'
+                    : 'bg-white text-lotteria-red border-2 border-lotteria-yellow/30 hover:border-lotteria-yellow hover:scale-105 hover:bg-white/90'
+                  }
+                `}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Full-Width Responsive Card Grid (1 col mobile, 2 col tablet, 3-4 col desktop) */}
-        {currentCategoryData && (
+        {loading && <MenuCardSkeletonGrid />}
+        {!loading && currentCategoryData && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {currentCategoryData.items.map((item, idx) => (
               <Reveal

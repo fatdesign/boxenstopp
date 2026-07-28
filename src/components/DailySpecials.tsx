@@ -80,6 +80,20 @@ export const DailySpecials: React.FC = () => {
           <p className="text-gray-600 font-medium max-w-2xl mx-auto">Täglich wechselnde Angebote direkt vor Ort. Schnell vorbeikommen, zugreifen und sparen.</p>
         </Reveal>
 
+        {!loaded && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="bg-white p-8 sm:p-10 speed-cut border border-gray-100 shadow-md animate-pulse">
+                <div className="w-full h-48 sm:h-56 rounded-2xl bg-gray-100 mb-6" />
+                <div className="h-7 bg-gray-100 rounded-full w-2/3 mb-4" />
+                <div className="h-4 bg-gray-100 rounded-full w-full mb-2" />
+                <div className="h-4 bg-gray-100 rounded-full w-1/2 mb-6" />
+                <div className="h-10 bg-gray-100 rounded-md w-24" />
+              </div>
+            ))}
+          </div>
+        )}
+
         {loaded && specials.length === 0 && (
           <Reveal className="text-center text-gray-500 font-medium py-6">
             Aktuell keine Tagesangebote – schau bald wieder vorbei!
