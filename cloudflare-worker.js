@@ -7,7 +7,7 @@ const DEFAULT_MENU = {
     "slogan": "Schnell. Heiss. Lecker.",
     "phone": "+43 662 123456",
     "address": {
-      "street": "Handelszentrum",
+      "street": "Handelszentrum 4",
       "city": "Bergheim bei Salzburg",
       "zip": "5101"
     },
