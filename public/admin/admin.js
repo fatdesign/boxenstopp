@@ -197,7 +197,7 @@ async function loadMenu() {
 
     // ── Local / Fallback Fetch (No Proxy) ───────────────
     try {
-        const res = await fetch('/menu.json?t=' + Date.now());
+        const res = await fetch('../menu.json?t=' + Date.now());
         if (res.ok) {
             menuData = await res.json();
         } else {
