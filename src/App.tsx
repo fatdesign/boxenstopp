@@ -24,6 +24,7 @@ const Home = () => (
 );
 
 import { FullMenuPage } from './components/FullMenuPage';
+import { ImpressumPage } from './components/ImpressumPage';
 
 const MenuPage = () => (
   <div>
@@ -38,6 +39,7 @@ const AnimatedRoutes = () => {
       <Routes location={location}>
         <Route path="/" element={<Home />} />
         <Route path="/speisekarte" element={<MenuPage />} />
+        <Route path="/impressum" element={<ImpressumPage />} />
       </Routes>
     </div>
   );
