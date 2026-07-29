@@ -286,7 +286,7 @@ function renderItemRow(item, catIdx, itemIdx) {
     if (soldOut) badges += '<span class="badge-aus">AUSVERKAUFT</span>';
     if (item.isPopular) badges += '<span class="badge-hit">HIT</span>';
     if (item.isVegetarian) badges += '<span class="badge-veg">VEGGIE</span>';
-    if (isSpecial) badges += '<span class="badge-special">🔥 TAGESANGEBOT</span>';
+    if (isSpecial) badges += '<span class="badge-special" style="display:inline-flex; align-items:center; gap:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg> TAGESANGEBOT</span>';
     if (Array.isArray(item.allergens) && item.allergens.length > 0) {
         badges += `<span class="badge-allergen" style="font-size:0.65rem; font-weight:800; color:var(--text-muted); background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:4px; margin-left:8px; letter-spacing:0.05em;">[${item.allergens.join(', ')}]</span>`;
     }
@@ -299,9 +299,15 @@ function renderItemRow(item, catIdx, itemIdx) {
             </div>
             <div class="item-row-price">€ ${item.price}</div>
             <div class="item-actions">
-                <button class="btn-icon toggle-special-btn ${isSpecial ? 'is-active-special' : ''}" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}" aria-label="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}">🔥</button>
-                <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten" aria-label="Gericht bearbeiten">✏️</button>
-                <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen" aria-label="Gericht löschen">🗑</button>
+                <button class="btn-icon toggle-special-btn ${isSpecial ? 'is-active-special' : ''}" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}" aria-label="${isSpecial ? 'Von Tagesangeboten entfernen' : 'Als Tagesangebot markieren'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+                </button>
+                <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten" aria-label="Gericht bearbeiten">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                </button>
+                <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen" aria-label="Gericht löschen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
             </div>
         </div>`;
 }

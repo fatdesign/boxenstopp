@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, MapPin, Navigation } from 'lucide-react';
+import { Clock, MapPin, Navigation, Building2 } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
@@ -38,7 +38,9 @@ export const InfoSection: React.FC = () => {
 
             {/* Firmen & Team-Bestellung Banner */}
             <div className="bg-lotteria-yellow/20 border-2 border-lotteria-yellow p-5 rounded-2xl mb-8 flex items-start gap-3.5 shadow-sm">
-              <div className="text-3xl flex-shrink-0">🏢</div>
+              <div className="w-10 h-10 rounded-xl bg-lotteria-red/10 border border-lotteria-red/20 flex items-center justify-center flex-shrink-0 text-lotteria-red">
+                <Building2 size={22} />
+              </div>
               <div>
                 <h4 className="font-display font-black text-base sm:text-lg text-lotteria-red uppercase tracking-tight mb-1">
                   Firmen- & Team-Bestellungen
@@ -66,7 +68,7 @@ export const InfoSection: React.FC = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-race text-white hover:bg-race-700 active:scale-95 px-8 py-4 font-display font-bold text-sm uppercase tracking-wider transition-all speed-cut shadow-lg shadow-race/25 w-full sm:w-auto text-center"
             >
-              <Navigation size={20} /> 📍 ROUTENPLANER STARTEN (Google Maps)
+              <Navigation size={20} /> ROUTENPLANER STARTEN (Google Maps)
             </a>
           </Reveal>
           <Reveal delay={150} id="zeiten" className="lg:pl-12 lg:border-l border-gray-200">

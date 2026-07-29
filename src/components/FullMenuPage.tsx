@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Printer } from 'lucide-react';
+import { Plus, Printer, Star, Leaf } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuRowSkeletonGrid } from './MenuSkeleton';
@@ -144,13 +144,13 @@ export const FullMenuPage: React.FC = () => {
                       {/* Status Badges + Add to Cart */}
                       <div className="flex flex-wrap items-center gap-2">
                         {item.isPopular && (
-                          <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
-                            ★ Beliebt
+                          <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+                            <Star size={10} className="fill-white" /> Beliebt
                           </span>
                         )}
                         {item.isVegetarian && (
-                          <span className="px-2.5 py-1 bg-green-600 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
-                            🌱 Veggie
+                          <span className="px-2.5 py-1 bg-green-600 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+                            <Leaf size={10} /> Veggie
                           </span>
                         )}
                         {item.isSoldOut && (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Minus, Plus, Trash2, Clock } from 'lucide-react';
+import { X, Minus, Plus, Trash2, Clock, ShoppingBag, Utensils, Building2, Zap, CalendarClock, CheckCircle2 } from 'lucide-react';
 import { useOrder } from '../context/OrderContext';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
@@ -142,9 +142,12 @@ export const OrderModal: React.FC = () => {
         <div className="p-6">
           {status === 'success' ? (
             <div className="text-center py-6">
-              <p className="text-lg font-medium text-ink mb-2">Danke{name ? `, ${name}` : ''}! 🏁</p>
-              <p className="text-gray-600">
-                Deine Bestellung ist raus – wir melden uns kurz telefonisch, sobald sie fertig ist.
+              <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+                <CheckCircle2 size={36} />
+              </div>
+              <p className="text-lg font-bold text-ink mb-2">Vielen Dank{name ? `, ${name}` : ''}!</p>
+              <p className="text-gray-600 text-sm max-w-xs mx-auto">
+                Deine Bestellung ist erfolgreich eingegangen. Wir bereiten deine Speisen pünktlich vor!
               </p>
               <button
                 onClick={close}
@@ -209,24 +212,24 @@ export const OrderModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setOrderType('pickup')}
-                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
                         orderType === 'pickup'
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>🥡</span> Zum Mitnehmen
+                      <ShoppingBag size={18} /> Zum Mitnehmen
                     </button>
                     <button
                       type="button"
                       onClick={() => setOrderType('dineIn')}
-                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
                         orderType === 'dineIn'
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>🍽️</span> Vor Ort essen
+                      <Utensils size={18} /> Vor Ort essen
                     </button>
                   </div>
                 </div>
@@ -244,8 +247,10 @@ export const OrderModal: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">
-                    🏢 Firmenname / Abteilung <span className="text-xs font-normal text-gray-500">(optional)</span>
+                  <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center gap-1.5">
+                    <Building2 size={16} className="text-lotteria-red" />
+                    <span>Firmenname / Abteilung</span>
+                    <span className="text-xs font-normal text-gray-500">(optional)</span>
                   </label>
                   <input
                     value={company}
@@ -279,13 +284,13 @@ export const OrderModal: React.FC = () => {
                         setIsCustomTime(false);
                         setPickupTime('So schnell wie möglich');
                       }}
-                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         !isCustomTime && pickupTime === 'So schnell wie möglich'
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>⚡</span> ASAP
+                      <Zap size={14} /> ASAP
                     </button>
 
                     <button
@@ -294,13 +299,13 @@ export const OrderModal: React.FC = () => {
                         setIsCustomTime(false);
                         setPickupTime(`in 15 Min. (${getTimeOffset(15)})`);
                       }}
-                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         !isCustomTime && pickupTime.startsWith('in 15 Min')
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>⏱️</span> +15 Min
+                      <Clock size={14} /> +15 Min
                     </button>
 
                     <button
@@ -309,13 +314,13 @@ export const OrderModal: React.FC = () => {
                         setIsCustomTime(false);
                         setPickupTime(`in 30 Min. (${getTimeOffset(30)})`);
                       }}
-                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         !isCustomTime && pickupTime.startsWith('in 30 Min')
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>⏱️</span> +30 Min
+                      <Clock size={14} /> +30 Min
                     </button>
 
                     <button
@@ -326,13 +331,13 @@ export const OrderModal: React.FC = () => {
                         const m = selectedMinute || '00';
                         handleSelectCustomTime(h, m);
                       }}
-                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                         isCustomTime
                           ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
                           : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>⏰</span> Wunschzeit
+                      <CalendarClock size={14} /> Wunschzeit
                     </button>
                   </div>
 

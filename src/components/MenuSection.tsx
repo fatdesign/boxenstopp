@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Star, Leaf } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuCardSkeletonGrid } from './MenuSkeleton';
@@ -159,13 +159,13 @@ export const MenuSection: React.FC = () => {
                 {/* Status Badges */}
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-lotteria-bg">
                   {item.isPopular && (
-                    <span className="px-3 py-1 bg-lotteria-red text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
-                      ★ Beliebt
+                    <span className="px-3 py-1 bg-lotteria-red text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+                      <Star size={12} className="fill-white" /> Beliebt
                     </span>
                   )}
                   {item.isVegetarian && (
-                    <span className="px-3 py-1 bg-green-600 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
-                      🌱 Veggie
+                    <span className="px-3 py-1 bg-green-600 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+                      <Leaf size={12} /> Veggie
                     </span>
                   )}
                   {item.isSoldOut && (
