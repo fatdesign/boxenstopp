@@ -20,7 +20,7 @@ export const MobileOrderBar: React.FC = () => {
   };
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 w-full z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex">
+    <div className="no-print lg:hidden fixed bottom-0 left-0 w-full z-40 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] flex">
       <a
         href="#menu"
         onClick={handleMenuClick}

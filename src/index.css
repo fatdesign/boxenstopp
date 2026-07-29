@@ -135,6 +135,11 @@
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
   header,
   footer,
   .no-print,
@@ -148,22 +153,77 @@
   body, html {
     background: #ffffff !important;
     color: #1a1a1a !important;
+    font-size: 11px !important;
   }
 
   .bg-lotteria-bg {
     background: #ffffff !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    min-height: auto !important;
   }
 
+  /* Preserve 2-column grid layout for menu items */
   .grid {
-    display: block !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
   }
 
+  /* Make categories & vertical spacing much more compact */
+  .space-y-24 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem !important;
+  }
+
+  .space-y-16 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0.75rem !important;
+  }
+
+  .mb-12, .mb-20, .mb-8 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .pb-8, .pb-12, .pb-24 {
+    padding-bottom: 0 !important;
+  }
+
+  .pt-32 {
+    padding-top: 0.5rem !important;
+  }
+
+  /* Card styling for print */
   .bg-white {
+    background: #ffffff !important;
     border: 1px solid #e5e7eb !important;
     box-shadow: none !important;
-    margin-bottom: 12px !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
     page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Compact header typography */
+  h1 {
+    font-size: 1.8rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  h2 {
+    font-size: 1.1rem !important;
+  }
+
+  h3 {
+    font-size: 0.95rem !important;
+  }
+
+  /* Scale item images down slightly */
+  .w-20, .w-32, .h-20, .h-32 {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .w-16, .w-28, .h-16, .h-28 {
+    width: 42px !important;
+    height: 42px !important;
   }
 }
