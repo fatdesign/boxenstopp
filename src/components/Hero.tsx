@@ -17,7 +17,7 @@ export const Hero: React.FC = () => {
             Wo Gschmack aufs Original trifft
           </h2>
           <h1 className="font-display font-black text-4xl sm:text-6xl md:text-8xl text-white uppercase leading-[0.95] sm:leading-[0.9] tracking-tighter drop-shadow-xl break-words">
-            Der Original Burger,<br/>{contact.name}
+            {contact.name}
           </h1>
         </div>
 
