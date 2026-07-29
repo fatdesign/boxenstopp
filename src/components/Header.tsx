@@ -106,10 +106,9 @@ export const Header: React.FC = () => {
   return (
     <header className={cn("fixed top-0 w-full z-50 transition-all duration-300 border-b", isScrolled ? "bg-white/95 backdrop-blur-md border-gray-200 shadow-md py-2" : "bg-white border-gray-100 shadow-sm py-2.5 md:py-3.5")}>
       <div className="max-w-[1400px] mx-auto pl-2 sm:pl-3 md:pl-4 pr-4 sm:pr-6 flex items-center justify-between">
-        {/* Left: Logo */}
         <div className="flex-shrink-0">
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="images/boxenstopp_logo.png" alt="Boxenstopp Logo" className="h-16 md:h-18 lg:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-2" />
+            <img src="images/boxenstopp_logo.png" alt="Boxenstopp Logo" className="h-11 md:h-12 lg:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-2" />
           </Link>
         </div>
 
