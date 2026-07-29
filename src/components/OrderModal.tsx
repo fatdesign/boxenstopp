@@ -40,6 +40,8 @@ export const OrderModal: React.FC = () => {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [orderType, setOrderType] = useState<'pickup' | 'dineIn'>('pickup');
+  const [company, setCompany] = useState('');
   const [pickupTime, setPickupTime] = useState('So schnell wie möglich');
   const [isCustomTime, setIsCustomTime] = useState(false);
   const [selectedHour, setSelectedHour] = useState(defaultHour);
@@ -71,6 +73,8 @@ export const OrderModal: React.FC = () => {
       setStatus('idle');
       setName('');
       setPhone('');
+      setOrderType('pickup');
+      setCompany('');
       setPickupTime('So schnell wie möglich');
       setIsCustomTime(false);
       setNote('');
@@ -96,6 +100,8 @@ export const OrderModal: React.FC = () => {
         body: JSON.stringify({
           name: name.trim(),
           phone: phone.trim(),
+          orderType,
+          company: company.trim(),
           pickupTime: pickupTime.trim() || 'So schnell wie möglich',
           note: note.trim(),
           items,
@@ -196,6 +202,35 @@ export const OrderModal: React.FC = () => {
               )}
 
               <div className="space-y-4">
+                {/* Verzehrart Selector */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Verzehrart *</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setOrderType('pickup')}
+                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        orderType === 'pickup'
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>🥡</span> Zum Mitnehmen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setOrderType('dineIn')}
+                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        orderType === 'dineIn'
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>🍽️</span> Vor Ort essen
+                    </button>
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Name *</label>
                   <input
@@ -204,6 +239,19 @@ export const OrderModal: React.FC = () => {
                     onChange={(e) => setName(e.target.value)}
                     type="text"
                     placeholder="Dein Name"
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-lotteria-red outline-none transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    🏢 Firmenname / Abteilung <span className="text-xs font-normal text-gray-500">(optional)</span>
+                  </label>
+                  <input
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    type="text"
+                    placeholder="z.B. Porsche Austria, Werkstatt..."
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-lotteria-red outline-none transition-colors"
                   />
                 </div>

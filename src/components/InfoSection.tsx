@@ -30,7 +30,25 @@ export const InfoSection: React.FC = () => {
           <Reveal>
             <div className="flex items-center gap-3 mb-6 text-ink"><MapPin size={32} className="text-race" /><h2 className="font-display font-black text-4xl uppercase tracking-tight">Standort</h2></div>
             <p className="text-gray-600 font-medium text-lg mb-8">Direkt im Handelszentrum Bergheim – gut erreichbar beim Einkauf oder für den kurzen Boxenstopp zwischendurch.</p>
-            <div className="bg-gray-50 p-6 speed-cut mb-8 border-l-4 border-l-race border border-gray-200 shadow-sm"><h3 className="font-bold text-ink text-xl mb-2">{contact.name}</h3><p className="text-gray-600 font-medium mb-1">{contact.address.street}</p><p className="text-gray-600 font-medium">{contact.address.zip} {contact.address.city}</p></div>
+            <div className="bg-gray-50 p-6 speed-cut mb-6 border-l-4 border-l-race border border-gray-200 shadow-sm">
+              <h3 className="font-bold text-ink text-xl mb-2">{contact.name}</h3>
+              <p className="text-gray-600 font-medium mb-1">{contact.address.street}</p>
+              <p className="text-gray-600 font-medium">{contact.address.zip} {contact.address.city}</p>
+            </div>
+
+            {/* Firmen & Team-Bestellung Banner */}
+            <div className="bg-lotteria-yellow/20 border-2 border-lotteria-yellow p-5 rounded-2xl mb-8 flex items-start gap-3.5 shadow-sm">
+              <div className="text-3xl flex-shrink-0">🏢</div>
+              <div>
+                <h4 className="font-display font-black text-base sm:text-lg text-lotteria-red uppercase tracking-tight mb-1">
+                  Firmen- & Team-Bestellungen
+                </h4>
+                <p className="text-xs sm:text-sm font-medium text-lotteria-red/80 leading-relaxed">
+                  Mittagspause im Büro oder Betrieb? Bestellt für euer gesamtes Team bequem vor – wahlweise <strong>Zum Mitnehmen</strong> oder <strong>Vor Ort essen</strong>!
+                </p>
+              </div>
+            </div>
+
             <div className="rounded-2xl overflow-hidden shadow-lg speed-cut mb-8 h-64 border border-gray-200">
               <iframe
                 title={`Standort ${contact.name} auf Google Maps`}
@@ -42,7 +60,14 @@ export const InfoSection: React.FC = () => {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-            <a href={mapsSearchUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 bg-race text-white hover:bg-race-700 active:scale-95 px-8 py-4 font-display font-bold text-sm uppercase tracking-wide transition-all speed-cut shadow-md shadow-race/20"><Navigation size={18} /> In Maps öffnen</a>
+            <a
+              href={mapsSearchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-race text-white hover:bg-race-700 active:scale-95 px-8 py-4 font-display font-bold text-sm uppercase tracking-wider transition-all speed-cut shadow-lg shadow-race/25 w-full sm:w-auto text-center"
+            >
+              <Navigation size={20} /> 📍 ROUTENPLANER STARTEN (Google Maps)
+            </a>
           </Reveal>
           <Reveal delay={150} id="zeiten" className="lg:pl-12 lg:border-l border-gray-200">
             <div className="flex items-center gap-3 mb-6 text-ink"><Clock size={32} className="text-amber-500" /><h2 className="font-display font-black text-4xl uppercase tracking-tight">Öffnungszeiten</h2></div>

@@ -310,6 +310,8 @@ export default {
 
         const name = (body.name || "").toString().trim().slice(0, 100);
         const phone = (body.phone || "").toString().trim().slice(0, 40);
+        const orderType = (body.orderType || "pickup").toString() === "dineIn" ? "🍽️ Vor Ort essen" : "🥡 Zum Mitnehmen";
+        const company = (body.company || "").toString().trim().slice(0, 100);
         const pickupTime = (body.pickupTime || "So schnell wie möglich").toString().trim().slice(0, 50);
         const note = (body.note || "").toString().trim().slice(0, 300);
         const items = Array.isArray(body.items) ? body.items.slice(0, 30) : [];
@@ -334,17 +336,26 @@ export default {
         }).join("\n");
 
         const messageParts = [
-          "🏁 <b>Neue Vorbestellung – BOXENSTOPP</b>",
+          company ? `🏢 <b>FIRMENBESTELLUNG: ${escapeHtml(company)}</b>` : "🏁 <b>Neue Vorbestellung – BOXENSTOPP</b>",
           "",
           `👤 <b>Name:</b> ${escapeHtml(name)}`,
           `📞 <b>Telefon:</b> ${escapeHtml(phone)}`,
-          `⏰ <b>Abholung:</b> ${escapeHtml(pickupTime)}`,
+          `📍 <b>Verzehrart:</b> ${escapeHtml(orderType)}`,
+          `⏰ <b>Abholung / Uhrzeit:</b> ${escapeHtml(pickupTime)}`,
+        ];
+
+        if (company) {
+          messageParts.push(`🏢 <b>Firma/Abt:</b> ${escapeHtml(company)}`);
+        }
+
+        messageParts.push(
           "",
           "🛒 <b>Bestellung:</b>",
           itemLines,
           "",
-          `💰 <b>Gesamt:</b> € ${total.toFixed(2)}`,
-        ];
+          `💰 <b>Gesamt:</b> € ${total.toFixed(2)}`
+        );
+
         if (note) {
           messageParts.push("", `📝 <b>Anmerkung:</b> ${escapeHtml(note)}`);
         }
