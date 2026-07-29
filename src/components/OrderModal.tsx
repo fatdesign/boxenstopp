@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Minus, Plus, Trash2, Clock } from 'lucide-react';
 import { useOrder } from '../context/OrderContext';
 
@@ -28,6 +28,15 @@ export const OrderModal: React.FC = () => {
   const [note, setNote] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -81,10 +90,12 @@ export const OrderModal: React.FC = () => {
 
   return (
     <div
+      data-lenis-prevent
       className="fixed inset-0 z-[150] flex items-end sm:items-center justify-center bg-ink/60 backdrop-blur-sm p-0 sm:p-4"
       onClick={close}
     >
       <div
+        data-lenis-prevent
         className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl max-h-[90vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -269,7 +280,7 @@ export const OrderModal: React.FC = () => {
                         >
                           {hoursOptions.map((h) => (
                             <option key={h} value={h}>
-                              {h} Std
+                              {h}
                             </option>
                           ))}
                         </select>
@@ -284,10 +295,12 @@ export const OrderModal: React.FC = () => {
                         >
                           {minutesOptions.map((m) => (
                             <option key={m} value={m}>
-                              {m} Min
+                              {m}
                             </option>
                           ))}
                         </select>
+
+                        <span className="font-bold text-sm text-gray-700 ml-0.5">Uhr</span>
                       </div>
                     </div>
                   )}
