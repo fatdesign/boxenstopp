@@ -275,7 +275,8 @@ export default {
 
       // ── Pre-Order → Telegram ─────────────────────────────────────────
       if (url.pathname === "/order" && request.method === "POST") {
-        if (!env.TELEGRAM_BOT_TOKEN) {
+        const telegramToken = env.TELEGRAM_API || env.TELEGRAM_BOT_TOKEN;
+        if (!telegramToken) {
           return new Response(JSON.stringify({ error: "Vorbestellungen sind aktuell nicht verfügbar." }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -294,6 +295,7 @@ export default {
 
         const name = (body.name || "").toString().trim().slice(0, 100);
         const phone = (body.phone || "").toString().trim().slice(0, 40);
+        const pickupTime = (body.pickupTime || "So schnell wie möglich").toString().trim().slice(0, 50);
         const note = (body.note || "").toString().trim().slice(0, 300);
         const items = Array.isArray(body.items) ? body.items.slice(0, 30) : [];
 
@@ -321,6 +323,7 @@ export default {
           "",
           `👤 <b>Name:</b> ${escapeHtml(name)}`,
           `📞 <b>Telefon:</b> ${escapeHtml(phone)}`,
+          `⏰ <b>Abholung:</b> ${escapeHtml(pickupTime)}`,
           "",
           "🛒 <b>Bestellung:</b>",
           itemLines,
@@ -333,7 +336,7 @@ export default {
         const message = messageParts.join("\n");
 
         const chatId = env.TELEGRAM_CHAT_ID || "-5156182561";
-        const tgRes = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const tgRes = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML" }),

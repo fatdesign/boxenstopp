@@ -10,6 +10,7 @@ export const OrderModal: React.FC = () => {
   const { items, updateQty, removeItem, clearCart, totalPrice, isCartOpen, setIsCartOpen } = useOrder();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [pickupTime, setPickupTime] = useState('So schnell wie möglich');
   const [note, setNote] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,6 +23,7 @@ export const OrderModal: React.FC = () => {
       setStatus('idle');
       setName('');
       setPhone('');
+      setPickupTime('So schnell wie möglich');
       setNote('');
     }
   };
@@ -36,7 +38,13 @@ export const OrderModal: React.FC = () => {
       const res = await fetch(`${WORKER_URL}/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), phone: phone.trim(), note: note.trim(), items }),
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          pickupTime: pickupTime.trim() || 'So schnell wie möglich',
+          note: note.trim(),
+          items,
+        }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -152,6 +160,35 @@ export const OrderModal: React.FC = () => {
                     placeholder="+43 ..."
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-lotteria-red outline-none transition-colors"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Abholzeit *</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPickupTime('So schnell wie möglich')}
+                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        pickupTime === 'So schnell wie möglich'
+                          ? 'border-lotteria-red bg-lotteria-red/10 text-lotteria-red'
+                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>⚡</span> So schnell wie möglich
+                    </button>
+                    <div className="relative flex items-center">
+                      <input
+                        type="time"
+                        value={pickupTime === 'So schnell wie möglich' ? '' : pickupTime}
+                        onChange={(e) => setPickupTime(e.target.value ? `${e.target.value} Uhr` : 'So schnell wie möglich')}
+                        placeholder="Uhrzeit auswählen"
+                        className={`w-full border-2 rounded-xl px-3 py-2.5 text-sm font-bold outline-none transition-colors cursor-pointer ${
+                          pickupTime !== 'So schnell wie möglich' && pickupTime !== ''
+                            ? 'border-lotteria-red bg-lotteria-red/10 text-ink'
+                            : 'border-gray-200 text-gray-600'
+                        }`}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Anmerkung (optional)</label>
