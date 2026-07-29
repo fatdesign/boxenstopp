@@ -729,3 +729,21 @@ body {
     font-weight: 500;
     color: var(--accent);
 }
+
+.allergen-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.5rem 0.8rem;
+    background: #f9f9f9;
+    border: 2px solid var(--border);
+    padding: 0.8rem;
+    border-radius: 8px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.allergen-checkbox-grid .check-label {
+    padding-top: 0;
+    font-size: 0.8rem;
+    font-weight: 500;
+}

@@ -287,6 +287,9 @@ function renderItemRow(item, catIdx, itemIdx) {
     if (item.isPopular) badges += '<span class="badge-hit">HIT</span>';
     if (item.isVegetarian) badges += '<span class="badge-veg">VEGGIE</span>';
     if (isSpecial) badges += '<span class="badge-special">🔥 TAGESANGEBOT</span>';
+    if (Array.isArray(item.allergens) && item.allergens.length > 0) {
+        badges += `<span class="badge-allergen" style="font-size:0.65rem; font-weight:800; color:var(--text-muted); background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:4px; margin-left:8px; letter-spacing:0.05em;">[${item.allergens.join(', ')}]</span>`;
+    }
 
     return `
         <div class="item-row ${soldOut ? 'is-unavailable' : ''}">
@@ -489,6 +492,7 @@ function openItemModal(catIdx, itemIdx = null) {
     document.getElementById('item-vegetarian').checked = false;
     document.getElementById('item-popular').checked = false;
     document.getElementById('item-available').checked = false;
+    document.querySelectorAll('input[name="item-allergen"]').forEach(cb => cb.checked = false);
     itemImageHidden.value = '';
     imageUploadStatus.textContent = '';
     setImagePreview('');
@@ -504,6 +508,11 @@ function openItemModal(catIdx, itemIdx = null) {
         document.getElementById('item-desc').value = item.description || '';
         itemImageHidden.value = item.image || '';
         setImagePreview(item.image || '');
+
+        const itemAllergens = Array.isArray(item.allergens) ? item.allergens : [];
+        document.querySelectorAll('input[name="item-allergen"]').forEach(cb => {
+            cb.checked = itemAllergens.includes(cb.value);
+        });
     } else {
         modalTitle.textContent = 'Gericht hinzufügen';
     }
@@ -521,6 +530,8 @@ itemForm.onsubmit = (e) => {
 
     const existingItem = itemIdx !== null ? menuData.categories[catIdx].items[itemIdx] : null;
 
+    const selectedAllergens = Array.from(document.querySelectorAll('input[name="item-allergen"]:checked')).map(cb => cb.value);
+
     const newItem = {
         name: document.getElementById('item-name').value.trim(),
         price: document.getElementById('item-price').value.trim(),
@@ -529,6 +540,7 @@ itemForm.onsubmit = (e) => {
         isPopular: document.getElementById('item-popular').checked,
         isDailySpecial: existingItem ? existingItem.isDailySpecial === true : false,
         image: itemImageHidden.value.trim(),
+        allergens: selectedAllergens,
         description: document.getElementById('item-desc').value.trim()
     };
 

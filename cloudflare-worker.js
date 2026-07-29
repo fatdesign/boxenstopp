@@ -33,7 +33,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": true,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "C", "G"]
         },
         {
           "name": "Bosna",
@@ -42,7 +43,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "M"]
         },
         {
           "name": "Käsekrainer im Weckerl",
@@ -51,7 +53,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "G", "M"]
         },
         {
           "name": "Currywurst",
@@ -60,7 +63,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["F", "M"]
         }
       ]
     },
@@ -75,7 +79,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": true,
           "isVegetarian": false,
-          "isDailySpecial": true
+          "isDailySpecial": true,
+          "allergens": ["A", "C", "G", "N"]
         },
         {
           "name": "Cheeseburger",
@@ -84,7 +89,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "G", "N"]
         },
         {
           "name": "Crispy-Chicken-Burger",
@@ -93,7 +99,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "C", "G", "M"]
         },
         {
           "name": "Veggie-Burger",
@@ -102,7 +109,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "F", "N"]
         }
       ]
     },
@@ -117,7 +125,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Süßkartoffel-Pommes",
@@ -126,7 +135,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Wedges",
@@ -135,7 +145,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["G"]
         }
       ]
     },
@@ -150,7 +161,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Mineralwasser",
@@ -159,7 +171,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Kaffee",
@@ -168,7 +181,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["G"]
         },
         {
           "name": "Energy & Eistee",
@@ -177,7 +191,8 @@ const DEFAULT_MENU = {
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         }
       ]
     }

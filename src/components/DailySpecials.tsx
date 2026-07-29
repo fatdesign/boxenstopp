@@ -12,6 +12,7 @@ interface MenuItem {
   isSoldOut?: boolean;
   isDailySpecial?: boolean;
   image?: string;
+  allergens?: string[];
 }
 
 interface MenuCategory {
@@ -109,7 +110,17 @@ export const DailySpecials: React.FC = () => {
                   <div className="w-full h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 border-2 border-gray-100 shadow-sm">
                     <img src={special.image || getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <div className={`flex items-center gap-3 mb-4 ${accent.text}`}><Tag size={26} /><h3 className="font-display font-bold text-2xl sm:text-3xl uppercase">{special.name}</h3></div>
+                  <div className={`flex items-center gap-3 mb-4 ${accent.text}`}>
+                    <Tag size={26} />
+                    <h3 className="font-display font-bold text-2xl sm:text-3xl uppercase flex items-center gap-2 flex-wrap">
+                      <span>{special.name}</span>
+                      {special.allergens && special.allergens.length > 0 && (
+                        <span className="text-xs font-sans font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded px-2 py-0.5 tracking-wider uppercase inline-block">
+                          {special.allergens.join(', ')}
+                        </span>
+                      )}
+                    </h3>
+                  </div>
                   <p className="text-gray-600 mb-6 font-medium text-lg">{special.description}</p>
                   <div className="font-mono text-xl sm:text-2xl text-gray-900 font-bold bg-gray-100 border border-gray-200 inline-block px-5 py-2.5 rounded-md">€ {special.price}</div>
                 </Reveal>

@@ -30,7 +30,8 @@
           "isSoldOut": false,
           "isPopular": true,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "C", "G"]
         },
         {
           "name": "Bosna",
@@ -39,7 +40,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "M"]
         },
         {
           "name": "Käsekrainer im Weckerl",
@@ -48,7 +50,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "G", "M"]
         },
         {
           "name": "Currywurst",
@@ -57,7 +60,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["F", "M"]
         }
       ]
     },
@@ -72,7 +76,8 @@
           "isSoldOut": false,
           "isPopular": true,
           "isVegetarian": false,
-          "isDailySpecial": true
+          "isDailySpecial": true,
+          "allergens": ["A", "C", "G", "N"]
         },
         {
           "name": "Cheeseburger",
@@ -81,7 +86,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "G", "N"]
         },
         {
           "name": "Crispy-Chicken-Burger",
@@ -90,7 +96,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": false,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "C", "G", "M"]
         },
         {
           "name": "Veggie-Burger",
@@ -99,7 +106,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["A", "F", "N"]
         }
       ]
     },
@@ -114,7 +122,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Süßkartoffel-Pommes",
@@ -123,7 +132,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Wedges",
@@ -132,7 +142,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["G"]
         }
       ]
     },
@@ -147,7 +158,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Mineralwasser",
@@ -156,7 +168,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         },
         {
           "name": "Kaffee",
@@ -165,7 +178,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": ["G"]
         },
         {
           "name": "Energy & Eistee",
@@ -174,7 +188,8 @@
           "isSoldOut": false,
           "isPopular": false,
           "isVegetarian": true,
-          "isDailySpecial": false
+          "isDailySpecial": false,
+          "allergens": []
         }
       ]
     }

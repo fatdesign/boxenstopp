@@ -13,6 +13,7 @@ interface MenuItem {
   isPopular?: boolean;
   isSoldOut?: boolean;
   image?: string;
+  allergens?: string[];
 }
 
 interface MenuCategory {
@@ -123,8 +124,13 @@ export const FullMenuPage: React.FC = () => {
                     {/* Details Right Side */}
                     <div className="flex-grow min-w-0 py-2">
                       <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
-                        <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0">
-                          {item.name}
+                        <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 flex items-center gap-1.5 flex-wrap">
+                          <span>{item.name}</span>
+                          {item.allergens && item.allergens.length > 0 && (
+                            <span className="text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block">
+                              {item.allergens.join(', ')}
+                            </span>
+                          )}
                         </h3>
                         <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-base sm:text-lg px-2.5 sm:px-3 py-1 rounded-full shadow-sm flex-shrink-0">
                           € {item.price}
@@ -168,6 +174,16 @@ export const FullMenuPage: React.FC = () => {
               </div>
             </Reveal>
           ))}
+        </div>
+
+        {/* Allergen Legend Footer */}
+        <div className="mt-16 pt-8 border-t border-lotteria-yellow/30 text-center">
+          <h4 className="font-display font-black text-sm uppercase text-lotteria-red tracking-wider mb-2">
+            Allergeninformation (EU-Klassifizierung)
+          </h4>
+          <p className="text-xs font-medium text-lotteria-red/70 max-w-4xl mx-auto leading-relaxed">
+            <strong>A:</strong> Glutenhaltiges Getreide | <strong>B:</strong> Krebstiere | <strong>C:</strong> Ei | <strong>D:</strong> Fisch | <strong>E:</strong> Erdnuss | <strong>F:</strong> Soja | <strong>G:</strong> Milch (Laktose) | <strong>H:</strong> Schalenfrüchte | <strong>L:</strong> Sellerie | <strong>M:</strong> Senf | <strong>N:</strong> Sesam | <strong>O:</strong> Sulfite | <strong>P:</strong> Lupinen | <strong>R:</strong> Weichtiere
+          </p>
         </div>
 
       </div>
