@@ -3,12 +3,12 @@ import { Clock, MapPin, Navigation } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
-// Geocoded once for "Handelszentrum 4, 5101 Bergheim bei Salzburg" — a fixed
-// coordinate pin is precise regardless of whether "Boxenstopp" exists as a
-// verified Google Business listing (a text/name search can otherwise jump to
-// an unrelated nearby place). Update these if the location ever changes.
-const LOCATION_LAT = 47.8421277;
-const LOCATION_LNG = 13.0334810;
+// Precise coordinates for "Handelszentrum 4, 5101 Bergheim bei Salzburg" — a
+// fixed coordinate pin is accurate regardless of whether "Boxenstopp" exists
+// as a verified Google Business listing (a text/name search can otherwise
+// jump to an unrelated nearby place). Update these if the location ever changes.
+const LOCATION_LAT = 47.84282356548513;
+const LOCATION_LNG = 13.035618751881326;
 
 export const InfoSection: React.FC = () => {
   const { openingHours, contact } = useSiteSettings();
