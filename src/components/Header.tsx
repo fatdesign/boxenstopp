@@ -32,15 +32,47 @@ export const Header: React.FC = () => {
   }, [openingHours]);
 
   useEffect(() => {
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
+
     const handleSpy = () => {
-      const scrollY = window.scrollY + 130;
+      const scrollPosition = window.scrollY + 200;
       let current = '';
+
       for (const id of SECTION_IDS) {
         const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollY) current = id;
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY;
+          const height = el.offsetHeight;
+
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            current = id;
+            break;
+          }
+        }
       }
+
+      if (!current) {
+        for (const id of SECTION_IDS) {
+          const el = document.getElementById(id);
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            if (top <= scrollPosition) {
+              current = id;
+            }
+          }
+        }
+      }
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+        current = 'zeiten';
+      }
+
       setActiveSection(current);
     };
+
     window.addEventListener('scroll', handleSpy, { passive: true });
     handleSpy();
     return () => window.removeEventListener('scroll', handleSpy);

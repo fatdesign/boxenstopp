@@ -24,10 +24,10 @@ export const InfoSection: React.FC = () => {
   const mapsEmbedUrl = `https://www.google.com/maps?q=${coords}&z=17&output=embed`;
 
   return (
-    <section id="standort" className="py-24 bg-white relative border-t border-gray-100">
+    <section id="info-section" className="py-24 bg-white relative border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <Reveal>
+          <Reveal id="standort">
             <div className="flex items-center gap-3 mb-6 text-ink"><MapPin size={32} className="text-race" /><h2 className="font-display font-black text-4xl uppercase tracking-tight">Standort</h2></div>
             <p className="text-gray-600 font-medium text-lg mb-8">Direkt im Handelszentrum Bergheim – gut erreichbar beim Einkauf oder für den kurzen Boxenstopp zwischendurch.</p>
             <div className="bg-gray-50 p-6 speed-cut mb-6 border-l-4 border-l-race border border-gray-200 shadow-sm">
