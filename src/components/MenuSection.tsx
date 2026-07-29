@@ -77,7 +77,7 @@ export const MenuSection: React.FC = () => {
         {/* Title Header */}
         <Reveal className="text-center mb-16">
           <h2 className="font-display font-black text-4xl sm:text-6xl md:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
-            Dein neuer Lieblingsburger startet do!
+            Dein neuer Lieblingsburger startet&nbsp;do!
           </h2>
           <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase">
             Jeder Biss a Stückerl Freid.
