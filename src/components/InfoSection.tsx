@@ -3,6 +3,13 @@ import { Clock, MapPin, Navigation } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
+// Geocoded once for "Handelszentrum 4, 5101 Bergheim bei Salzburg" — a fixed
+// coordinate pin is precise regardless of whether "Boxenstopp" exists as a
+// verified Google Business listing (a text/name search can otherwise jump to
+// an unrelated nearby place). Update these if the location ever changes.
+const LOCATION_LAT = 47.8421277;
+const LOCATION_LNG = 13.0334810;
+
 export const InfoSection: React.FC = () => {
   const { openingHours, contact } = useSiteSettings();
   const days = [
@@ -12,9 +19,9 @@ export const InfoSection: React.FC = () => {
   const currentDayIndex = new Date().getDay();
   const currentDayKey = currentDayIndex === 0 ? 'sunday' : days[currentDayIndex - 1].key;
 
-  const fullAddress = `${contact.name}, ${contact.address.street}, ${contact.address.zip} ${contact.address.city}`;
-  const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
-  const mapsEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`;
+  const coords = `${LOCATION_LAT},${LOCATION_LNG}`;
+  const mapsSearchUrl = `https://www.google.com/maps/search/?api=1&query=${coords}`;
+  const mapsEmbedUrl = `https://www.google.com/maps?q=${coords}&z=17&output=embed`;
 
   return (
     <section id="standort" className="py-24 bg-white relative border-t border-gray-100">
