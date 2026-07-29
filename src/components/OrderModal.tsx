@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
-import { X, Minus, Plus, Trash2 } from 'lucide-react';
+import { X, Minus, Plus, Trash2, Clock } from 'lucide-react';
 import { useOrder } from '../context/OrderContext';
 
 const WORKER_URL = 'https://boxenstopp.f-klavun.workers.dev';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
+const getTimeOffset = (minutes: number) => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes() + minutes);
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  return `${hh}:${mm} Uhr`;
+};
+
+const hoursOptions = Array.from({ length: 11 }, (_, i) => String(i + 8).padStart(2, '0')); // 08 .. 18
+const minutesOptions = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
+
 export const OrderModal: React.FC = () => {
   const { items, updateQty, removeItem, clearCart, totalPrice, isCartOpen, setIsCartOpen } = useOrder();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [pickupTime, setPickupTime] = useState('So schnell wie möglich');
+  const [isCustomTime, setIsCustomTime] = useState(false);
+  const [selectedHour, setSelectedHour] = useState('12');
+  const [selectedMinute, setSelectedMinute] = useState('30');
   const [note, setNote] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -24,8 +38,15 @@ export const OrderModal: React.FC = () => {
       setName('');
       setPhone('');
       setPickupTime('So schnell wie möglich');
+      setIsCustomTime(false);
       setNote('');
     }
+  };
+
+  const handleSelectCustomTime = (h: string, m: string) => {
+    setSelectedHour(h);
+    setSelectedMinute(m);
+    setPickupTime(`${h}:${m} Uhr`);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -150,6 +171,7 @@ export const OrderModal: React.FC = () => {
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-lotteria-red outline-none transition-colors"
                   />
                 </div>
+
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Telefonnummer *</label>
                   <input
@@ -161,35 +183,116 @@ export const OrderModal: React.FC = () => {
                     className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-lotteria-red outline-none transition-colors"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Abholzeit *</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Abholzeit *</label>
+                  
+                  {/* Quick Preset Buttons */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                     <button
                       type="button"
-                      onClick={() => setPickupTime('So schnell wie möglich')}
-                      className={`py-3 px-3 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                        pickupTime === 'So schnell wie möglich'
-                          ? 'border-lotteria-red bg-lotteria-red/10 text-lotteria-red'
-                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                      onClick={() => {
+                        setIsCustomTime(false);
+                        setPickupTime('So schnell wie möglich');
+                      }}
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                        !isCustomTime && pickupTime === 'So schnell wie möglich'
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <span>⚡</span> So schnell wie möglich
+                      <span>⚡</span> ASAP
                     </button>
-                    <div className="relative flex items-center">
-                      <input
-                        type="time"
-                        value={pickupTime === 'So schnell wie möglich' ? '' : pickupTime}
-                        onChange={(e) => setPickupTime(e.target.value ? `${e.target.value} Uhr` : 'So schnell wie möglich')}
-                        placeholder="Uhrzeit auswählen"
-                        className={`w-full border-2 rounded-xl px-3 py-2.5 text-sm font-bold outline-none transition-colors cursor-pointer ${
-                          pickupTime !== 'So schnell wie möglich' && pickupTime !== ''
-                            ? 'border-lotteria-red bg-lotteria-red/10 text-ink'
-                            : 'border-gray-200 text-gray-600'
-                        }`}
-                      />
-                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomTime(false);
+                        setPickupTime(`in 15 Min. (${getTimeOffset(15)})`);
+                      }}
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                        !isCustomTime && pickupTime.startsWith('in 15 Min')
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>⏱️</span> +15 Min
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomTime(false);
+                        setPickupTime(`in 30 Min. (${getTimeOffset(30)})`);
+                      }}
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                        !isCustomTime && pickupTime.startsWith('in 30 Min')
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>⏱️</span> +30 Min
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCustomTime(true);
+                        const h = selectedHour || String(new Date().getHours()).padStart(2, '0');
+                        const m = selectedMinute || '00';
+                        handleSelectCustomTime(h, m);
+                      }}
+                      className={`py-2.5 px-2 rounded-xl border-2 font-bold text-xs transition-all flex items-center justify-center gap-1 cursor-pointer ${
+                        isCustomTime
+                          ? 'border-lotteria-red bg-lotteria-red text-white shadow-md shadow-lotteria-red/20'
+                          : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
+                      }`}
+                    >
+                      <span>⏰</span> Wunschzeit
+                    </button>
                   </div>
+
+                  {/* Modern Segmented Time Selector */}
+                  {isCustomTime && (
+                    <div className="bg-lotteria-red/5 border-2 border-lotteria-red/30 rounded-2xl p-3.5 flex items-center justify-between gap-3 animate-fadeIn">
+                      <div className="flex items-center gap-2 text-ink font-bold text-xs uppercase tracking-wider">
+                        <Clock size={18} className="text-lotteria-red" />
+                        <span>Gewünschte Uhrzeit:</span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        {/* Hour Dropdown */}
+                        <select
+                          value={selectedHour}
+                          onChange={(e) => handleSelectCustomTime(e.target.value, selectedMinute)}
+                          className="bg-white border-2 border-gray-200 rounded-xl px-2.5 py-1.5 text-base font-black text-ink outline-none focus:border-lotteria-red cursor-pointer shadow-sm"
+                        >
+                          {hoursOptions.map((h) => (
+                            <option key={h} value={h}>
+                              {h} Std
+                            </option>
+                          ))}
+                        </select>
+
+                        <span className="font-black text-xl text-lotteria-red">:</span>
+
+                        {/* Minute Dropdown */}
+                        <select
+                          value={selectedMinute}
+                          onChange={(e) => handleSelectCustomTime(selectedHour, e.target.value)}
+                          className="bg-white border-2 border-gray-200 rounded-xl px-2.5 py-1.5 text-base font-black text-ink outline-none focus:border-lotteria-red cursor-pointer shadow-sm"
+                        >
+                          {minutesOptions.map((m) => (
+                            <option key={m} value={m}>
+                              {m} Min
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  )}
                 </div>
+
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Anmerkung (optional)</label>
                   <textarea
