@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Minus, Plus, Trash2, Clock } from 'lucide-react';
 import { useOrder } from '../context/OrderContext';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const WORKER_URL = 'https://boxenstopp.f-klavun.workers.dev';
 
@@ -14,20 +15,44 @@ const getTimeOffset = (minutes: number) => {
   return `${hh}:${mm} Uhr`;
 };
 
-const hoursOptions = Array.from({ length: 11 }, (_, i) => String(i + 8).padStart(2, '0')); // 08 .. 18
 const minutesOptions = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
 
 export const OrderModal: React.FC = () => {
   const { items, updateQty, removeItem, clearCart, totalPrice, isCartOpen, setIsCartOpen } = useOrder();
+  const { openingHours } = useSiteSettings();
+
+  // Dynamic hours based on today's opening hours from Admin Dashboard
+  const now = new Date();
+  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+  const todayHours = openingHours?.[days[now.getDay()]];
+
+  const startHourInt = todayHours?.open ? parseInt(todayHours.open.split(':')[0], 10) : 8;
+  const endHourInt = todayHours?.close ? parseInt(todayHours.close.split(':')[0], 10) : 18;
+
+  const hoursOptions = Array.from(
+    { length: Math.max(1, endHourInt - startHourInt + 1) },
+    (_, i) => String(startHourInt + i).padStart(2, '0')
+  );
+
+  const defaultHour = String(
+    Math.max(startHourInt, Math.min(endHourInt, now.getHours() < startHourInt ? startHourInt : now.getHours()))
+  ).padStart(2, '0');
+
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [pickupTime, setPickupTime] = useState('So schnell wie möglich');
   const [isCustomTime, setIsCustomTime] = useState(false);
-  const [selectedHour, setSelectedHour] = useState('12');
+  const [selectedHour, setSelectedHour] = useState(defaultHour);
   const [selectedMinute, setSelectedMinute] = useState('30');
   const [note, setNote] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    if (isCustomTime && !hoursOptions.includes(selectedHour)) {
+      setSelectedHour(defaultHour);
+    }
+  }, [openingHours, isCustomTime]);
 
   useEffect(() => {
     if (isCartOpen) {
