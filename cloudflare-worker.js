@@ -273,6 +273,87 @@ export default {
         });
       }
 
+      // ── Pre-Order → Telegram ─────────────────────────────────────────
+      if (url.pathname === "/order" && request.method === "POST") {
+        if (!env.TELEGRAM_BOT_TOKEN) {
+          return new Response(JSON.stringify({ error: "Vorbestellungen sind aktuell nicht verfügbar." }), {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        let body;
+        try {
+          body = await request.json();
+        } catch {
+          return new Response(JSON.stringify({ error: "Ungültige Anfrage." }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        const name = (body.name || "").toString().trim().slice(0, 100);
+        const phone = (body.phone || "").toString().trim().slice(0, 40);
+        const note = (body.note || "").toString().trim().slice(0, 300);
+        const items = Array.isArray(body.items) ? body.items.slice(0, 30) : [];
+
+        if (!name || !phone || items.length === 0) {
+          return new Response(
+            JSON.stringify({ error: "Name, Telefonnummer und mindestens ein Artikel sind erforderlich." }),
+            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+
+        const escapeHtml = (str) =>
+          str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        let total = 0;
+        const itemLines = items.map((it) => {
+          const qty = Math.max(1, Math.min(20, parseInt(it.qty, 10) || 1));
+          const price = parseFloat(it.price) || 0;
+          total += qty * price;
+          const itemName = escapeHtml((it.name || "Artikel").toString().slice(0, 80));
+          return `• ${qty}× ${itemName} — € ${(qty * price).toFixed(2)}`;
+        }).join("\n");
+
+        const messageParts = [
+          "🏁 <b>Neue Vorbestellung – BOXENSTOPP</b>",
+          "",
+          `👤 <b>Name:</b> ${escapeHtml(name)}`,
+          `📞 <b>Telefon:</b> ${escapeHtml(phone)}`,
+          "",
+          "🛒 <b>Bestellung:</b>",
+          itemLines,
+          "",
+          `💰 <b>Gesamt:</b> € ${total.toFixed(2)}`,
+        ];
+        if (note) {
+          messageParts.push("", `📝 <b>Anmerkung:</b> ${escapeHtml(note)}`);
+        }
+        const message = messageParts.join("\n");
+
+        const chatId = env.TELEGRAM_CHAT_ID || "-5156182561";
+        const tgRes = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML" }),
+        });
+
+        if (!tgRes.ok) {
+          const tgErr = await tgRes.text();
+          console.error("Telegram-Fehler:", tgErr);
+          return new Response(JSON.stringify({ error: "Bestellung konnte nicht zugestellt werden. Bitte ruf uns direkt an." }), {
+            status: 502,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify({ success: true }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
       // 1. Ensure D1 DB Table exists
       await env.DB.prepare(`
         CREATE TABLE IF NOT EXISTS menu_store (

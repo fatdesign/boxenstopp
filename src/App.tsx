@@ -10,6 +10,9 @@ import { Footer } from './components/Footer';
 import { MobileOrderBar } from './components/MobileOrderBar';
 import { CheckeredDivider } from './components/CheckeredDivider';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
+import { OrderProvider } from './context/OrderContext';
+import { CartButton } from './components/CartButton';
+import { OrderModal } from './components/OrderModal';
 
 const Home = () => (
   <>
@@ -83,18 +86,22 @@ function App() {
   }, []);
   return (
     <SiteSettingsProvider>
-      <Router>
-        <LoadingScreen />
-        <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
-          <Header />
-          <main className="pb-16 lg:pb-0">
-            <AnimatedRoutes />
-          </main>
-          <MarqueeSection />
-          <Footer />
-          <MobileOrderBar />
-        </div>
-      </Router>
+      <OrderProvider>
+        <Router>
+          <LoadingScreen />
+          <div className="min-h-screen bg-paper text-ink font-body selection:bg-race selection:text-white">
+            <Header />
+            <main className="pb-16 lg:pb-0">
+              <AnimatedRoutes />
+            </main>
+            <MarqueeSection />
+            <Footer />
+            <MobileOrderBar />
+            <CartButton />
+            <OrderModal />
+          </div>
+        </Router>
+      </OrderProvider>
     </SiteSettingsProvider>
   );
 }

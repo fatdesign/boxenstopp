@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Plus } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuRowSkeletonGrid } from './MenuSkeleton';
+import { useOrder } from '../context/OrderContext';
 
 interface MenuItem {
   name: string;
@@ -20,6 +22,7 @@ interface MenuCategory {
 }
 
 export const FullMenuPage: React.FC = () => {
+  const { addItem } = useOrder();
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -124,8 +127,8 @@ export const FullMenuPage: React.FC = () => {
                         {item.description}
                       </p>
 
-                      {/* Status Badges */}
-                      <div className="flex flex-wrap gap-2">
+                      {/* Status Badges + Add to Cart */}
+                      <div className="flex flex-wrap items-center gap-2">
                         {item.isPopular && (
                           <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
                             ★ Beliebt
@@ -140,6 +143,15 @@ export const FullMenuPage: React.FC = () => {
                           <span className="px-2.5 py-1 bg-gray-500 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
                             Ausverkauft
                           </span>
+                        )}
+                        {!item.isSoldOut && (
+                          <button
+                            onClick={() => addItem(item.name, item.price)}
+                            aria-label={`${item.name} vorbestellen`}
+                            className="ml-auto flex items-center gap-1 bg-lotteria-red text-white text-[0.7rem] font-bold uppercase tracking-wide rounded-full px-3 py-1.5 hover:bg-lotteria-red/90 active:scale-95 transition-all"
+                          >
+                            <Plus size={13} /> Vorbestellen
+                          </button>
                         )}
                       </div>
                     </div>

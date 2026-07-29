@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Plus } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuCardSkeletonGrid } from './MenuSkeleton';
+import { useOrder } from '../context/OrderContext';
 
 interface MenuItem {
   name: string;
@@ -20,6 +22,7 @@ interface MenuCategory {
 }
 
 export const MenuSection: React.FC = () => {
+  const { addItem } = useOrder();
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [activeCategory, setActiveCategory] = useState('');
   const [loading, setLoading] = useState(true);
@@ -165,6 +168,15 @@ export const MenuSection: React.FC = () => {
                     </span>
                   )}
                 </div>
+
+                {!item.isSoldOut && (
+                  <button
+                    onClick={() => addItem(item.name, item.price)}
+                    className="mt-4 w-full flex items-center justify-center gap-2 bg-lotteria-red text-white py-2.5 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-lotteria-red/90 active:scale-95 transition-all"
+                  >
+                    <Plus size={16} /> Vorbestellen
+                  </button>
+                )}
               </Reveal>
             ))}
           </div>
