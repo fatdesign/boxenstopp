@@ -7,22 +7,84 @@
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#E31837" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BOXENSTOPP im Handelszentrum</title>
-    <meta name="description" content="Boxenstopp im Handelszentrum Bergheim bei Salzburg: schnelle, heiße und leiwande Snacks, Burger und warme Speisen. Original Burger, frische Beilagen, täglich wechselnde Tagesangebote." />
+    <title>BOXENSTOPP im Handelszentrum Bergheim | Burger & Vorbestellung</title>
+    <meta name="description" content="Boxenstopp im Handelszentrum Bergheim bei Salzburg: Frische Burger, heiße Snacks, Mittagsangebote & schnelle Vorbestellung. Jetzt Speisekarte ansehen & online bestellen!" />
+    <meta name="keywords" content="Boxenstopp, Burger Bergheim, Imbiss Handelszentrum, Mittagessen Bergheim, Essen bestellen Salzburg, Vorbestellung Burger" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Geo Metadata for Local Google Search -->
+    <meta name="geo.region" content="AT-5" />
+    <meta name="geo.placename" content="Bergheim bei Salzburg" />
+    <meta name="geo.position" content="47.842824;13.035619" />
+    <meta name="ICBM" content="47.842824, 13.035619" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="restaurant" />
     <meta property="og:site_name" content="Boxenstopp" />
-    <meta property="og:title" content="BOXENSTOPP im Handelszentrum" />
-    <meta property="og:description" content="Schnell. Heiss. Leiwand. Dein Boxenstopp für Burger, warme Snacks und Beilagen im Handelszentrum Bergheim bei Salzburg." />
-    <meta property="og:image" content="images/logo.png" />
+    <meta property="og:title" content="BOXENSTOPP im Handelszentrum Bergheim | Burger & Snacks" />
+    <meta property="og:description" content="Schnell. Heiss. Leiwand. Dein Boxenstopp für Burger, warme Snacks und Beilagen im Handelszentrum Bergheim bei Salzburg. Vorbestellung online!" />
+    <meta property="og:image" content="images/boxenstopp_logo.png" />
     <meta property="og:locale" content="de_AT" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="BOXENSTOPP im Handelszentrum" />
-    <meta name="twitter:description" content="Schnell. Heiss. Leiwand. Dein Boxenstopp für Burger, warme Snacks und Beilagen im Handelszentrum Bergheim bei Salzburg." />
-    <meta name="twitter:image" content="images/logo.png" />
+    <meta name="twitter:title" content="BOXENSTOPP im Handelszentrum Bergheim" />
+    <meta name="twitter:description" content="Schnell. Heiss. Leiwand. Frische Burger & Snacks im Handelszentrum Bergheim bei Salzburg." />
+    <meta name="twitter:image" content="images/boxenstopp_logo.png" />
+
+    <!-- Google Structured Data (JSON-LD) for Restaurant SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FastFoodRestaurant",
+      "name": "Boxenstopp",
+      "image": "https://fatdesign.github.io/boxenstopp/images/boxenstopp_logo.png",
+      "@id": "https://fatdesign.github.io/boxenstopp/",
+      "url": "https://fatdesign.github.io/boxenstopp/",
+      "telephone": "+43662123456",
+      "priceRange": "€",
+      "servesCuisine": [
+        "Burger",
+        "Snacks",
+        "Österreichisch",
+        "Fast Food"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Handelszentrum 4",
+        "addressLocality": "Bergheim bei Salzburg",
+        "postalCode": "5101",
+        "addressCountry": "AT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 47.84282356548513,
+        "longitude": 13.035618751881326
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "14:00"
+        }
+      ],
+      "hasMenu": "https://fatdesign.github.io/boxenstopp/#/speisekarte",
+      "acceptsReservations": "False"
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
