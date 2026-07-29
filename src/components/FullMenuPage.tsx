@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Printer } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuRowSkeletonGrid } from './MenuSkeleton';
@@ -72,9 +72,17 @@ export const FullMenuPage: React.FC = () => {
           <h1 className="font-display font-black text-4xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
             Die Speisekarte
           </h1>
-          <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase">
+          <p className="font-medium text-base sm:text-lg text-lotteria-red/70 tracking-widest uppercase mb-6">
             Original Boxenstopp Geschmack
           </p>
+          <div className="no-print">
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2.5 bg-lotteria-red text-white px-6 py-3 rounded-full font-bold text-sm sm:text-base uppercase tracking-wide hover:bg-lotteria-red/90 active:scale-95 transition-all shadow-lg hover:shadow-xl cursor-pointer"
+            >
+              <Printer size={20} /> Speisekarte drucken / PDF
+            </button>
+          </div>
         </Reveal>
 
         {/* Sequential Categories */}

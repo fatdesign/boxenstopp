@@ -133,3 +133,37 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+@media print {
+  header,
+  footer,
+  .no-print,
+  button,
+  [data-lenis-prevent],
+  .marquee-section,
+  .mobile-order-bar {
+    display: none !important;
+  }
+
+  body, html {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  .bg-lotteria-bg {
+    background: #ffffff !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  .bg-white {
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+    margin-bottom: 12px !important;
+    page-break-inside: avoid;
+  }
+}
