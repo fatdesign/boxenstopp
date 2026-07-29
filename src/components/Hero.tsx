@@ -1,6 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { scrollToId } from '../utils/scrollToId';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export const Hero: React.FC = () => {
@@ -22,9 +22,9 @@ export const Hero: React.FC = () => {
         </div>
 
         <div className="opacity-0 animate-[slide-up_1s_ease-out_0.8s_forwards]">
-          <a href="#menu" onClick={(e) => { e.preventDefault(); scrollToId('menu'); }} className="inline-flex items-center justify-center gap-2 bg-white text-lotteria-red px-6 sm:px-10 py-4 sm:py-5 rounded-full font-display font-bold text-base sm:text-xl uppercase tracking-wide hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+          <Link to="/speisekarte" className="inline-flex items-center justify-center gap-2 bg-white text-lotteria-red px-6 sm:px-10 py-4 sm:py-5 rounded-full font-display font-bold text-base sm:text-xl uppercase tracking-wide hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
             Speisekarte entdecken <ChevronRight size={24} />
-          </a>
+          </Link>
         </div>
       </div>
 
