@@ -229,9 +229,12 @@ body {
 }
 
 .admin-container {
-    width: 95%;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    box-sizing: border-box;
 }
 
 .header-top {
@@ -296,6 +299,12 @@ body {
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 2.5rem;
+    gap: 1.5rem;
+}
+
+.controls-left {
+    flex: 1;
+    min-width: 0;
 }
 
 .dash-title {
@@ -310,7 +319,29 @@ body {
 .dash-sub {
     font-size: 0.9rem;
     color: var(--text-muted);
-    margin-top: 0.25rem;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    #add-category-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.85rem;
+        font-size: 0.95rem;
+    }
+
+    .dash-title {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
 }
 
 .categories-list {
@@ -656,18 +687,45 @@ body {
 
 .image-upload-controls {
     flex: 1;
-    min-width: 220px;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .image-file-input {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.image-file-input::file-selector-button {
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #f1f5f9;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: background 0.2s;
+}
+
+.image-file-input::file-selector-button:hover {
+    background: #e2e8f0;
 }
 
 .image-upload-hint {
     font-size: 0.75rem;
     color: var(--text-muted);
     margin-top: 0.4rem;
+    line-height: 1.4;
 }
 
 .image-upload-status {
@@ -691,7 +749,10 @@ body {
     backdrop-filter: blur(5px);
     z-index: 1000;
     overflow-y: auto;
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
@@ -699,10 +760,12 @@ body {
     border: 2px solid var(--accent);
     width: 100%;
     max-width: 600px;
-    margin: 2rem auto;
-    padding: 2.5rem;
+    margin: auto;
+    padding: 2rem 1.75rem;
     border-radius: var(--radius-lg);
     box-shadow: 0 10px 40px rgba(218, 41, 28, 0.15);
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .modal-content h3 {
@@ -812,6 +875,60 @@ body {
 
 /* ── Responsive Enhancements ── */
 @media (max-width: 640px) {
+    .modal-overlay {
+        padding: 1rem 0.5rem;
+    }
+
+    .modal-content {
+        padding: 1.25rem 1rem;
+        border-radius: 16px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .modal-content h3 {
+        font-size: 1.35rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+
+    .image-upload-row {
+        gap: 0.75rem;
+    }
+
+    .image-preview-wrap {
+        width: 72px;
+        height: 72px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0.9rem;
+    }
+
+    .checkbox-group {
+        justify-content: flex-start;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+        gap: 0.5rem;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
     .item-row {
         grid-template-columns: 1fr auto;
         gap: 0.75rem;
