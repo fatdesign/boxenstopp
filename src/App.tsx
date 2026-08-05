@@ -16,12 +16,12 @@ import { OrderModal } from './components/OrderModal';
 
 const Home = () => (
   <>
+    <DailySpecials />
+    <CheckeredDivider />
     <Hero />
     <CheckeredDivider />
     <MenuSection />
     <HorizontalScrollSection />
-    <CheckeredDivider />
-    <DailySpecials />
     <InfoSection />
   </>
 );

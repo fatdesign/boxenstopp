@@ -73,17 +73,17 @@ export const DailySpecials: React.FC = () => {
   }, []);
 
   return (
-    <section id="tagesangebot" className="py-24 bg-gray-50 relative overflow-hidden">
+    <section id="tagesangebot" className="pt-28 md:pt-36 pb-24 bg-gray-50 relative overflow-hidden animate-circle-reveal">
       {/* Subtle Food Background Texture (25% Opacity) */}
       <div
         className="absolute inset-0 opacity-25 bg-cover bg-center mix-blend-multiply pointer-events-none z-0"
         style={{ backgroundImage: "url('images/hero_food_bg.png')" }}
       ></div>
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 md:px-12 relative z-10">
-        <Reveal className="text-center mb-16">
+        <div className="text-center mb-16 opacity-0 animate-[slide-up_1s_ease-out_0.5s_forwards]">
           <h2 className="font-display font-black text-4xl md:text-5xl text-ink uppercase tracking-tight mb-4">Heute im <span className="text-race">Boxenstopp</span></h2>
           <p className="text-gray-600 font-medium max-w-2xl mx-auto">Täglich wechselnde Angebote direkt vor Ort. Schnell vorbeikommen, zugreifen und sparen.</p>
-        </Reveal>
+        </div>
 
         {!loaded && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">

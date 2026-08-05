@@ -8,7 +8,7 @@ import { scrollToId } from '../utils/scrollToId';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 import { StatusGauge } from './StatusGauge';
 
-const SECTION_IDS = ['menu', 'tagesangebot', 'standort', 'zeiten'];
+const SECTION_IDS = ['tagesangebot', 'menu', 'standort', 'zeiten'];
 
 export const Header: React.FC = () => {
   const { openingHours, contact } = useSiteSettings();
