@@ -314,11 +314,19 @@ function renderDashboard() {
     categoriesContainer.innerHTML = '';
     if (notice) categoriesContainer.appendChild(notice);
 
-    menuData.categories.forEach((cat, catIdx) => {
+    const orderedCategories = menuData.categories
+        .map((cat, catIdx) => ({ cat, catIdx }))
+        .sort((a, b) => {
+            if (a.cat.id === 'wochenmenue') return -1;
+            if (b.cat.id === 'wochenmenue') return 1;
+            return 0;
+        });
+
+    orderedCategories.forEach(({ cat, catIdx }, displayIdx) => {
         const block = document.createElement('div');
         block.className = 'category-block';
         const catName = cat.name || 'Unbenannte Kategorie';
-        const numStr = String(catIdx + 1).padStart(2, '0');
+        const numStr = String(displayIdx + 1).padStart(2, '0');
 
         block.innerHTML = `
             <div class="category-header">
