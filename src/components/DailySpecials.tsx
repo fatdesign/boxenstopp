@@ -11,6 +11,7 @@ interface MenuItem {
   isPopular?: boolean;
   isSoldOut?: boolean;
   isDailySpecial?: boolean;
+  specialDays?: string[];
   image?: string;
   allergens?: string[];
 }
@@ -25,8 +26,6 @@ interface FeaturedSpecial extends MenuItem {
   categoryId: string;
 }
 
-type WeeklyMenu = Partial<Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday', MenuItem[]>>;
-
 const CARD_ACCENTS = [
   { border: 'border-t-amber-500', text: 'text-amber-600' },
   { border: 'border-t-race', text: 'text-race' },
@@ -36,19 +35,12 @@ const CARD_ACCENTS = [
 const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
 function extractSpecials(categories: MenuCategory[]): FeaturedSpecial[] {
+  const today = WEEKDAY_KEYS[new Date().getDay()];
   return categories.flatMap(cat =>
     cat.items
-      .filter(item => item.isDailySpecial && !item.isSoldOut)
+      .filter(item => !item.isSoldOut && (item.isDailySpecial || (item.specialDays && item.specialDays.includes(today))))
       .map(item => ({ ...item, categoryId: cat.id }))
   );
-}
-
-function extractTodaysWeeklyMenu(weeklyMenu: WeeklyMenu | undefined): FeaturedSpecial[] {
-  if (!weeklyMenu) return [];
-  const key = WEEKDAY_KEYS[new Date().getDay()];
-  const items = weeklyMenu[key as keyof WeeklyMenu];
-  if (!items || items.length === 0) return [];
-  return items.filter(item => !item.isSoldOut).map(item => ({ ...item, categoryId: 'warme-snacks' }));
 }
 
 export const DailySpecials: React.FC = () => {
@@ -61,16 +53,14 @@ export const DailySpecials: React.FC = () => {
         const res = await fetch('https://boxenstopp.f-klavun.workers.dev');
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        const todaysMenu = extractTodaysWeeklyMenu(data.weeklyMenu);
-        setSpecials(todaysMenu.length > 0 ? todaysMenu : extractSpecials(data.categories || []));
+        setSpecials(extractSpecials(data.categories || []));
         setLoaded(true);
       } catch (err) {
         console.warn('Worker fetch failed, falling back to local menu.json', err);
         fetch('menu.json')
           .then(res => res.json())
           .then(data => {
-            const todaysMenu = extractTodaysWeeklyMenu(data.weeklyMenu);
-            setSpecials(todaysMenu.length > 0 ? todaysMenu : extractSpecials(data.categories || []));
+            setSpecials(extractSpecials(data.categories || []));
             setLoaded(true);
           })
           .catch(fallbackErr => {

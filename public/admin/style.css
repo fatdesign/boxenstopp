@@ -651,96 +651,21 @@ body {
     }
 }
 
-/* ── Weekly Menu ────── */
-.weekly-menu-list {
+/* ── Weekday Special-Day Picker (Item Modal) ────── */
+.day-checkbox-grid {
     display: grid;
-    gap: 1rem;
-}
-
-.weekly-item-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.weekly-item-row:last-child {
-    border-bottom: none;
-}
-
-.weekly-item-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    flex: 1 1 260px;
-    min-width: 220px;
-}
-
-.weekly-item-fields input {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 0.5rem 0.8rem;
     background: #f9f9f9;
     border: 2px solid var(--border);
-    padding: 0.6rem 0.75rem;
+    padding: 0.8rem;
     border-radius: 8px;
-    color: var(--text);
-    transition: border-color 0.3s;
-    outline: none;
-    font-size: 0.9rem;
-    width: 100%;
 }
 
-.weekly-item-fields input:first-child {
+.day-checkbox-grid .check-label {
+    padding-top: 0;
+    font-size: 0.85rem;
     font-weight: 700;
-}
-
-.weekly-item-fields input:focus {
-    border-color: var(--accent);
-    background: #fff;
-}
-
-.weekly-item-meta {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    flex-shrink: 0;
-}
-
-.weekly-price-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    color: var(--text-muted);
-    font-weight: 700;
-}
-
-.weekly-price-wrap input {
-    width: 70px;
-    background: #f9f9f9;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text);
-    outline: none;
-    text-align: right;
-    transition: border-color 0.3s;
-}
-
-.weekly-price-wrap input:focus {
-    border-color: var(--accent);
-    background: #fff;
-}
-
-@media (max-width: 640px) {
-    .weekly-item-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .weekly-item-meta {
-        justify-content: space-between;
-    }
 }
 
 /* ── Image Upload ────── */

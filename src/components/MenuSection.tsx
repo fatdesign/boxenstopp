@@ -4,6 +4,7 @@ import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuCardSkeletonGrid } from './MenuSkeleton';
 import { useOrder } from '../context/OrderContext';
+import { formatSpecialDays } from '../utils/weekday';
 
 interface MenuItem {
   name: string;
@@ -12,6 +13,7 @@ interface MenuItem {
   isVegetarian?: boolean;
   isPopular?: boolean;
   isSoldOut?: boolean;
+  specialDays?: string[];
   image?: string;
   allergens?: string[];
 }
@@ -171,6 +173,11 @@ export const MenuSection: React.FC = () => {
                   {item.isSoldOut && (
                     <span className="px-3 py-1 bg-gray-500 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
                       Ausverkauft
+                    </span>
+                  )}
+                  {formatSpecialDays(item.specialDays) && (
+                    <span className="px-3 py-1 bg-amber-500 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
+                      Nur {formatSpecialDays(item.specialDays)}
                     </span>
                   )}
                 </div>
