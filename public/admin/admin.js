@@ -114,6 +114,46 @@ function seedWeeklyMenuCategory(data) {
     return false;
 }
 
+function defaultSalateToastCategory() {
+    return {
+        id: 'salate-toast',
+        name: 'Salate & Toast',
+        items: [
+            { name: 'Fitness Salat', description: 'Mit Hähnchenbrustfilet und Weckerl.', price: '12.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'E', 'F', 'G', 'M', 'N', 'O'] },
+            { name: 'Gemischter Salat (klein)', description: '', price: '4.80', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'F', 'G', 'L', 'M', 'O'] },
+            { name: 'Gemischter Salat (groß)', description: '', price: '8.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'F', 'G', 'L', 'M', 'O'] },
+            { name: 'Käse Toast', description: '', price: '4.70', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'G', 'L', 'M', 'N', 'O'] },
+            { name: 'Käse Toast mit Salatgarnitur', description: '', price: '6.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'G', 'L', 'M', 'N', 'O'] },
+            { name: 'Käse-Schinken Toast', description: '', price: '5.80', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'G', 'L', 'M', 'N', 'O'] },
+            { name: 'Käse-Schinken Toast mit Salatgarnitur', description: '', price: '6.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: [], allergens: ['A', 'C', 'G', 'L', 'M', 'N', 'O'] },
+        ],
+    };
+}
+
+function defaultHauptgerichteCategory() {
+    return {
+        id: 'hauptgerichte',
+        name: 'Hauptgerichte',
+        items: [
+            { name: 'Putensteak gegrillt', description: 'Mit Pommes oder Kartoffelsalat.', price: '11.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: [], allergens: [] },
+        ],
+    };
+}
+
+function seedNewDishCategories(data) {
+    if (!Array.isArray(data.categories)) data.categories = [];
+    let seeded = false;
+    if (!data.categories.some(c => c.id === 'salate-toast')) {
+        data.categories.push(defaultSalateToastCategory());
+        seeded = true;
+    }
+    if (!data.categories.some(c => c.id === 'hauptgerichte')) {
+        data.categories.push(defaultHauptgerichteCategory());
+        seeded = true;
+    }
+    return seeded;
+}
+
 // ── White-Label Hydration ─────────────────────
 (function hydrateAdminUI() {
     if (typeof SETTINGS === 'undefined') return;
@@ -214,11 +254,12 @@ async function loadMenu() {
             if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
             seedContactDefaults(menuData.settings);
             const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
+            const newDishesWereSeeded = seedNewDishCategories(menuData);
             if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
-            if (weeklyMenuWasSeeded) showSaveHint();
+            if (weeklyMenuWasSeeded || newDishesWereSeeded) showSaveHint();
             return;
         } catch (err) {
             if (err.message.startsWith('401:')) throw err;
@@ -243,6 +284,7 @@ async function loadMenu() {
     if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
     seedContactDefaults(menuData.settings);
     const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
+    const newDishesWereSeeded = seedNewDishCategories(menuData);
     if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
     currentFileSha = null;
@@ -252,7 +294,7 @@ async function loadMenu() {
         showConfigNotice('Kein Cloudflare-Proxy konfiguriert. Du befindest dich im Offline-Modus.');
     }
     renderDashboard();
-    if (weeklyMenuWasSeeded) showSaveHint();
+    if (weeklyMenuWasSeeded || newDishesWereSeeded) showSaveHint();
 }
 
 function showConfigNotice(msg = '') {

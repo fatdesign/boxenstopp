@@ -208,6 +208,26 @@
         { "name": "Hühnerbrust mit Kartoffelpüree", "description": "Hühnerbrust, cremiges Kartoffelpüree, Sauce & Gemüse.", "price": "8.90", "isSoldOut": false, "isPopular": false, "isVegetarian": false, "isDailySpecial": false, "specialDays": ["friday"], "allergens": [] },
         { "name": "Ricotta-Spinat-Tortellini", "description": "Tortellini gefüllt mit Ricotta & Spinat, Parmesansauce.", "price": "8.90", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": ["friday"], "allergens": [] }
       ]
+    },
+    {
+      "id": "salate-toast",
+      "name": "Salate & Toast",
+      "items": [
+        { "name": "Fitness Salat", "description": "Mit Hähnchenbrustfilet und Weckerl.", "price": "12.90", "isSoldOut": false, "isPopular": false, "isVegetarian": false, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "E", "F", "G", "M", "N", "O"] },
+        { "name": "Gemischter Salat (klein)", "description": "", "price": "4.80", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "F", "G", "L", "M", "O"] },
+        { "name": "Gemischter Salat (groß)", "description": "", "price": "8.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "F", "G", "L", "M", "O"] },
+        { "name": "Käse Toast", "description": "", "price": "4.70", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "G", "L", "M", "N", "O"] },
+        { "name": "Käse Toast mit Salatgarnitur", "description": "", "price": "6.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "G", "L", "M", "N", "O"] },
+        { "name": "Käse-Schinken Toast", "description": "", "price": "5.80", "isSoldOut": false, "isPopular": false, "isVegetarian": false, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "G", "L", "M", "N", "O"] },
+        { "name": "Käse-Schinken Toast mit Salatgarnitur", "description": "", "price": "6.90", "isSoldOut": false, "isPopular": false, "isVegetarian": false, "isDailySpecial": false, "specialDays": [], "allergens": ["A", "C", "G", "L", "M", "N", "O"] }
+      ]
+    },
+    {
+      "id": "hauptgerichte",
+      "name": "Hauptgerichte",
+      "items": [
+        { "name": "Putensteak gegrillt", "description": "Mit Pommes oder Kartoffelsalat.", "price": "11.90", "isSoldOut": false, "isPopular": false, "isVegetarian": false, "isDailySpecial": false, "specialDays": [], "allergens": [] }
+      ]
     }
   ],
   "archive": []
