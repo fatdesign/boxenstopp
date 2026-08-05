@@ -88,7 +88,7 @@ export const FullMenuPage: React.FC = () => {
       {/* Details Right Side */}
       <div className="flex-grow min-w-0 py-2">
         <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
-          <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0">
+          <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 break-words">
             {item.name}
             {item.allergens && item.allergens.length > 0 && (
               <span className="ml-1.5 text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block align-middle">

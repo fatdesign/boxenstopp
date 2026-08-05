@@ -122,7 +122,7 @@ export const DailySpecials: React.FC = () => {
                   </div>
                   <div className={`flex items-center gap-3 mb-4 ${accent.text}`}>
                     <Tag size={26} className="flex-shrink-0" />
-                    <h3 className="font-display font-bold text-2xl sm:text-3xl uppercase min-w-0">
+                    <h3 className="font-display font-bold text-2xl sm:text-3xl uppercase min-w-0 break-words">
                       {special.name}
                       {special.allergens && special.allergens.length > 0 && (
                         <span className="ml-1.5 text-xs font-sans font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded px-2 py-0.5 tracking-wider uppercase inline-block align-middle">
