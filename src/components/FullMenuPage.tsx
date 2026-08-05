@@ -82,12 +82,11 @@ export const FullMenuPage: React.FC = () => {
       className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
     >
       {/* Item Image Left Side */}
-      <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-50 group-hover:scale-150 transition-transform duration-500 blur-xl"></div>
+      <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl relative overflow-hidden">
         <img
           src={item.image || getImageForCategory(categoryId)}
           alt={item.name}
-          className="w-16 h-16 sm:w-28 sm:h-28 object-cover rounded-full shadow-md relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 border-2 border-white"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
 
