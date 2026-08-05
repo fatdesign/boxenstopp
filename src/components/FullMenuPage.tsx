@@ -24,6 +24,16 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
+const WEEKDAY_ORDER = [
+  { key: 'monday', label: 'Montag' },
+  { key: 'tuesday', label: 'Dienstag' },
+  { key: 'wednesday', label: 'Mittwoch' },
+  { key: 'thursday', label: 'Donnerstag' },
+  { key: 'friday', label: 'Freitag' },
+  { key: 'saturday', label: 'Samstag' },
+  { key: 'sunday', label: 'Sonntag' },
+];
+
 export const FullMenuPage: React.FC = () => {
   const { addItem } = useOrder();
   const [categories, setCategories] = useState<MenuCategory[]>([]);
@@ -59,6 +69,77 @@ export const FullMenuPage: React.FC = () => {
   if (!loading && categories.length === 0) {
     return <div className="min-h-screen pt-32 pb-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Keine Speisen gefunden.</div>;
   }
+
+  const renderItemCard = (item: MenuItem, idx: number, categoryId: string) => (
+    <div
+      key={idx}
+      className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
+    >
+      {/* Item Image Left Side */}
+      <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-50 group-hover:scale-150 transition-transform duration-500 blur-xl"></div>
+        <img
+          src={item.image || getImageForCategory(categoryId)}
+          alt={item.name}
+          className="w-16 h-16 sm:w-28 sm:h-28 object-cover rounded-full shadow-md relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 border-2 border-white"
+        />
+      </div>
+
+      {/* Details Right Side */}
+      <div className="flex-grow min-w-0 py-2">
+        <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
+          <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 flex items-center gap-1.5 flex-wrap">
+            <span>{item.name}</span>
+            {item.allergens && item.allergens.length > 0 && (
+              <span className="text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block">
+                {item.allergens.join(', ')}
+              </span>
+            )}
+          </h3>
+          <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-base sm:text-lg px-2.5 sm:px-3 py-1 rounded-full shadow-sm flex-shrink-0">
+            € {item.price}
+          </span>
+        </div>
+
+        <p className="text-sm font-medium text-lotteria-red/70 mb-3">
+          {item.description}
+        </p>
+
+        {/* Status Badges + Add to Cart */}
+        <div className="flex flex-wrap items-center gap-2">
+          {item.isPopular && (
+            <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+              <Star size={10} className="fill-white" /> Beliebt
+            </span>
+          )}
+          {item.isVegetarian && (
+            <span className="px-2.5 py-1 bg-green-600 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
+              <Leaf size={10} /> Veggie
+            </span>
+          )}
+          {item.isSoldOut && (
+            <span className="px-2.5 py-1 bg-gray-500 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
+              Ausverkauft
+            </span>
+          )}
+          {formatSpecialDays(item.specialDays) && (
+            <span className="px-2.5 py-1 bg-amber-800 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
+              Nur {formatSpecialDays(item.specialDays)}
+            </span>
+          )}
+          {!item.isSoldOut && (
+            <button
+              onClick={() => addItem(item.name, item.price)}
+              aria-label={`${item.name} vorbestellen`}
+              className="ml-auto flex items-center gap-1 bg-lotteria-red text-white text-[0.7rem] font-bold uppercase tracking-wide rounded-full px-3 py-1.5 hover:bg-lotteria-red/90 active:scale-95 transition-all"
+            >
+              <Plus size={13} /> Vorbestellen
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="bg-lotteria-bg min-h-screen pt-32 pb-24 relative overflow-hidden">
@@ -97,92 +178,62 @@ export const FullMenuPage: React.FC = () => {
         )}
         <div className="space-y-24">
           {!loading && categories.map((category, catIdx) => {
+            const isWeeklyMenu = category.id === 'wochenmenue';
+
+            if (isWeeklyMenu) {
+              const dayGroups = WEEKDAY_ORDER
+                .map(day => ({ ...day, items: category.items.filter(item => item.specialDays?.includes(day.key)) }))
+                .filter(group => group.items.length > 0);
+
+              if (dayGroups.length === 0) return null;
+
+              return (
+                <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
+                  {/* Category Header */}
+                  <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+                    <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
+                      {category.name}
+                    </h2>
+                    <div className="flex-grow h-1 bg-lotteria-red/10 rounded-full"></div>
+                  </div>
+
+                  {/* Day-by-Day Groups */}
+                  <div className="space-y-10 sm:space-y-14">
+                    {dayGroups.map(group => (
+                      <div key={group.key}>
+                        <div className="flex items-center gap-3 mb-5">
+                          <span className="font-display font-black text-sm sm:text-base text-white bg-lotteria-red px-4 py-1.5 rounded-full uppercase tracking-wide shadow-sm">
+                            {group.label}
+                          </span>
+                          <div className="flex-grow h-0.5 bg-lotteria-red/15 rounded-full"></div>
+                        </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+                          {group.items.map((item, idx) => renderItemCard(item, idx, category.id))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+              );
+            }
+
             const visibleItems = category.items.filter(item => isAvailableToday(item.specialDays));
             if (visibleItems.length === 0) return null;
             return (
-            <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
-              {/* Category Header */}
-              <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-                <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
-                  {category.name}
-                </h2>
-                <div className="flex-grow h-1 bg-lotteria-red/10 rounded-full"></div>
-              </div>
+              <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
+                {/* Category Header */}
+                <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
+                  <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
+                    {category.name}
+                  </h2>
+                  <div className="flex-grow h-1 bg-lotteria-red/10 rounded-full"></div>
+                </div>
 
-              {/* Items Grid (Classic 2-Column Menu Style) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-                {visibleItems.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
-                  >
-                    {/* Item Image Left Side */}
-                    <div className="w-20 h-20 sm:w-32 sm:h-32 flex-shrink-0 bg-lotteria-bg/60 rounded-2xl flex items-center justify-center relative overflow-hidden">
-                      <div className="absolute inset-0 bg-lotteria-yellow/20 rounded-full scale-50 group-hover:scale-150 transition-transform duration-500 blur-xl"></div>
-                      <img
-                        src={item.image || getImageForCategory(category.id)}
-                        alt={item.name}
-                        className="w-16 h-16 sm:w-28 sm:h-28 object-cover rounded-full shadow-md relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 border-2 border-white"
-                      />
-                    </div>
-
-                    {/* Details Right Side */}
-                    <div className="flex-grow min-w-0 py-2">
-                      <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
-                        <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 flex items-center gap-1.5 flex-wrap">
-                          <span>{item.name}</span>
-                          {item.allergens && item.allergens.length > 0 && (
-                            <span className="text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block">
-                              {item.allergens.join(', ')}
-                            </span>
-                          )}
-                        </h3>
-                        <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-base sm:text-lg px-2.5 sm:px-3 py-1 rounded-full shadow-sm flex-shrink-0">
-                          € {item.price}
-                        </span>
-                      </div>
-
-                      <p className="text-sm font-medium text-lotteria-red/70 mb-3">
-                        {item.description}
-                      </p>
-
-                      {/* Status Badges + Add to Cart */}
-                      <div className="flex flex-wrap items-center gap-2">
-                        {item.isPopular && (
-                          <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
-                            <Star size={10} className="fill-white" /> Beliebt
-                          </span>
-                        )}
-                        {item.isVegetarian && (
-                          <span className="px-2.5 py-1 bg-green-600 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
-                            <Leaf size={10} /> Veggie
-                          </span>
-                        )}
-                        {item.isSoldOut && (
-                          <span className="px-2.5 py-1 bg-gray-500 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
-                            Ausverkauft
-                          </span>
-                        )}
-                        {formatSpecialDays(item.specialDays) && (
-                          <span className="px-2.5 py-1 bg-amber-800 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
-                            Nur {formatSpecialDays(item.specialDays)}
-                          </span>
-                        )}
-                        {!item.isSoldOut && (
-                          <button
-                            onClick={() => addItem(item.name, item.price)}
-                            aria-label={`${item.name} vorbestellen`}
-                            className="ml-auto flex items-center gap-1 bg-lotteria-red text-white text-[0.7rem] font-bold uppercase tracking-wide rounded-full px-3 py-1.5 hover:bg-lotteria-red/90 active:scale-95 transition-all"
-                          >
-                            <Plus size={13} /> Vorbestellen
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
+                {/* Items Grid (Classic 2-Column Menu Style) */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+                  {visibleItems.map((item, idx) => renderItemCard(item, idx, category.id))}
+                </div>
+              </Reveal>
             );
           })}
         </div>
