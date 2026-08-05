@@ -47,6 +47,11 @@ const itemImageDelete = document.getElementById('item-image-delete');
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 
+const WEEKDAY_KEYS_JS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+function getTodayKey() {
+    return WEEKDAY_KEYS_JS[new Date().getDay()];
+}
+
 const DAY_LABELS = [
     { key: 'monday', label: 'Montag' },
     { key: 'tuesday', label: 'Dienstag' },
@@ -375,10 +380,13 @@ function renderItemRow(item, catIdx, itemIdx) {
     if (item.isPopular) badges += '<span class="badge-hit">HIT</span>';
     if (item.isVegetarian) badges += '<span class="badge-veg">VEGGIE</span>';
     if (isSpecial) badges += '<span class="badge-special" style="display:inline-flex; align-items:center; gap:3px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg> TAGESANGEBOT</span>';
+    const isDayMatchToday = Array.isArray(item.specialDays) && item.specialDays.includes(getTodayKey());
     if (Array.isArray(item.specialDays) && item.specialDays.length > 0) {
         const dayShort = { monday: 'MO', tuesday: 'DI', wednesday: 'MI', thursday: 'DO', friday: 'FR', saturday: 'SA', sunday: 'SO' };
         const label = item.specialDays.map(d => dayShort[d] || d).join(', ');
-        badges += `<span class="badge-day">NUR ${label}</span>`;
+        badges += isDayMatchToday
+            ? `<span class="badge-day badge-day-active" title="Erscheint heute automatisch im Tagesangebot – unabhängig vom Flammen-Button">NUR ${label} · HEUTE LIVE</span>`
+            : `<span class="badge-day">NUR ${label}</span>`;
     }
     if (Array.isArray(item.allergens) && item.allergens.length > 0) {
         badges += `<span class="badge-allergen" style="font-size:0.65rem; font-weight:800; color:var(--text-muted); background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:4px; margin-left:8px; letter-spacing:0.05em;">[${item.allergens.join(', ')}]</span>`;

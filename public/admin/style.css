@@ -579,6 +579,11 @@ body {
     letter-spacing: 0.03em;
 }
 
+.badge-day-active {
+    background: #16a34a;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
+}
+
 .toggle-special-btn.is-active-special {
     opacity: 1;
     filter: drop-shadow(0 0 4px rgba(255, 184, 28, 0.7));
