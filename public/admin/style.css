@@ -479,10 +479,25 @@ body {
 }
 
 /* Delete Button */
-.delete-item-btn:hover {
+.delete-item-btn:hover,
+.delete-archive-btn:hover {
     background: #fef2f2;
     color: #dc2626;
     border-color: #fca5a5;
+}
+
+/* Archive Button */
+.archive-item-btn:hover {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+/* Restore Button */
+.restore-archive-btn:hover {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #86efac;
 }
 
 .item-row-name {

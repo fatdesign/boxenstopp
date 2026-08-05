@@ -31,6 +31,7 @@ const catModal = document.getElementById('cat-modal');
 const catForm = document.getElementById('cat-form');
 const catModalCancel = document.getElementById('cat-modal-cancel');
 const hoursContainer = document.getElementById('hours-container');
+const archiveContainer = document.getElementById('archive-container');
 const contactNameInput = document.getElementById('contact-name');
 const contactSloganInput = document.getElementById('contact-slogan');
 const contactPhoneInput = document.getElementById('contact-phone');
@@ -213,6 +214,7 @@ async function loadMenu() {
             if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
             seedContactDefaults(menuData.settings);
             const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
+            if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
@@ -241,6 +243,7 @@ async function loadMenu() {
     if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
     seedContactDefaults(menuData.settings);
     const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
+    if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
@@ -263,6 +266,7 @@ function showConfigNotice(msg = '') {
 function renderDashboard() {
     renderOpeningHours();
     renderContactInfo();
+    renderArchive();
 
     const notice = categoriesContainer.querySelector('.config-notice');
     categoriesContainer.innerHTML = '';
@@ -301,6 +305,8 @@ function renderDashboard() {
         btn.onclick = () => openItemModal(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
     document.querySelectorAll('.delete-item-btn').forEach(btn =>
         btn.onclick = () => deleteItem(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
+    document.querySelectorAll('.archive-item-btn').forEach(btn =>
+        btn.onclick = () => archiveItem(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
     document.querySelectorAll('.toggle-special-btn').forEach(btn =>
         btn.onclick = () => toggleDailySpecial(parseInt(btn.dataset.catIdx), parseInt(btn.dataset.itemIdx)));
     document.querySelectorAll('.delete-cat-btn').forEach(btn =>
@@ -342,6 +348,9 @@ function renderItemRow(item, catIdx, itemIdx) {
                 <button class="btn-icon edit-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Bearbeiten" aria-label="Gericht bearbeiten">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
                 </button>
+                <button class="btn-icon archive-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Archivieren" aria-label="Gericht archivieren">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                </button>
                 <button class="btn-icon delete-item-btn" data-cat-idx="${catIdx}" data-item-idx="${itemIdx}" title="Löschen" aria-label="Gericht löschen">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                 </button>
@@ -354,6 +363,86 @@ function toggleDailySpecial(catIdx, itemIdx) {
     item.isDailySpecial = !item.isDailySpecial;
     renderDashboard();
     showSaveHint();
+}
+
+// ── Archive ───────────────────────────────────
+function archiveItem(catIdx, itemIdx) {
+    const cat = menuData.categories[catIdx];
+    const item = cat.items[itemIdx];
+    if (!confirm(`"${item.name}" archivieren? Das Gericht verschwindet aus der Speisekarte, bleibt aber im Archiv gespeichert und kann jederzeit wiederhergestellt werden.`)) return;
+
+    if (!Array.isArray(menuData.archive)) menuData.archive = [];
+    menuData.archive.push({
+        categoryId: cat.id,
+        categoryName: cat.name,
+        archivedAt: new Date().toISOString(),
+        item,
+    });
+    cat.items.splice(itemIdx, 1);
+    renderDashboard();
+    showSaveHint();
+}
+
+function restoreArchivedItem(archiveIdx) {
+    const entry = menuData.archive[archiveIdx];
+    let targetCat = menuData.categories.find(c => c.id === entry.categoryId);
+    if (!targetCat) {
+        targetCat = { id: entry.categoryId, name: entry.categoryName, items: [] };
+        menuData.categories.push(targetCat);
+    }
+    targetCat.items.push(entry.item);
+    menuData.archive.splice(archiveIdx, 1);
+    renderDashboard();
+    showSaveHint();
+}
+
+function deleteArchivedItem(archiveIdx) {
+    const entry = menuData.archive[archiveIdx];
+    if (confirm(`"${entry.item.name}" endgültig aus dem Archiv löschen? Das kann nicht rückgängig gemacht werden.`)) {
+        menuData.archive.splice(archiveIdx, 1);
+        renderDashboard();
+        showSaveHint();
+    }
+}
+
+function renderArchive() {
+    if (!Array.isArray(menuData.archive)) menuData.archive = [];
+
+    if (menuData.archive.length === 0) {
+        archiveContainer.innerHTML = '<p style="padding:1.5rem; text-align:center; color:var(--text-muted); font-size:0.9rem;">Noch keine archivierten Gerichte.</p>';
+        return;
+    }
+
+    archiveContainer.innerHTML = `
+        <div class="item-list">
+            ${menuData.archive.map((entry, idx) => renderArchiveRow(entry, idx)).join('')}
+        </div>`;
+
+    document.querySelectorAll('.restore-archive-btn').forEach(btn =>
+        btn.onclick = () => restoreArchivedItem(parseInt(btn.dataset.archiveIdx)));
+    document.querySelectorAll('.delete-archive-btn').forEach(btn =>
+        btn.onclick = () => deleteArchivedItem(parseInt(btn.dataset.archiveIdx)));
+}
+
+function renderArchiveRow(entry, idx) {
+    const item = entry.item;
+    const archivedDate = entry.archivedAt ? new Date(entry.archivedAt).toLocaleDateString('de-AT') : '';
+    return `
+        <div class="item-row">
+            <div class="item-info">
+                <div class="item-row-name">${item.name || 'N/A'} <span class="badge-day" style="background:#475569;">${entry.categoryName || ''}</span></div>
+                <div class="item-row-desc">${item.description || ''}${archivedDate ? ` · archiviert am ${archivedDate}` : ''}</div>
+            </div>
+            <div class="item-row-price">€ ${item.price || ''}</div>
+            <div class="item-actions">
+                <button class="btn-icon restore-archive-btn" data-archive-idx="${idx}" title="Wiederherstellen" aria-label="Gericht wiederherstellen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                </button>
+                <button class="btn-icon delete-archive-btn" data-archive-idx="${idx}" title="Endgültig löschen" aria-label="Gericht endgültig löschen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
+            </div>
+        </div>`;
 }
 
 // ── Opening Hours ───────────────────────────────

@@ -212,7 +212,8 @@ const DEFAULT_MENU = {
         { "name": "Ricotta-Spinat-Tortellini", "description": "Tortellini gefüllt mit Ricotta & Spinat, Parmesansauce.", "price": "8.90", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "specialDays": ["friday"], "allergens": [] }
       ]
     }
-  ]
+  ],
+  "archive": []
 };
 
 // Helper for CORS headers
