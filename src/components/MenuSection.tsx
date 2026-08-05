@@ -149,13 +149,8 @@ export const MenuSection: React.FC = () => {
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight mb-2 group-hover:text-lotteria-red/90 transition-colors break-words">
+                  <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight mb-2 group-hover:text-lotteria-red/90 transition-colors break-words text-balance">
                     {item.name}
-                    {item.allergens && item.allergens.length > 0 && (
-                      <span className="ml-1.5 text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block align-middle">
-                        {item.allergens.join(', ')}
-                      </span>
-                    )}
                   </h3>
                   
                   <p className="text-sm font-medium text-lotteria-red/70 mb-4 line-clamp-2">
@@ -165,6 +160,11 @@ export const MenuSection: React.FC = () => {
 
                 {/* Status Badges */}
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-lotteria-bg">
+                  {item.allergens && item.allergens.length > 0 && (
+                    <span className="px-3 py-1 text-xs font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded-full tracking-wider uppercase">
+                      {item.allergens.join(', ')}
+                    </span>
+                  )}
                   {item.isPopular && (
                     <span className="px-3 py-1 bg-lotteria-red text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
                       <Star size={12} className="fill-white" /> Beliebt

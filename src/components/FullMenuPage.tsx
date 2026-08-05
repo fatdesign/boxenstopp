@@ -93,13 +93,8 @@ export const FullMenuPage: React.FC = () => {
       {/* Details Right Side */}
       <div className="flex-grow min-w-0 py-2">
         <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
-          <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 break-words">
+          <h3 className="font-display font-black text-lg sm:text-2xl text-lotteria-red uppercase leading-tight group-hover:text-lotteria-red/90 transition-colors min-w-0 break-words text-balance">
             {item.name}
-            {item.allergens && item.allergens.length > 0 && (
-              <span className="ml-1.5 text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block align-middle">
-                {item.allergens.join(', ')}
-              </span>
-            )}
           </h3>
           <span className="bg-lotteria-yellow text-lotteria-red font-display font-black text-base sm:text-lg px-2.5 sm:px-3 py-1 rounded-full shadow-sm flex-shrink-0">
             € {item.price}
@@ -112,6 +107,11 @@ export const FullMenuPage: React.FC = () => {
 
         {/* Status Badges + Add to Cart */}
         <div className="flex flex-wrap items-center gap-2">
+          {item.allergens && item.allergens.length > 0 && (
+            <span className="px-2.5 py-1 text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded-full tracking-wider uppercase">
+              {item.allergens.join(', ')}
+            </span>
+          )}
           {item.isPopular && (
             <span className="px-2.5 py-1 bg-lotteria-red text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm flex items-center gap-1">
               <Star size={10} className="fill-white" /> Beliebt
