@@ -286,7 +286,7 @@ function renderDashboard() {
                 </div>
                 <div class="category-actions">
                     <button class="btn btn-ghost btn-sm edit-cat-btn" data-cat-idx="${catIdx}" title="Umbenennen" aria-label="Kategorie umbenennen">✏️</button>
-                    <button class="btn btn-ghost btn-sm delete-cat-btn" data-cat-idx="${catIdx}" title="Löschen" aria-label="Kategorie löschen">🗑</button>
+                    ${cat.id !== 'wochenmenue' ? `<button class="btn btn-ghost btn-sm delete-cat-btn" data-cat-idx="${catIdx}" title="Löschen" aria-label="Kategorie löschen">🗑</button>` : ''}
                 </div>
             </div>
             <div class="item-list">
