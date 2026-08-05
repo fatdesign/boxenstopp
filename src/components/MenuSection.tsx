@@ -4,7 +4,7 @@ import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuCardSkeletonGrid } from './MenuSkeleton';
 import { useOrder } from '../context/OrderContext';
-import { formatSpecialDays } from '../utils/weekday';
+import { formatSpecialDays, isAvailableToday } from '../utils/weekday';
 
 interface MenuItem {
   name: string;
@@ -68,6 +68,7 @@ export const MenuSection: React.FC = () => {
   }
 
   const currentCategoryData = categories.find(c => c.id === activeCategory);
+  const visibleItems = currentCategoryData?.items.filter(item => isAvailableToday(item.specialDays)) || [];
 
   return (
     <section id="menu" className="py-24 bg-lotteria-bg relative overflow-hidden">
@@ -119,9 +120,14 @@ export const MenuSection: React.FC = () => {
 
         {/* Full-Width Responsive Card Grid (1 col mobile, 2 col tablet, 3-4 col desktop) */}
         {loading && <MenuCardSkeletonGrid />}
-        {!loading && currentCategoryData && (
+        {!loading && currentCategoryData && visibleItems.length === 0 && (
+          <Reveal className="text-center text-lotteria-red/70 font-medium py-12">
+            Heute keine Gerichte in dieser Kategorie – schau bald wieder vorbei!
+          </Reveal>
+        )}
+        {!loading && currentCategoryData && visibleItems.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-            {currentCategoryData.items.map((item, idx) => (
+            {visibleItems.map((item, idx) => (
               <Reveal
                 key={idx}
                 delay={Math.min(idx, 7) * 70}
@@ -176,7 +182,7 @@ export const MenuSection: React.FC = () => {
                     </span>
                   )}
                   {formatSpecialDays(item.specialDays) && (
-                    <span className="px-3 py-1 bg-amber-500 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
+                    <span className="px-3 py-1 bg-amber-800 text-white text-xs font-bold uppercase rounded-full tracking-wider shadow-sm">
                       Nur {formatSpecialDays(item.specialDays)}
                     </span>
                   )}

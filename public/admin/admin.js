@@ -322,7 +322,7 @@ function renderItemRow(item, catIdx, itemIdx) {
     if (Array.isArray(item.specialDays) && item.specialDays.length > 0) {
         const dayShort = { monday: 'MO', tuesday: 'DI', wednesday: 'MI', thursday: 'DO', friday: 'FR', saturday: 'SA', sunday: 'SO' };
         const label = item.specialDays.map(d => dayShort[d] || d).join(', ');
-        badges += `<span class="badge-special" style="background:#ea580c;">NUR ${label}</span>`;
+        badges += `<span class="badge-day">NUR ${label}</span>`;
     }
     if (Array.isArray(item.allergens) && item.allergens.length > 0) {
         badges += `<span class="badge-allergen" style="font-size:0.65rem; font-weight:800; color:var(--text-muted); background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:4px; margin-left:8px; letter-spacing:0.05em;">[${item.allergens.join(', ')}]</span>`;

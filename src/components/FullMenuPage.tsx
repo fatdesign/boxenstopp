@@ -4,7 +4,7 @@ import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuRowSkeletonGrid } from './MenuSkeleton';
 import { useOrder } from '../context/OrderContext';
-import { formatSpecialDays } from '../utils/weekday';
+import { formatSpecialDays, isAvailableToday } from '../utils/weekday';
 
 interface MenuItem {
   name: string;
@@ -96,7 +96,10 @@ export const FullMenuPage: React.FC = () => {
           </div>
         )}
         <div className="space-y-24">
-          {!loading && categories.map((category, catIdx) => (
+          {!loading && categories.map((category, catIdx) => {
+            const visibleItems = category.items.filter(item => isAvailableToday(item.specialDays));
+            if (visibleItems.length === 0) return null;
+            return (
             <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
               {/* Category Header */}
               <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
@@ -108,7 +111,7 @@ export const FullMenuPage: React.FC = () => {
 
               {/* Items Grid (Classic 2-Column Menu Style) */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-                {category.items.map((item, idx) => (
+                {visibleItems.map((item, idx) => (
                   <div
                     key={idx}
                     className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
@@ -161,7 +164,7 @@ export const FullMenuPage: React.FC = () => {
                           </span>
                         )}
                         {formatSpecialDays(item.specialDays) && (
-                          <span className="px-2.5 py-1 bg-amber-500 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
+                          <span className="px-2.5 py-1 bg-amber-800 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
                             Nur {formatSpecialDays(item.specialDays)}
                           </span>
                         )}
@@ -180,7 +183,8 @@ export const FullMenuPage: React.FC = () => {
                 ))}
               </div>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
 
         {/* Allergen Legend Footer */}
