@@ -25,11 +25,15 @@ interface FeaturedSpecial extends MenuItem {
   categoryId: string;
 }
 
+type WeeklyMenu = Partial<Record<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday', MenuItem[]>>;
+
 const CARD_ACCENTS = [
   { border: 'border-t-amber-500', text: 'text-amber-600' },
   { border: 'border-t-race', text: 'text-race' },
   { border: 'border-t-green-500', text: 'text-green-600' },
 ];
+
+const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
 function extractSpecials(categories: MenuCategory[]): FeaturedSpecial[] {
   return categories.flatMap(cat =>
@@ -37,6 +41,14 @@ function extractSpecials(categories: MenuCategory[]): FeaturedSpecial[] {
       .filter(item => item.isDailySpecial && !item.isSoldOut)
       .map(item => ({ ...item, categoryId: cat.id }))
   );
+}
+
+function extractTodaysWeeklyMenu(weeklyMenu: WeeklyMenu | undefined): FeaturedSpecial[] {
+  if (!weeklyMenu) return [];
+  const key = WEEKDAY_KEYS[new Date().getDay()];
+  const items = weeklyMenu[key as keyof WeeklyMenu];
+  if (!items || items.length === 0) return [];
+  return items.filter(item => !item.isSoldOut).map(item => ({ ...item, categoryId: 'warme-snacks' }));
 }
 
 export const DailySpecials: React.FC = () => {
@@ -49,14 +61,16 @@ export const DailySpecials: React.FC = () => {
         const res = await fetch('https://boxenstopp.f-klavun.workers.dev');
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setSpecials(extractSpecials(data.categories || []));
+        const todaysMenu = extractTodaysWeeklyMenu(data.weeklyMenu);
+        setSpecials(todaysMenu.length > 0 ? todaysMenu : extractSpecials(data.categories || []));
         setLoaded(true);
       } catch (err) {
         console.warn('Worker fetch failed, falling back to local menu.json', err);
         fetch('menu.json')
           .then(res => res.json())
           .then(data => {
-            setSpecials(extractSpecials(data.categories || []));
+            const todaysMenu = extractTodaysWeeklyMenu(data.weeklyMenu);
+            setSpecials(todaysMenu.length > 0 ? todaysMenu : extractSpecials(data.categories || []));
             setLoaded(true);
           })
           .catch(fallbackErr => {
@@ -102,7 +116,13 @@ export const DailySpecials: React.FC = () => {
         )}
 
         {specials.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <div className={`grid gap-6 sm:gap-8 ${
+            specials.length === 1
+              ? 'grid-cols-1 max-w-md mx-auto'
+              : specials.length === 2
+              ? 'grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto'
+              : 'grid-cols-1 md:grid-cols-3'
+          }`}>
             {specials.map((special, idx) => {
               const accent = CARD_ACCENTS[idx % CARD_ACCENTS.length];
               return (

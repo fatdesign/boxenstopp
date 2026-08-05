@@ -196,7 +196,29 @@ const DEFAULT_MENU = {
         }
       ]
     }
-  ]
+  ],
+  "weeklyMenu": {
+    "monday": [
+      { "name": "Rindsgulasch mit Spätzle & Gurkensalat", "description": "Zartes Rindsgulasch, hausgemachte Spätzle, frischer Gurkensalat.", "price": "8.90", "isVegetarian": false, "allergens": [] },
+      { "name": "Bohnen-Linsen-Eintopf mit Brot", "description": "Herzhafter Eintopf mit frischem Brot.", "price": "8.90", "isVegetarian": true, "allergens": [] }
+    ],
+    "tuesday": [
+      { "name": "Pute Natur mit Couscous-Gemüse", "description": "Putenbrust natur, Couscous, Gemüse & Sauce.", "price": "8.90", "isVegetarian": false, "allergens": [] },
+      { "name": "Penne mit Gemüsesugo & Parmesan", "description": "Penne in würzigem Gemüsesugo, frisch geriebener Parmesan.", "price": "8.90", "isVegetarian": true, "allergens": [] }
+    ],
+    "wednesday": [
+      { "name": "Hähnchengeschnetzeltes mit Langkornreis", "description": "Zartes Hähnchengeschnetzeltes auf Langkornreis.", "price": "8.90", "isVegetarian": false, "allergens": [] },
+      { "name": "Kasnocken mit Röstzwiebeln & Salat", "description": "Hausgemachte Kasnocken, knusprige Röstzwiebeln, kleiner Salat.", "price": "8.90", "isVegetarian": true, "allergens": [] }
+    ],
+    "thursday": [
+      { "name": "Spaghetti Bolognese mit Parmesan", "description": "Klassische Spaghetti Bolognese, frisch geriebener Parmesan.", "price": "8.90", "isVegetarian": false, "allergens": [] },
+      { "name": "Gemüse-Curry mit Basmatireis", "description": "Würziges Gemüse-Curry auf duftendem Basmatireis.", "price": "8.90", "isVegetarian": true, "allergens": [] }
+    ],
+    "friday": [
+      { "name": "Hühnerbrust mit Kartoffelpüree", "description": "Hühnerbrust, cremiges Kartoffelpüree, Sauce & Gemüse.", "price": "8.90", "isVegetarian": false, "allergens": [] },
+      { "name": "Ricotta-Spinat-Tortellini", "description": "Tortellini gefüllt mit Ricotta & Spinat, Parmesansauce.", "price": "8.90", "isVegetarian": true, "allergens": [] }
+    ]
+  }
 };
 
 // Helper for CORS headers

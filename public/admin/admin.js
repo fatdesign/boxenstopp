@@ -31,6 +31,7 @@ const catModal = document.getElementById('cat-modal');
 const catForm = document.getElementById('cat-form');
 const catModalCancel = document.getElementById('cat-modal-cancel');
 const hoursContainer = document.getElementById('hours-container');
+const weeklyMenuContainer = document.getElementById('weekly-menu-container');
 const contactNameInput = document.getElementById('contact-name');
 const contactSloganInput = document.getElementById('contact-slogan');
 const contactPhoneInput = document.getElementById('contact-phone');
@@ -74,6 +75,33 @@ function defaultContactInfo() {
         slogan: 'Schnell. Heiss. Lecker.',
         phone: '+43 662 123456',
         address: { street: 'Handelszentrum 4', city: 'Bergheim bei Salzburg', zip: '5101' },
+    };
+}
+
+const WEEKDAY_LABELS = DAY_LABELS.slice(0, 5); // Montag–Freitag
+
+function defaultWeeklyMenu() {
+    return {
+        monday: [
+            { name: 'Rindsgulasch mit Spätzle & Gurkensalat', description: 'Zartes Rindsgulasch, hausgemachte Spätzle, frischer Gurkensalat.', price: '8.90', isVegetarian: false, allergens: [] },
+            { name: 'Bohnen-Linsen-Eintopf mit Brot', description: 'Herzhafter Eintopf mit frischem Brot.', price: '8.90', isVegetarian: true, allergens: [] },
+        ],
+        tuesday: [
+            { name: 'Pute Natur mit Couscous-Gemüse', description: 'Putenbrust natur, Couscous, Gemüse & Sauce.', price: '8.90', isVegetarian: false, allergens: [] },
+            { name: 'Penne mit Gemüsesugo & Parmesan', description: 'Penne in würzigem Gemüsesugo, frisch geriebener Parmesan.', price: '8.90', isVegetarian: true, allergens: [] },
+        ],
+        wednesday: [
+            { name: 'Hähnchengeschnetzeltes mit Langkornreis', description: 'Zartes Hähnchengeschnetzeltes auf Langkornreis.', price: '8.90', isVegetarian: false, allergens: [] },
+            { name: 'Kasnocken mit Röstzwiebeln & Salat', description: 'Hausgemachte Kasnocken, knusprige Röstzwiebeln, kleiner Salat.', price: '8.90', isVegetarian: true, allergens: [] },
+        ],
+        thursday: [
+            { name: 'Spaghetti Bolognese mit Parmesan', description: 'Klassische Spaghetti Bolognese, frisch geriebener Parmesan.', price: '8.90', isVegetarian: false, allergens: [] },
+            { name: 'Gemüse-Curry mit Basmatireis', description: 'Würziges Gemüse-Curry auf duftendem Basmatireis.', price: '8.90', isVegetarian: true, allergens: [] },
+        ],
+        friday: [
+            { name: 'Hühnerbrust mit Kartoffelpüree', description: 'Hühnerbrust, cremiges Kartoffelpüree, Sauce & Gemüse.', price: '8.90', isVegetarian: false, allergens: [] },
+            { name: 'Ricotta-Spinat-Tortellini', description: 'Tortellini gefüllt mit Ricotta & Spinat, Parmesansauce.', price: '8.90', isVegetarian: true, allergens: [] },
+        ],
     };
 }
 
@@ -184,6 +212,7 @@ async function loadMenu() {
             if (!menuData.settings) menuData.settings = {};
             if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
             seedContactDefaults(menuData.settings);
+            if (!menuData.weeklyMenu) menuData.weeklyMenu = defaultWeeklyMenu();
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
@@ -210,6 +239,7 @@ async function loadMenu() {
     if (!menuData.settings) menuData.settings = {};
     if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
     seedContactDefaults(menuData.settings);
+    if (!menuData.weeklyMenu) menuData.weeklyMenu = defaultWeeklyMenu();
 
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
@@ -231,6 +261,7 @@ function showConfigNotice(msg = '') {
 function renderDashboard() {
     renderOpeningHours();
     renderContactInfo();
+    renderWeeklyMenu();
 
     const notice = categoriesContainer.querySelector('.config-notice');
     categoriesContainer.innerHTML = '';
@@ -403,6 +434,78 @@ function renderContactInfo() {
         showSaveHint();
     });
 });
+
+// ── Weekly Menu ───────────────────────────────────
+function renderWeeklyMenu() {
+    if (!menuData.weeklyMenu) menuData.weeklyMenu = defaultWeeklyMenu();
+    const weeklyMenu = menuData.weeklyMenu;
+
+    weeklyMenuContainer.innerHTML = WEEKDAY_LABELS.map(day => {
+        const items = weeklyMenu[day.key] || [];
+        const rows = items.map((item, idx) => renderWeeklyItemRow(day.key, item, idx)).join('')
+            || '<p style="padding:1rem 0.75rem; color:var(--text-muted); font-size:0.85rem;">Kein Gericht für diesen Tag.</p>';
+        return `
+            <div class="category-block">
+                <div class="category-header">
+                    <div class="cat-label">
+                        <span class="category-name">${day.label}</span>
+                    </div>
+                </div>
+                <div class="item-list">${rows}</div>
+                <div class="add-item-wrap">
+                    <button type="button" class="btn btn-secondary btn-sm add-weekly-item-btn" data-day="${day.key}">+ Gericht hinzufügen</button>
+                </div>
+            </div>`;
+    }).join('');
+
+    document.querySelectorAll('.weekly-name-input').forEach(input =>
+        input.oninput = () => { weeklyMenu[input.dataset.day][parseInt(input.dataset.idx)].name = input.value; showSaveHint(); });
+    document.querySelectorAll('.weekly-desc-input').forEach(input =>
+        input.oninput = () => { weeklyMenu[input.dataset.day][parseInt(input.dataset.idx)].description = input.value; showSaveHint(); });
+    document.querySelectorAll('.weekly-price-input').forEach(input =>
+        input.oninput = () => { weeklyMenu[input.dataset.day][parseInt(input.dataset.idx)].price = input.value; showSaveHint(); });
+    document.querySelectorAll('.weekly-veg-checkbox').forEach(cb =>
+        cb.onchange = () => { weeklyMenu[cb.dataset.day][parseInt(cb.dataset.idx)].isVegetarian = cb.checked; showSaveHint(); });
+    document.querySelectorAll('.delete-weekly-item-btn').forEach(btn =>
+        btn.onclick = () => {
+            weeklyMenu[btn.dataset.day].splice(parseInt(btn.dataset.idx), 1);
+            renderWeeklyMenu();
+            showSaveHint();
+        });
+    document.querySelectorAll('.add-weekly-item-btn').forEach(btn =>
+        btn.onclick = () => {
+            if (!weeklyMenu[btn.dataset.day]) weeklyMenu[btn.dataset.day] = [];
+            weeklyMenu[btn.dataset.day].push({ name: '', description: '', price: '', isVegetarian: false, allergens: [] });
+            renderWeeklyMenu();
+            showSaveHint();
+        });
+}
+
+function renderWeeklyItemRow(dayKey, item, idx) {
+    const name = (item.name || '').replace(/"/g, '&quot;');
+    const desc = (item.description || '').replace(/"/g, '&quot;');
+    const price = (item.price || '').toString().replace(/"/g, '&quot;');
+    return `
+        <div class="weekly-item-row">
+            <div class="weekly-item-fields">
+                <input type="text" class="weekly-name-input" data-day="${dayKey}" data-idx="${idx}" value="${name}" placeholder="Name des Gerichts">
+                <input type="text" class="weekly-desc-input" data-day="${dayKey}" data-idx="${idx}" value="${desc}" placeholder="Beschreibung">
+            </div>
+            <div class="weekly-item-meta">
+                <label class="check-label" style="font-size:0.75rem; display:flex; align-items:center; gap:0.3rem;">
+                    <input type="checkbox" class="weekly-veg-checkbox" data-day="${dayKey}" data-idx="${idx}" ${item.isVegetarian ? 'checked' : ''}>
+                    <span>Veggie</span>
+                </label>
+                <div class="weekly-price-wrap">
+                    <span>€</span>
+                    <input type="text" class="weekly-price-input" data-day="${dayKey}" data-idx="${idx}" value="${price}" placeholder="0.00">
+                </div>
+                <button type="button" class="btn-icon delete-weekly-item-btn" data-day="${dayKey}" data-idx="${idx}" title="Löschen" aria-label="Gericht löschen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                </button>
+            </div>
+        </div>`;
+}
 
 // ── Image Upload ─────────────────────────────────
 function setImagePreview(url) {
