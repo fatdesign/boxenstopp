@@ -85,6 +85,34 @@ function seedContactDefaults(settings) {
     if (!settings.address) settings.address = defaults.address;
 }
 
+function defaultWeeklyMenuCategory() {
+    return {
+        id: 'wochenmenue',
+        name: 'Wochenmenü',
+        items: [
+            { name: 'Rindsgulasch mit Spätzle & Gurkensalat', description: 'Zartes Rindsgulasch, hausgemachte Spätzle, frischer Gurkensalat.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: ['monday'], allergens: [] },
+            { name: 'Bohnen-Linsen-Eintopf mit Brot', description: 'Herzhafter Eintopf mit frischem Brot.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: ['monday'], allergens: [] },
+            { name: 'Pute Natur mit Couscous-Gemüse', description: 'Putenbrust natur, Couscous, Gemüse & Sauce.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: ['tuesday'], allergens: [] },
+            { name: 'Penne mit Gemüsesugo & Parmesan', description: 'Penne in würzigem Gemüsesugo, frisch geriebener Parmesan.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: ['tuesday'], allergens: [] },
+            { name: 'Hähnchengeschnetzeltes mit Langkornreis', description: 'Zartes Hähnchengeschnetzeltes auf Langkornreis.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: ['wednesday'], allergens: [] },
+            { name: 'Kasnocken mit Röstzwiebeln & Salat', description: 'Hausgemachte Kasnocken, knusprige Röstzwiebeln, kleiner Salat.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: ['wednesday'], allergens: [] },
+            { name: 'Spaghetti Bolognese mit Parmesan', description: 'Klassische Spaghetti Bolognese, frisch geriebener Parmesan.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: ['thursday'], allergens: [] },
+            { name: 'Gemüse-Curry mit Basmatireis', description: 'Würziges Gemüse-Curry auf duftendem Basmatireis.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: ['thursday'], allergens: [] },
+            { name: 'Hühnerbrust mit Kartoffelpüree', description: 'Hühnerbrust, cremiges Kartoffelpüree, Sauce & Gemüse.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: false, isDailySpecial: false, specialDays: ['friday'], allergens: [] },
+            { name: 'Ricotta-Spinat-Tortellini', description: 'Tortellini gefüllt mit Ricotta & Spinat, Parmesansauce.', price: '8.90', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: ['friday'], allergens: [] },
+        ],
+    };
+}
+
+function seedWeeklyMenuCategory(data) {
+    if (!Array.isArray(data.categories)) data.categories = [];
+    if (!data.categories.some(c => c.id === 'wochenmenue')) {
+        data.categories.push(defaultWeeklyMenuCategory());
+        return true;
+    }
+    return false;
+}
+
 // ── White-Label Hydration ─────────────────────
 (function hydrateAdminUI() {
     if (typeof SETTINGS === 'undefined') return;
@@ -184,9 +212,11 @@ async function loadMenu() {
             if (!menuData.settings) menuData.settings = {};
             if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
             seedContactDefaults(menuData.settings);
+            const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
+            if (weeklyMenuWasSeeded) showSaveHint();
             return;
         } catch (err) {
             if (err.message.startsWith('401:')) throw err;
@@ -210,14 +240,16 @@ async function loadMenu() {
     if (!menuData.settings) menuData.settings = {};
     if (!menuData.settings.openingHours) menuData.settings.openingHours = defaultOpeningHours();
     seedContactDefaults(menuData.settings);
+    const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
 
     currentFileSha = null;
     categoriesContainer.innerHTML = '';
-    
+
     if (!PROXY_URL) {
         showConfigNotice('Kein Cloudflare-Proxy konfiguriert. Du befindest dich im Offline-Modus.');
     }
     renderDashboard();
+    if (weeklyMenuWasSeeded) showSaveHint();
 }
 
 function showConfigNotice(msg = '') {
