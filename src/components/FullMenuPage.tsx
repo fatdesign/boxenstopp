@@ -70,7 +70,13 @@ export const FullMenuPage: React.FC = () => {
     return <div className="min-h-screen pt-32 pb-24 bg-lotteria-bg flex items-center justify-center font-display text-2xl text-lotteria-red">Keine Speisen gefunden.</div>;
   }
 
-  const renderItemCard = (item: MenuItem, idx: number, categoryId: string) => (
+  const orderedCategories = [...categories].sort((a, b) => {
+    if (a.id === 'wochenmenue') return -1;
+    if (b.id === 'wochenmenue') return 1;
+    return 0;
+  });
+
+  const renderItemCard = (item: MenuItem, idx: number, categoryId: string, showDayBadge: boolean = true) => (
     <div
       key={idx}
       className={`bg-white rounded-3xl p-5 sm:p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-lotteria-yellow/30 hover:border-lotteria-yellow relative flex gap-4 sm:gap-6 items-center group ${item.isSoldOut ? 'opacity-50 grayscale' : ''}`}
@@ -122,7 +128,7 @@ export const FullMenuPage: React.FC = () => {
               Ausverkauft
             </span>
           )}
-          {formatSpecialDays(item.specialDays) && (
+          {showDayBadge && formatSpecialDays(item.specialDays) && (
             <span className="px-2.5 py-1 bg-amber-800 text-white text-[0.65rem] font-bold uppercase rounded-full tracking-wider shadow-sm">
               Nur {formatSpecialDays(item.specialDays)}
             </span>
@@ -177,7 +183,7 @@ export const FullMenuPage: React.FC = () => {
           </div>
         )}
         <div className="space-y-24">
-          {!loading && categories.map((category, catIdx) => {
+          {!loading && orderedCategories.map((category, catIdx) => {
             const isWeeklyMenu = category.id === 'wochenmenue';
 
             if (isWeeklyMenu) {
@@ -208,7 +214,7 @@ export const FullMenuPage: React.FC = () => {
                           <div className="flex-grow h-0.5 bg-lotteria-red/15 rounded-full"></div>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-                          {group.items.map((item, idx) => renderItemCard(item, idx, category.id))}
+                          {group.items.map((item, idx) => renderItemCard(item, idx, category.id, false))}
                         </div>
                       </div>
                     ))}
