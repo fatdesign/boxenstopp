@@ -150,10 +150,10 @@ export const MenuSection: React.FC = () => {
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight mb-2 group-hover:text-lotteria-red/90 transition-colors flex items-center gap-1.5 flex-wrap">
-                    <span>{item.name}</span>
+                  <h3 className="font-display font-black text-xl sm:text-2xl text-lotteria-red uppercase leading-tight mb-2 group-hover:text-lotteria-red/90 transition-colors">
+                    {item.name}
                     {item.allergens && item.allergens.length > 0 && (
-                      <span className="text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block">
+                      <span className="ml-1.5 text-[0.65rem] font-sans font-bold text-lotteria-red/80 bg-lotteria-yellow/40 border border-lotteria-yellow/60 rounded px-1.5 py-0.5 tracking-wider uppercase inline-block align-middle">
                         {item.allergens.join(', ')}
                       </span>
                     )}

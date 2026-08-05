@@ -121,11 +121,11 @@ export const DailySpecials: React.FC = () => {
                     <img src={special.image || getImageForCategory(special.categoryId)} alt={special.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className={`flex items-center gap-3 mb-4 ${accent.text}`}>
-                    <Tag size={26} />
-                    <h3 className="font-display font-bold text-2xl sm:text-3xl uppercase flex items-center gap-2 flex-wrap">
-                      <span>{special.name}</span>
+                    <Tag size={26} className="flex-shrink-0" />
+                    <h3 className="font-display font-bold text-2xl sm:text-3xl uppercase min-w-0">
+                      {special.name}
                       {special.allergens && special.allergens.length > 0 && (
-                        <span className="text-xs font-sans font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded px-2 py-0.5 tracking-wider uppercase inline-block">
+                        <span className="ml-1.5 text-xs font-sans font-bold text-gray-700 bg-gray-100 border border-gray-300 rounded px-2 py-0.5 tracking-wider uppercase inline-block align-middle">
                           {special.allergens.join(', ')}
                         </span>
                       )}
