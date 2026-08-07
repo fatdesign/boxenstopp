@@ -32,9 +32,20 @@ export const Footer: React.FC = () => {
           </div>
           <div><h4 className="font-bold text-white mb-4 uppercase tracking-wider text-sm">Links & Rechtliches</h4><ul className="space-y-2 text-sm text-gray-400"><li><a href="admin/index.html" className="hover:text-white transition-colors">Admin Dashboard</a></li><li><Link to="/impressum" className="hover:text-white transition-colors">Impressum</Link></li><li><Link to="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link></li></ul></div>
         </div>
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-xs">&copy; {new Date().getFullYear()} {contact.name}. Alle Rechte vorbehalten.</p>
-          <p className="text-gray-500 text-xs flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-race inline-block"></span> Bergheim bei Salzburg</p>
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+          <p>&copy; {new Date().getFullYear()} {contact.name}. Alle Rechte vorbehalten.</p>
+          <p className="flex items-center gap-1">
+            Website entwickelt von{' '}
+            <a
+              href="https://fatdesign.at"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-race transition-colors font-bold tracking-wider uppercase ml-1"
+            >
+              FAT DESIGN
+            </a>
+          </p>
+          <p className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-race inline-block"></span> Bergheim bei Salzburg</p>
         </div>
       </div>
     </footer>

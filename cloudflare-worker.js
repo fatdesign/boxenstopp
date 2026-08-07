@@ -5,19 +5,19 @@ const DEFAULT_MENU = {
   "settings": {
     "name": "BOXENSTOPP im Handelszentrum",
     "slogan": "Schnell. Heiss. Lecker.",
-    "phone": "+43 662 123456",
+    "phone": "+43 660 4871477",
     "address": {
       "street": "Handelszentrum 4",
       "city": "Bergheim bei Salzburg",
       "zip": "5101"
     },
     "openingHours": {
-      "monday": { "open": "08:00", "close": "18:00" },
-      "tuesday": { "open": "08:00", "close": "18:00" },
-      "wednesday": { "open": "08:00", "close": "18:00" },
-      "thursday": { "open": "08:00", "close": "18:00" },
-      "friday": { "open": "08:00", "close": "18:00" },
-      "saturday": { "open": "09:00", "close": "14:00" },
+      "monday": { "open": "09:00", "close": "14:30" },
+      "tuesday": { "open": "09:00", "close": "14:30" },
+      "wednesday": { "open": "09:00", "close": "14:30" },
+      "thursday": { "open": "09:00", "close": "14:30" },
+      "friday": { "open": "09:00", "close": "14:30" },
+      "saturday": { "closed": "09:00", "close": "14:00" },
       "sunday": null
     }
   },
@@ -193,7 +193,20 @@ const DEFAULT_MENU = {
           "isVegetarian": true,
           "isDailySpecial": false,
           "allergens": []
-        }
+        },
+        { "name": "Gasteiner Wasser Still", "description": "Stilles Mineralwasser.", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Gasteiner Wasser Prickelnd", "description": "Spritziges Mineralwasser.", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Sodawasser", "description": "", "price": "2.10", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Sodawasser mit Zitrone", "description": "", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Apfelsaft gespritzt", "description": "Erfrischend gespritzt.", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Johannisbeere gespritzt", "description": "Erfrischend gespritzt.", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Eistee Pfirsich", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Eistee Zitrone", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Orange (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Zitrone (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Cola (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Stiegl", "description": "Vom Fass bzw. Flasche.", "price": "3.70", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": ["A"] },
+        { "name": "Stiegl Radler", "description": "Erfrischender Radler.", "price": "3.80", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": ["A"] }
       ]
     },
     {
@@ -327,9 +340,14 @@ export default {
 
       // ── Pre-Order → Telegram ─────────────────────────────────────────
       if (url.pathname === "/order" && request.method === "POST") {
-        const telegramToken = env.TELEGRAM_API || env.TELEGRAM_BOT_TOKEN;
-        if (!telegramToken) {
-          return new Response(JSON.stringify({ error: "Vorbestellungen sind aktuell nicht verfügbar." }), {
+        let rawToken = (env.TELEGRAM_API || env.TELEGRAM_BOT_TOKEN || "").toString().trim();
+        // Strip out 'bot' prefix if user pasted 'bot123456:...' instead of '123456:...'
+        if (rawToken.toLowerCase().startsWith("bot")) {
+          rawToken = rawToken.slice(3).trim();
+        }
+
+        if (!rawToken) {
+          return new Response(JSON.stringify({ error: "Vorbestellungen sind aktuell nicht verfügbar (Token fehlt)." }), {
             status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
@@ -398,8 +416,11 @@ export default {
         }
         const message = messageParts.join("\n");
 
-        const chatId = env.TELEGRAM_CHAT_ID || "-5156182561";
-        const tgRes = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+        let chatId = (env.TELEGRAM_CHAT_ID || "-5156182561").toString().trim();
+        // Remove trailing or leading quotes if copied with quotes
+        chatId = chatId.replace(/^["']|["']$/g, '');
+
+        const tgRes = await fetch(`https://api.telegram.org/bot${rawToken}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML" }),
@@ -408,7 +429,10 @@ export default {
         if (!tgRes.ok) {
           const tgErr = await tgRes.text();
           console.error("Telegram-Fehler:", tgErr);
-          return new Response(JSON.stringify({ error: "Bestellung konnte nicht zugestellt werden. Bitte ruf uns direkt an." }), {
+          return new Response(JSON.stringify({
+            error: "Bestellung konnte nicht zugestellt werden. Bitte ruf uns direkt an.",
+            details: tgErr
+          }), {
             status: 502,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
@@ -505,6 +529,21 @@ export default {
             status: 400,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
+        }
+
+        // Optimistic concurrency check: reject if someone else (another tab/device)
+        // saved in the meantime, so we never silently overwrite their changes.
+        if (body.sha && dbRecord.sha !== body.sha) {
+          return new Response(
+            JSON.stringify({
+              error: "conflict",
+              message: "Die Speisekarte wurde zwischenzeitlich in einem anderen Tab oder Gerät gespeichert. Bitte Seite neu laden (F5) und deine Änderungen erneut eintragen, damit nichts überschrieben wird.",
+            }),
+            {
+              status: 409,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            }
+          );
         }
 
         const newSha = "sha_" + Date.now();

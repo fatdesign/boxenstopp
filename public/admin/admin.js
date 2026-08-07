@@ -52,6 +52,13 @@ function getTodayKey() {
     return WEEKDAY_KEYS_JS[new Date().getDay()];
 }
 
+const WEEKDAY_ORDER = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+function getItemWeekdayRank(item) {
+    if (!Array.isArray(item.specialDays) || item.specialDays.length === 0) return WEEKDAY_ORDER.length;
+    const ranks = item.specialDays.map(d => WEEKDAY_ORDER.indexOf(d)).filter(r => r !== -1);
+    return ranks.length > 0 ? Math.min(...ranks) : WEEKDAY_ORDER.length;
+}
+
 const DAY_LABELS = [
     { key: 'monday', label: 'Montag' },
     { key: 'tuesday', label: 'Dienstag' },
@@ -78,7 +85,7 @@ function defaultContactInfo() {
     return {
         name: 'BOXENSTOPP im Handelszentrum',
         slogan: 'Schnell. Heiss. Lecker.',
-        phone: '+43 662 123456',
+        phone: '+43 660 4871477',
         address: { street: 'Handelszentrum 4', city: 'Bergheim bei Salzburg', zip: '5101' },
     };
 }
@@ -159,6 +166,38 @@ function seedNewDishCategories(data) {
     return seeded;
 }
 
+function defaultGetraenkeExpansionItems() {
+    return [
+        { name: 'Gasteiner Wasser Still', description: 'Stilles Mineralwasser.', price: '3.30', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Gasteiner Wasser Prickelnd', description: 'Spritziges Mineralwasser.', price: '3.30', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Sodawasser', description: '', price: '2.10', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Sodawasser mit Zitrone', description: '', price: '3.30', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Rauch Apfelsaft gespritzt', description: 'Erfrischend gespritzt.', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Rauch Johannisbeere gespritzt', description: 'Erfrischend gespritzt.', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Rauch Eistee Pfirsich', description: '', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Rauch Eistee Zitrone', description: '', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Steglitz Orange (Dose/Flasche)', description: '', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Steglitz Zitrone (Dose/Flasche)', description: '', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Steglitz Cola (Dose/Flasche)', description: '', price: '3.40', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: [] },
+        { name: 'Stiegl', description: 'Vom Fass bzw. Flasche.', price: '3.70', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A'] },
+        { name: 'Stiegl Radler', description: 'Erfrischender Radler.', price: '3.80', isSoldOut: false, isPopular: false, isVegetarian: true, isDailySpecial: false, specialDays: [], allergens: ['A'] },
+    ];
+}
+
+function seedGetraenkeExpansion(data) {
+    if (!Array.isArray(data.categories)) data.categories = [];
+    const cat = data.categories.find(c => c.id === 'getraenke');
+    if (!cat) return false;
+    let seeded = false;
+    defaultGetraenkeExpansionItems().forEach(item => {
+        if (!cat.items.some(existing => existing.name === item.name)) {
+            cat.items.push(item);
+            seeded = true;
+        }
+    });
+    return seeded;
+}
+
 // ── White-Label Hydration ─────────────────────
 (function hydrateAdminUI() {
     if (typeof SETTINGS === 'undefined') return;
@@ -236,7 +275,9 @@ async function proxyRequest(method, body = null) {
     const res = await fetch(url, options);
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(`${res.status}: ${err.error || 'Request fehlgeschlagen'}`);
+        const message = new Error(`${res.status}: ${err.message || err.error || 'Request fehlgeschlagen'}`);
+        message.status = res.status;
+        throw message;
     }
     return res.json();
 }
@@ -260,11 +301,12 @@ async function loadMenu() {
             seedContactDefaults(menuData.settings);
             const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
             const newDishesWereSeeded = seedNewDishCategories(menuData);
+            const getraenkeWereSeeded = seedGetraenkeExpansion(menuData);
             if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
             categoriesContainer.innerHTML = '';
             renderDashboard();
-            if (weeklyMenuWasSeeded || newDishesWereSeeded) showSaveHint();
+            if (weeklyMenuWasSeeded || newDishesWereSeeded || getraenkeWereSeeded) showSaveHint();
             return;
         } catch (err) {
             if (err.message.startsWith('401:')) throw err;
@@ -290,6 +332,7 @@ async function loadMenu() {
     seedContactDefaults(menuData.settings);
     const weeklyMenuWasSeeded = seedWeeklyMenuCategory(menuData);
     const newDishesWereSeeded = seedNewDishCategories(menuData);
+    const getraenkeWereSeeded = seedGetraenkeExpansion(menuData);
     if (!Array.isArray(menuData.archive)) menuData.archive = [];
 
     currentFileSha = null;
@@ -299,7 +342,7 @@ async function loadMenu() {
         showConfigNotice('Kein Cloudflare-Proxy konfiguriert. Du befindest dich im Offline-Modus.');
     }
     renderDashboard();
-    if (weeklyMenuWasSeeded || newDishesWereSeeded) showSaveHint();
+    if (weeklyMenuWasSeeded || newDishesWereSeeded || getraenkeWereSeeded) showSaveHint();
 }
 
 function showConfigNotice(msg = '') {
@@ -333,6 +376,11 @@ function renderDashboard() {
         const catName = cat.name || 'Unbenannte Kategorie';
         const numStr = String(displayIdx + 1).padStart(2, '0');
 
+        let itemsToRender = cat.items.map((item, itemIdx) => ({ item, itemIdx }));
+        if (cat.id === 'wochenmenue') {
+            itemsToRender = itemsToRender.slice().sort((a, b) => getItemWeekdayRank(a.item) - getItemWeekdayRank(b.item));
+        }
+
         block.innerHTML = `
             <div class="category-header">
                 <div class="cat-label">
@@ -345,7 +393,7 @@ function renderDashboard() {
                 </div>
             </div>
             <div class="item-list">
-                ${cat.items.map((item, itemIdx) => renderItemRow(item, catIdx, itemIdx)).join('')}
+                ${itemsToRender.map(({ item, itemIdx }) => renderItemRow(item, catIdx, itemIdx)).join('')}
             </div>
             <div class="add-item-wrap">
                 <button class="btn btn-secondary add-item-btn" data-cat-idx="${catIdx}">+ Gericht hinzufügen</button>
@@ -819,11 +867,15 @@ saveBtn.onclick = async () => {
             saveStatus.textContent = '✓ Live gespeichert (in ~30s aktuell)';
             saveStatus.style.color = '#16a34a';
         } catch (err) {
-            saveStatus.textContent = '❌ Fehler: ' + err.message;
+            if (err.status === 409) {
+                saveStatus.textContent = '⚠️ Nicht gespeichert: Jemand anderes (anderer Tab/Gerät) hat zwischenzeitlich gespeichert. Bitte Seite neu laden und Änderungen erneut eintragen.';
+            } else {
+                saveStatus.textContent = '❌ Fehler: ' + err.message;
+            }
             saveStatus.style.color = 'var(--danger)';
         } finally {
             saveBtn.disabled = false;
-            setTimeout(() => { saveStatus.textContent = ''; }, 5000);
+            setTimeout(() => { saveStatus.textContent = ''; }, 8000);
         }
         return;
     }

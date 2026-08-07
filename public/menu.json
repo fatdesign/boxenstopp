@@ -2,7 +2,7 @@
   "settings": {
     "name": "BOXENSTOPP im Handelszentrum",
     "slogan": "Schnell. Heiss. Lecker.",
-    "phone": "+43 662 123456",
+    "phone": "+43 660 4871477",
     "address": {
       "street": "Handelszentrum 4",
       "city": "Bergheim bei Salzburg",
@@ -190,7 +190,20 @@
           "isVegetarian": true,
           "isDailySpecial": false,
           "allergens": []
-        }
+        },
+        { "name": "Gasteiner Wasser Still", "description": "Stilles Mineralwasser.", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Gasteiner Wasser Prickelnd", "description": "Spritziges Mineralwasser.", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Sodawasser", "description": "", "price": "2.10", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Sodawasser mit Zitrone", "description": "", "price": "3.30", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Apfelsaft gespritzt", "description": "Erfrischend gespritzt.", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Johannisbeere gespritzt", "description": "Erfrischend gespritzt.", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Eistee Pfirsich", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Rauch Eistee Zitrone", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Orange (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Zitrone (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Steglitz Cola (Dose/Flasche)", "description": "", "price": "3.40", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": [] },
+        { "name": "Stiegl", "description": "Vom Fass bzw. Flasche.", "price": "3.70", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": ["A"] },
+        { "name": "Stiegl Radler", "description": "Erfrischender Radler.", "price": "3.80", "isSoldOut": false, "isPopular": false, "isVegetarian": true, "isDailySpecial": false, "allergens": ["A"] }
       ]
     },
     {
