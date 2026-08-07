@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Printer, Star, Leaf } from 'lucide-react';
-import { Reveal } from './Reveal';
 import { getImageForCategory } from '../utils/categoryImage';
 import { MenuRowSkeletonGrid } from './MenuSkeleton';
 import { useOrder } from '../context/OrderContext';
@@ -157,7 +156,7 @@ export const FullMenuPage: React.FC = () => {
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-8 relative z-10">
 
         {/* Page Header */}
-        <Reveal className="text-center mb-12 sm:mb-20 border-b-2 border-lotteria-red/10 pb-8 sm:pb-12">
+        <div className="text-center mb-12 sm:mb-20 border-b-2 border-lotteria-red/10 pb-8 sm:pb-12">
           <h1 className="font-display font-black text-4xl sm:text-7xl uppercase text-lotteria-red tracking-tighter mb-4">
             Die Speisekarte
           </h1>
@@ -172,7 +171,7 @@ export const FullMenuPage: React.FC = () => {
               <Printer size={20} /> Speisekarte drucken / PDF
             </button>
           </div>
-        </Reveal>
+        </div>
 
         {/* Sequential Categories */}
         {loading && (
@@ -182,7 +181,7 @@ export const FullMenuPage: React.FC = () => {
           </div>
         )}
         <div className="space-y-24">
-          {!loading && orderedCategories.map((category, catIdx) => {
+          {!loading && orderedCategories.map((category) => {
             const isWeeklyMenu = category.id === 'wochenmenue';
 
             if (isWeeklyMenu) {
@@ -193,7 +192,7 @@ export const FullMenuPage: React.FC = () => {
               if (dayGroups.length === 0) return null;
 
               return (
-                <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
+                <div key={category.id} className="scroll-mt-32" id={`cat-${category.id}`}>
                   {/* Category Header */}
                   <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
                     <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
@@ -218,14 +217,14 @@ export const FullMenuPage: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </Reveal>
+                </div>
               );
             }
 
             const visibleItems = category.items.filter(item => isAvailableToday(item.specialDays));
             if (visibleItems.length === 0) return null;
             return (
-              <Reveal key={category.id} delay={Math.min(catIdx, 5) * 80} className="scroll-mt-32" id={`cat-${category.id}`}>
+              <div key={category.id} className="scroll-mt-32" id={`cat-${category.id}`}>
                 {/* Category Header */}
                 <div className="flex items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
                   <h2 className="font-display font-black text-2xl sm:text-4xl text-lotteria-red uppercase tracking-tight">
@@ -238,7 +237,7 @@ export const FullMenuPage: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                   {visibleItems.map((item, idx) => renderItemCard(item, idx, category.id))}
                 </div>
-              </Reveal>
+              </div>
             );
           })}
         </div>
